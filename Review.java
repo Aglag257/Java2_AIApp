@@ -89,8 +89,12 @@ public class Review {
         
     }
 
-    public void checkSpoiler(String reviewText) {
-        if () {
+    public void checkSpoiler() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Does your review contain spoilers? (yes/no): ");
+        String answer = scanner.nextLine();
+        
+        if (answer.toLowerCase() = yes) {
             isSpoiler = true;
         } else {
             isSpoiler = false;
