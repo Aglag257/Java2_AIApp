@@ -42,6 +42,8 @@ public class Review {
     public boolean getIsSpoiler() {
         return isSpoiler;
     }
+    public boolean getIsDeleted() {
+        return isDeleted;
 
 //Setter methods
     public void setReviewID(int reviewID) {
@@ -59,6 +61,7 @@ public class Review {
     public void setReviewText(String reviewText) {
         this.reviewText = reviewText;
     }
+    //isDeleted and isSpoiler dont need a Setter method
 
 //Other Methods
     public void giveUserRating() {
