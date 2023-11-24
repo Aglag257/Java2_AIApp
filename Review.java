@@ -94,7 +94,7 @@ public class Review {
         System.out.print("Does your review contain spoilers? (yes/no): ");
         String answer = scanner.nextLine();
         
-        if (answer.toLowerCase() = yes) {
+        if (answer.toLowerCase() = "yes") {
             isSpoiler = true;
         } else {
             isSpoiler = false;
