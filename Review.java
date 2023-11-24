@@ -34,7 +34,7 @@ public class Review {
     }
 
     public float getUserRating() {
-        return rating;
+        return userRating;
     }
     public String getReviewText() {
         return reviewText;
@@ -44,7 +44,8 @@ public class Review {
     }
     public boolean getIsDeleted() {
         return isDeleted;
-
+    }
+    
 //Setter methods
     public void setReviewID(int reviewID) {
         this.reviewID = reviewID;
@@ -56,15 +57,16 @@ public class Review {
         this.movieID = movieID;
     }
     public void setUserRating(float userRating) {
-        this.rating = rating;
+        this.userRating = userRating;
     }
     public void setReviewText(String reviewText) {
         this.reviewText = reviewText;
     }
-    //isDeleted and isSpoiler dont need a Setter method
+    //isDeleted and isSpoiler don't need a Setter method
 
 //Other Methods
     public void giveUserRating() {
+        Scanner scanner = new Scanner(System.in);
         System.out.println("Please enter your personal rating for the movie (0.0 - 10.0):");
         float userInput = scanner.nextFloat();
         userRating = userInput;
