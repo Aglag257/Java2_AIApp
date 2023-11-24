@@ -1,19 +1,23 @@
+import java.util.Scanner;
+
 public class Review {
     private int reviewID;
     private int userID;
     private int movieID;
-    private float rating;
+    private float userRating;
     private String reviewText;
     private boolean isSpoiler;
-    
+    private boolean isDeleted;
+
 //Constructor
-    public Review(int reviewID, int userID, int movieID, float rating, String reviewTextext, boolean isSpoiler) {
+    public Review(int reviewID, int userID, int movieID, float userRating, String reviewText, boolean isSpoiler, boolean isDeleted) {
         this.reviewID = reviewID;
         this.userID = userID;
         this.movieID = movieID;
-        this.rating = rating;
-        this.reviewText = reviewTextext;
+        this.userRating = userRating;
+        this.reviewText = "";
         this.isSpoiler = isSpoiler;
+        this.isDeleted = false;
     }
 
 //Getter methods
@@ -29,13 +33,13 @@ public class Review {
         return movieID;
     }
 
-    public float getRating() {
+    public float getUserRating() {
         return rating;
     }
-    public String GetReviewText() {
+    public String getReviewText() {
         return reviewText;
     }
-    public boolean GetIsSpoiler() {
+    public boolean getIsSpoiler() {
         return isSpoiler;
     }
 
@@ -49,25 +53,46 @@ public class Review {
     public void setMovieID(int movieID) {
         this.movieID = movieID;
     }
-    public void setRating(float rating) {
+    public void setUserRating(float userRating) {
         this.rating = rating;
     }
-    public void SetReviewText(String reviewText) {
+    public void setReviewText(String reviewText) {
         this.reviewText = reviewText;
     }
 
 //Other Methods
-    public void editReview(String reviewText) {
+    public void giveUserRating() {
+        System.out.println("Please enter your personal rating for the movie (0.0 - 10.0):");
+        float userInput = scanner.nextFloat();
+        userRating = userInput;
 
+        System.out.println("Thank you for your rating!");
+        scanner.close();
     }
-    public void checkSpoiler(boolean isSpoiler, String reviewText) {
-        if (isSpoiler) {
 
+    public void writeReview() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Please write your review:");
+        String userInput = scanner.nextLine();
+        reviewText = userInput;
+
+        System.out.println("Thank you for your review!");
+        scanner.close();
+    }
+
+    public void editReview(String reviewText) {
+        
+    }
+
+    public void checkSpoiler(String reviewText) {
+        if () {
+            isSpoiler = true;
         } else {
-
+            isSpoiler = false;
         }
     }
-    public void deleteReview() {
 
+    public void deleteReview() {
+        this.isDeleted = true;
     }
 }
