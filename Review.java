@@ -85,8 +85,27 @@ public class Review {
         scanner.close();
     }
 
-    public void editReview(String reviewText) {
+    public void editReview(float userRating, String reviewText) {
+        System.out.println("Current Rating and Review:");
+        System.out.println(userRating);
+        System.out.println(reviewText);
         
+        Scanner scanner = new Scanner(System.in);
+        
+        System.out.println("Do you want to change your Rating? (yes/no)");
+        String changeRating = scanner.nextLine();
+        
+        if (changeRating.equalsIgnoreCase("yes")) {
+            giveUserRating();
+        }
+        
+        System.out.println("Do you want to change your review? (yes/no)");
+        String changeReview = scanner.nextLine();
+        
+        if (changeReview.equalsIgnoreCase("yes")) {
+            writeReview();
+        }
+        scanner.close();
     }
 
     public void checkSpoiler() {
@@ -94,7 +113,7 @@ public class Review {
         System.out.print("Does your review contain spoilers? (yes/no): ");
         String answer = scanner.nextLine();
         
-        if (answer.toLowerCase() == "yes") {
+        if (answer.equalsIgnoreCase("yes")) {
             isSpoiler = true;
         } else {
             isSpoiler = false;
