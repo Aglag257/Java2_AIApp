@@ -9,7 +9,7 @@ public class Review {
     private boolean isSpoiler;
     private boolean isDeleted;
 
-    // Constructor
+// Constructor
     public Review(int reviewID, int userID, int movieID, float userRating, String reviewText, boolean isSpoiler, boolean isDeleted) {
         this.reviewID = reviewID;
         this.userID = userID;
@@ -20,7 +20,7 @@ public class Review {
         this.isDeleted = false;
     }
 
-    // Getter methods...
+// Getter methods...
     public int getReviewID() {
         return reviewID;
     }
@@ -49,7 +49,7 @@ public class Review {
         return isDeleted;
     }
     
-    // Setter methods...
+ // Setter methods...
     public void setReviewID(int reviewID) {
         this.reviewID = reviewID;
     }
@@ -78,7 +78,7 @@ public class Review {
         this.isDeleted = isDeleted;
     }
 
-    // Other Methods...
+ // Other Methods...
     public void giveUserRating() {
         Scanner scanner = new Scanner(System.in);
         float userInput;
