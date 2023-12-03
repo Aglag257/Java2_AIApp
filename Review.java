@@ -9,7 +9,7 @@ public class Review {
     private boolean isSpoiler;
     private boolean isDeleted;
 
-//Constructor
+    // Constructor
     public Review(int reviewID, int userID, int movieID, float userRating, String reviewText, boolean isSpoiler, boolean isDeleted) {
         this.reviewID = reviewID;
         this.userID = userID;
@@ -20,7 +20,7 @@ public class Review {
         this.isDeleted = false;
     }
 
-//Getter methods
+    // Getter methods...
     public int getReviewID() {
         return reviewID;
     }
@@ -36,41 +36,61 @@ public class Review {
     public float getUserRating() {
         return userRating;
     }
+
     public String getReviewText() {
         return reviewText;
     }
+
     public boolean getIsSpoiler() {
         return isSpoiler;
     }
+
     public boolean getIsDeleted() {
         return isDeleted;
     }
     
-//Setter methods
+    // Setter methods...
     public void setReviewID(int reviewID) {
         this.reviewID = reviewID;
     }
+
     public void setUserID(int userID) {
         this.userID = userID;
     }
+
     public void setMovieID(int movieID) {
         this.movieID = movieID;
     }
+
     public void setUserRating(float userRating) {
         this.userRating = userRating;
     }
+
     public void setReviewText(String reviewText) {
         this.reviewText = reviewText;
     }
-    //isDeleted and isSpoiler don't need a Setter method
 
-//Other Methods
+    public void setIsSpoiler(boolean isSpoiler) {
+        this.isSpoiler = isSpoiler;
+    }
+
+    public void setIsDeleted(boolean isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+
+    // Other Methods...
     public void giveUserRating() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Please enter your personal rating for the movie (0.0 - 10.0):");
-        float userInput = scanner.nextFloat();
-        userRating = userInput;
-
+        float userInput;
+        do {
+            System.out.println("Please enter your personal rating for the movie (0.0 - 10.0):");
+            while (!scanner.hasNextFloat()) {
+                System.out.println("Invalid input. Please enter a valid rating:");
+                scanner.next();
+            }
+            userInput = scanner.nextFloat();
+        } while (userInput < 0.0 || userInput > 10.0);
+        setUserRating(userInput);
         System.out.println("Thank you for your rating!");
         scanner.close();
     }
@@ -79,48 +99,64 @@ public class Review {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Please write your review:");
         String userInput = scanner.nextLine();
-        reviewText = userInput;
-
+        setReviewText(userInput);
         System.out.println("Thank you for your review!");
         scanner.close();
     }
 
-    public void editReview(float userRating, String reviewText) {
-        System.out.println("Current Rating and Review:");
-        System.out.println(userRating);
-        System.out.println(reviewText);
-        
+    public void editUserRating() {
         Scanner scanner = new Scanner(System.in);
-        
-        System.out.println("Do you want to change your Rating? (yes/no)");
-        String changeRating = scanner.nextLine();
-        
+
+        System.out.println("Current Rating: " + userRating);
+
+        String changeRating;
+        do {
+            System.out.println("Do you want to change your Rating? (yes/no)");
+            changeRating = scanner.nextLine();
+        } while (!changeRating.equalsIgnoreCase("yes") && !changeRating.equalsIgnoreCase("no"));
+
         if (changeRating.equalsIgnoreCase("yes")) {
             giveUserRating();
         }
-        
-        System.out.println("Do you want to change your review? (yes/no)");
-        String changeReview = scanner.nextLine();
-        
+
+        scanner.close();
+    }
+
+    public void editReviewText() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Current Review: " + reviewText);
+
+        String changeReview;
+        do {
+            System.out.println("Do you want to change your review? (yes/no)");
+            changeReview = scanner.nextLine();
+        } while (!changeReview.equalsIgnoreCase("yes") && !changeReview.equalsIgnoreCase("no"));
+
         if (changeReview.equalsIgnoreCase("yes")) {
             writeReview();
         }
+
         scanner.close();
     }
 
     public void checkSpoiler() {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Does your review contain spoilers? (yes/no): ");
-        String answer = scanner.nextLine();
-        
+        String answer;
+        do {
+            System.out.print("Does your review contain spoilers? (yes/no): ");
+            answer = scanner.nextLine();
+        } while (!answer.equalsIgnoreCase("yes") && !answer.equalsIgnoreCase("no"));
+
         if (answer.equalsIgnoreCase("yes")) {
-            isSpoiler = true;
+            setIsSpoiler(true);
         } else {
-            isSpoiler = false;
+            setIsSpoiler(false);
         }
+        scanner.close();
     }
 
     public void deleteReview() {
-        this.isDeleted = true;
+        setIsDeleted(true);
     }
 }
