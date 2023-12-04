@@ -90,6 +90,7 @@ public class Review {
                 scanner.next();
             }
             userInput = scanner.nextFloat();
+            scanner.nextLine();
         } while (userInput < 0.0 || userInput > 10.0);
         setUserRating(userInput);
         System.out.println("Thank you for your rating!");
