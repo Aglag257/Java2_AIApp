@@ -1,4 +1,4 @@
-package main;
+package gr.aueb;
 
 import java.util.ArrayList;
 import java.net.URI;
@@ -18,8 +18,8 @@ public class Movie {
     private String release_date;
     private String runtime;
     private float vote_average;
-    private transient float avgRating;
-    private transient ArrayList<Float> ratings;
+    private float avgRating;
+    private ArrayList<Float> ratings;
    
 
     private Cast[] cast;
