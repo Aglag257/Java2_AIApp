@@ -177,10 +177,10 @@ public class Movie {
     
     //TODO: better form
     @Override
-    public String toString() {
-        return "Movie [genres=" + Arrays.toString(genres) + ", id=" + id + ", original_title=" + original_title
-                + ", overview=" + overview + ", release_date=" + release_date + ", runtime=" + runtime
-                + ", vote_average=" + vote_average + ", avgRating=" + avgRating + ", ratings=" + ratings + ", cast="
-                + Arrays.toString(cast) + ", crew=" + Arrays.toString(crew) + "]";
-    }
+  @Override
+public String toString() {
+    return String.format("Movie [id=%d, title=%s, genres=%s, release_date=%s, runtime=%d, vote_average=%.2f, avgRating=%.2f, ratings=%d, overview=%s, cast=%s, crew=%s]%n",
+            id, original_title, Arrays.toString(genres), release_date, runtime, vote_average, avgRating, ratings, overview, Arrays.toString(cast), Arrays.toString(crew));
+}
+
 }
