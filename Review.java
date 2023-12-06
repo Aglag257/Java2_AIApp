@@ -1,3 +1,5 @@
+package app.src.main.java.gr.aueb;
+
 import java.util.Scanner;
 
 public class Review {
