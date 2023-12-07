@@ -56,6 +56,7 @@ public class App {
                             break;
                         case 2:
                             searchForMovie(scanner);
+
                             break;
                         case 3:
                             if(currentUser != "Guest") {
@@ -154,5 +155,16 @@ public class App {
         System.out.println("\nChoose your title. \n");
         int answer = scanner.nextInt();
         Movie.createMovie(ids.get(answer - 1), tmdbApiKey);
+        System.out.println("\nDo you want bonus content for your movie? (yes/no)");
+        scanner.nextLine(); // consume the newline character
+        String bonusContentChoice = scanner.nextLine();
+        if (bonusContentChoice.equals("yes")) {
+           // BonusContent.printBonusContent();
+        }
+}
+    public static void printBonusContent(String movieTitle) {
+        BonusContent.searchAndPrintVideo(movieTitle + " fun facts movie", "Fun Facts");
+        BonusContent.searchAndPrintVideo(movieTitle + " behind the scenes movie", "Behind the Scenes");
+        BonusContent.searchAndPrintVideo(movieTitle + " interviews movie", "Interviews");
     }
 }
