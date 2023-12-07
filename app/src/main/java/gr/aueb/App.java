@@ -11,6 +11,7 @@ public class App {
     private static String currentUser;
     private static String tmdbApiKey;
     private static String chatgptApiKey;
+    private static String youtubeApiKey; 
 
     public static void main(String[] args) throws Exception {
         loadApiKeys(); // Load API keys from files
@@ -79,6 +80,7 @@ public class App {
     private static void loadApiKeys() {
         File tmdbFile = new File("C:\\Users\\Nick\\api_keys\\tmdb_api_key.txt");
         File chatgptFile = new File("C:\\Users\\Nick\\api_keys\\chat_gpt_key.txt");
+        File youtubeFile = new File("C:\\Users\\Nick\\api_keys\\youtube_key.txt");
 
         try (BufferedReader br = new BufferedReader(new FileReader(tmdbFile))) {
             tmdbApiKey = br.readLine();
@@ -89,6 +91,13 @@ public class App {
 
         try (BufferedReader br = new BufferedReader(new FileReader(chatgptFile))) {
             chatgptApiKey = br.readLine();
+        } catch (Exception e) {
+            System.err.println("Error reading ChatGPT API key file.");
+            System.exit(1);
+        }
+
+        try (BufferedReader br = new BufferedReader(new FileReader(youtubeFile))) {
+            youtubeApiKey = br.readLine();
         } catch (Exception e) {
             System.err.println("Error reading ChatGPT API key file.");
             System.exit(1);
