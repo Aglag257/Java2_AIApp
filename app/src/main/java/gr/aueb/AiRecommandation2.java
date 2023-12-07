@@ -13,20 +13,6 @@ import com.google.gson.JsonObject;
 import java.net.URISyntaxException;
 
 public class AiRecommandation2 {
-    
-    /*  
-    public static void main(String[] args) {
-        // Get user input
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println("Enter a user message:");
-        try {
-            String userMessage = reader.readLine();
-            testChatCompletions(userMessage, "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");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    */
 
     public static void testChatCompletions(String userMessage, String apiKey) {
         String url = "https://api.openai.com/v1/chat/completions";
