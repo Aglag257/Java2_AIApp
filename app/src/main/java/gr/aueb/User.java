@@ -123,13 +123,30 @@ public class User {
     }
 
     public void setPassword(String current_username, String current_password, String new_password) {
-        if (current_username.equals(username) && current_password.equals(password)) {
-        this.password = new_password;
+    	    boolean valid ;
+    	if (current_username.equals(username) && current_password.equals(password) ) {
+           valid = true;
         } else {
             System.out.println("Wrong credentials.If you want to change your password "+
-             "you have to give the correct username and password");
-        }
-    }
+            "you have to give the correct username and password");
+            valid = false;
+            }
+	        if (new_password.length()< 8 ) {
+	        	System.out.println("Password must have the minimum length of 8 characters ");
+	        	valid = false;
+	        }
+	    	if (!new_password.matches(".*[A-Z].*") ||       // Uppercase letter
+	    	        !new_password.matches(".*[a-z].*") ||       // Lowercase letter
+	    	        !new_password.matches(".*\\d.*") ||          // Digit
+	    	        !new_password.matches(".*[!@#$%^&*()].*")) {// Special character
+	    	        System.out.println("Password must contain Uppercase letter ,Lowercase letter,Digit and Special character");
+	    	       valid = false;    
+	    	}
+
+	    	if(valid = true) {
+	    		this.password = new_password;
+	       } 
+	    	}
 
     //Getters
     public int getUserID() {
