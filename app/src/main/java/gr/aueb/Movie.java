@@ -185,13 +185,11 @@ public class Movie {
         ArrayList<Integer> originalIdsArray = new ArrayList<Integer>();
 
         //Iterate through the existing array and extract original ids
-        System.out.println();
         for (int i = 0; i < resultsArray.length(); i++) {
             int originalId = resultsArray.getJSONObject(i).getInt("id");
             originalIdsArray.add(originalId);
             //Prints the title of each result 
-            String originalTitle = resultsArray.getJSONObject(i).getString("original_title");
-            System.out.printf("%2d. %s%n", i + 1, originalTitle);
+            System.out.println(i+1 + "\t" + resultsArray.getJSONObject(i).getString("original_title"));
         }
         return originalIdsArray;
     }
