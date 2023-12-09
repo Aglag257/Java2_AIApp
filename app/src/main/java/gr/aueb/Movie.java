@@ -183,13 +183,17 @@ public class Movie {
         //Get the results array from the JSON object
         JSONArray resultsArray = jsonResponse.getJSONArray("results");
         ArrayList<Integer> originalIdsArray = new ArrayList<Integer>();
+        ArrayList<String> originalTitlesArray = new ArrayList<String>();
 
         //Iterate through the existing array and extract original ids
+        System.out.println();
         for (int i = 0; i < resultsArray.length(); i++) {
             int originalId = resultsArray.getJSONObject(i).getInt("id");
             originalIdsArray.add(originalId);
             //Prints the title of each result 
-            System.out.println(i+1 + "\t" + resultsArray.getJSONObject(i).getString("original_title"));
+            String originalTitle = resultsArray.getJSONObject(i).getString("original_title");
+            originalTitlesArray.add(originalTitle);
+            System.out.printf("%2d. %s%n", i + 1, originalTitle);
         }
         return originalIdsArray;
     }
