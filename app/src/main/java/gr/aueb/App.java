@@ -143,28 +143,37 @@ public class App {
         AiRecommendation2.testChatCompletions(userMessage + " (Only movie titles, no description or other movie details, no apologies for your previous responses or things you can't do as an AI.)", chatgptApiKey);
         System.out.println("\nChoose your title");
         scanner.nextInt();
-        //Temporary
-        Movie.createMovie(157336,tmdbApiKey);
 
     }
 
     private static void searchForMovie(Scanner scanner) throws Exception {
         System.out.println("\nType your search. \n");
         String userMessage = scanner.nextLine();
-        ArrayList<Integer> ids = Movie.movieSearch(userMessage, tmdbApiKey);
+        ArrayList<?> ids = Movie.movieSearch(userMessage, tmdbApiKey, "id");
+        ArrayList<?> titles = Movie.movieSearch(userMessage, tmdbApiKey, "title");
+        ArrayList<?> years = Movie.movieSearch(userMessage, tmdbApiKey, "year");
         System.out.println("\nChoose your title. \n");
         int answer = scanner.nextInt();
-        Movie.createMovie(ids.get(answer - 1), tmdbApiKey);
+        Movie m = new Movie((int)ids.get(answer - 1), tmdbApiKey);
+        System.out.println(m);
         System.out.println("\nDo you want bonus content for your movie? (yes/no)");
         scanner.nextLine(); // consume the newline character
         String bonusContentChoice = scanner.nextLine();
         if (bonusContentChoice.equals("yes")) {
-           // BonusContent.printBonusContent();
+            String title = (String) titles.get(answer - 1);
+            int year = (int) years.get(answer - 1);
+            printBonusContent(title, year);
         }
 }
-    public static void printBonusContent(String movieTitle) {
-        BonusContent.searchAndPrintVideo(movieTitle + " fun facts movie", "Fun Facts");
-        BonusContent.searchAndPrintVideo(movieTitle + " behind the scenes movie", "Behind the Scenes");
-        BonusContent.searchAndPrintVideo(movieTitle + " interviews movie", "Interviews");
+    public static void printBonusContent(String movieTitle, int year) {
+        if(year != -1) {
+            BonusContent.searchAndPrintVideo(movieTitle + " fun facts movie " + year, "Fun Facts", youtubeApiKey);
+            BonusContent.searchAndPrintVideo(movieTitle + " behind the scenes movie " + year, "Behind the Scenes", youtubeApiKey);
+            BonusContent.searchAndPrintVideo(movieTitle + " interviews movie " + year, "Interviews", youtubeApiKey);
+        } else{
+            BonusContent.searchAndPrintVideo(movieTitle + " fun facts movie ", "Fun Facts", youtubeApiKey);
+            BonusContent.searchAndPrintVideo(movieTitle + " behind the scenes movie ", "Behind the Scenes", youtubeApiKey);
+            BonusContent.searchAndPrintVideo(movieTitle + " interviews movie ", "Interviews", youtubeApiKey);
+        }
     }
 }
