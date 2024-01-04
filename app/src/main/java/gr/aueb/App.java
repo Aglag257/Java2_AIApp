@@ -79,9 +79,9 @@ public class App {
     }
 
     private static void loadApiKeys() {
-        File tmdbFile = new File("C:\\Users\\Nick\\api_keys\\tmdb_api_key.txt");
-        File chatgptFile = new File("C:\\Users\\Nick\\api_keys\\chat_gpt_key.txt");
-        File youtubeFile = new File("C:\\Users\\Nick\\api_keys\\youtube_key.txt");
+        File tmdbFile = new File("c:\\Users\\Βασιλης\\Downloads\\tmdb_api_key.txt");
+        File chatgptFile = new File("c:\\\\Users\\\\Βασιλης\\\\Downloads\\chat_gpt_key.txt");
+        File youtubeFile = new File("c:\\\\Users\\\\Βασιλης\\\\Downloads\\youtube_key.txt");
 
         try (BufferedReader br = new BufferedReader(new FileReader(tmdbFile))) {
             tmdbApiKey = br.readLine();

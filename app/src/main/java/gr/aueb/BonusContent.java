@@ -13,7 +13,7 @@ import java.nio.charset.StandardCharsets;
 public class BonusContent {
 
 
-    public static void searchAndPrintVideo(String searchQuery, String category, String apiKey) {
+    public static void searchAndPrintVideo(String searchQuery, String category, String apiKey ) {
         try {
 
             String searchUrl = "https://www.googleapis.com/youtube/v3/search?part=snippet&q=" +

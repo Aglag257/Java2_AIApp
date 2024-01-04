@@ -60,7 +60,7 @@ public class Movie {
         imdbRating = getImdbRatingFromID(md.getImdb_id());
     }
     public static double getImdbRatingFromID(String imdbID) {
-        String filePath = "C:\\Users\\Nick\\api_keys\\title.rating.tsv"; // Replace this with your file path
+        String filePath = "c:\\\\Users\\\\Βασιλης\\\\Downloads\\title.rating.tsv"; // Replace this with your file path
         String line;
         double imdbRating = -1; // Default value if the ID is not found
 
