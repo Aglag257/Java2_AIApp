@@ -1,4 +1,3 @@
-package gr.aueb;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -37,6 +36,12 @@ public class ChatFrame extends JFrame implements ActionListener{
     initComponents();
   }
 
+  //public ChatFrame(User user) {
+
+
+  //  initComponents();
+ // }
+
 
   private void initComponents() {
     setTitle("Filmbro");
@@ -63,6 +68,8 @@ public class ChatFrame extends JFrame implements ActionListener{
   private void setFont() {
 	chatMess1.setFont(new Font("Tahoma", 0, 16));
     chatMess1.setForeground(new Color(230, 120, 50));
+    textArea.setFont(new Font("Tahoma", 0, 14));
+    showMess.setFont(new Font("Tahoma", 0, 14));
     textArea.setForeground(new Color(230, 120, 50));
     showMess.setForeground(new Color(230, 120, 50));
     prevMess.setFont(new Font("Tahoma", 0, 13));
@@ -91,7 +98,7 @@ public class ChatFrame extends JFrame implements ActionListener{
     sentButton.setBounds(centerOffset + 200, 430, 80, 30);
     prevMess.setBounds(centerOffset + 60, 95, 240, 150);
     picLabel.setBounds(centerOffset + 50, 55, 150, 90);
-    jsp.setBounds(centerOffset - 15, 185,300, 210);
+    jsp.setBounds(centerOffset - 15, 185, 300, 210);
     scroll.setBounds(centerOffset - 15, 420, 200, 50);
     likeMessButton.setBounds(centerOffset - 15, 475, 200, 20);
     backButton.setBounds(20, 490, 80, 30);

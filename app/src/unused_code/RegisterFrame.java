@@ -1,5 +1,3 @@
-package  gr.aueb;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -30,7 +28,7 @@ public class RegisterFrame extends JFrame implements ActionListener {
 
 
   private void initComponents() {
-    setTitle("Java");
+    setTitle("Filmbro");
     setBounds(10, 10, 600, 600);
     frm.setJMenuBar(mb);
     setLocationRelativeTo(null); // center the application window

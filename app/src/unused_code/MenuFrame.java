@@ -1,4 +1,3 @@
-package gr.aueb;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,7 +9,6 @@ import java.awt.event.ComponentEvent;
 
 public class MenuFrame extends JFrame implements ActionListener {
 
-  
   private static final long serialVersionUID = 1L;
   JLabel menuMess = new JLabel("MENU");
   JLabel logoMess = new JLabel("YOUR AI MOVIE SOULMATE");

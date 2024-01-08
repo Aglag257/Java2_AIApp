@@ -1,4 +1,3 @@
-package gr.aueb;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,9 +17,13 @@ public class ProfileFrame extends JFrame implements ActionListener {
     JLabel profileInfo = new JLabel("PROFILE:");
     JLabel nameLabel = new JLabel("Name:");
     JLabel passwordLabel = new JLabel("Password:");
+    JLabel countryLabel = new JLabel("Country:");
 
-    JTextField nameTextField = new JTextField();
-    JTextField passwordTextField = new JTextField();
+
+    JLabel nameTextField = new JLabel("maria");
+    JLabel passwordTextField = new JLabel("123456");
+    JLabel countryTextField = new JLabel("Greece");
+
     DarkButton updateButton = new DarkButton("Update");
     DarkButton backButton = new DarkButton("BACK");
     JLabel picLabel = new JLabel(new ImageIcon("logo.png"));
@@ -31,12 +34,14 @@ public class ProfileFrame extends JFrame implements ActionListener {
         initComponents();
     }
 
-    ProfileFrame(User user) {
-		nameTextField.setText(user.getUsername());
-		passwordTextField.setText(user.getPassword());
-	    initComponents();
+  //  ProfileFrame(User user) {
+	//	nameTextField.setText(user.getUsername());
+	//	passwordTextField.setText(user.getPassword());
+	//  countryTextField.setText(user.getCountry());
 
-	}
+	//    initComponents();
+
+	//}
 
 
     private void initComponents() {
@@ -52,8 +57,7 @@ public class ProfileFrame extends JFrame implements ActionListener {
 		    addActionEvent();
 		    setBackground(20,20,20);
 		    setFont();
-		    nameTextField.setEditable(false);
-		    passwordTextField.setEditable(false);
+
 
 
      addComponentListener(new ComponentAdapter() {
@@ -82,6 +86,8 @@ public class ProfileFrame extends JFrame implements ActionListener {
 	nameLabel.setForeground(new Color(230, 120, 50));
     nameTextField.setForeground(new Color(230, 120, 50));
     passwordTextField.setForeground(new Color(230, 120, 50));
+    countryLabel.setForeground(new Color(230, 120, 50));
+    countryTextField.setForeground(new Color(230, 120, 50));
   }
 
 
@@ -94,6 +100,9 @@ public class ProfileFrame extends JFrame implements ActionListener {
         container.add(updateButton);
         container.add(backButton);
         container.add(picLabel);
+        container.add(countryLabel);
+        container.add(countryTextField);
+
     }
 
 
@@ -118,9 +127,11 @@ public class ProfileFrame extends JFrame implements ActionListener {
 	    picLabel.setBounds(centerOffset + 50, 45, 150, 90);
 		nameLabel.setBounds(centerOffset, 180, 120, 30);
         passwordLabel.setBounds(centerOffset,  230, 100, 30);
+        countryLabel.setBounds(centerOffset,  280, 100, 30);
+        countryTextField.setBounds(centerOffset + 100, 280, 150, 30);
         nameTextField.setBounds(centerOffset + 100, 180, 150, 30);
         passwordTextField.setBounds(centerOffset + 100, 230, 150, 30);
-	    updateButton.setBounds(centerOffset +15, 275, 200, 20);
+	    updateButton.setBounds(centerOffset +15, 335, 200, 20);
 	    backButton.setBounds(20, 490, 80, 30);
 }
 
