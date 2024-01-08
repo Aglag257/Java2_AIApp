@@ -1,4 +1,3 @@
-package gr.aueb;
 
 import javax.swing.*;
 import java.awt.*;
@@ -33,7 +32,7 @@ public class LoginFrame extends JFrame implements ActionListener {
 
 
   private void initComponents() {
-    setTitle("Java");
+    setTitle("Filmbro");
     setBounds(10, 10, 600, 600);
     frm.setJMenuBar(mb);
 

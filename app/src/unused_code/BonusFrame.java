@@ -1,5 +1,3 @@
-package gr.aueb;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -17,8 +15,7 @@ public class BonusFrame extends JFrame implements ActionListener {
 	JFrame frm = new JFrame();
     Container container = getContentPane();
     JLabel bonusLabel = new JLabel("BONUS CONTENT:");
-    String bonus[] = {"FUN", "CAT2"};
-    DarkComboBox bn = new DarkComboBox(bonus);
+    DarkButton bn = new DarkButton("BONUS CONTENT");
     DarkButton backButton = new DarkButton("BACK");
     JLabel picLabel = new JLabel(new ImageIcon("logo.png"));
     JMenuBar mb = new JMenuBar();
@@ -82,18 +79,8 @@ public class BonusFrame extends JFrame implements ActionListener {
     @Override
        public void actionPerformed(ActionEvent e) {
            if (e.getSource() == bn) {
-               String selectedBonus = (String) bn.getSelectedItem();
-               switch (selectedBonus) {
-                   case "FUN":
-                       bonusContentLabel.setText("In Titanic, Jack accidentally telling Rose to lie on the “bed” instead of the “couch” before he draws apparently wasn’t in the script.");
-                       break;
-                   case "":
-                       bonusContentLabel.setText("Bonus Content: MPLA1 Bonus Content");
-                       break;
-                   default:
-                       bonusContentLabel.setText("No Bonus Content Available");
-                       break;
-               }
+               bonusContentLabel.setText("In Titanic, Jack accidentally telling Rose to lie on the “bed” instead of the “couch” before he draws apparently wasn’t in the script.");
+               // getBonusContent();
                changeLineInBonusContent();
            }
        }
@@ -107,7 +94,7 @@ public class BonusFrame extends JFrame implements ActionListener {
 
 	    picLabel.setBounds(centerOffset + 50, 45, 150, 90);
 	    bn.setBounds(centerOffset +15, 275, 200, 30);
-	     bonusContentLabel.setBounds(centerOffset -75, 300, 400, 60);
+	    bonusContentLabel.setBounds(centerOffset -75, 300, 400, 60);
 	    backButton.setBounds(20, 490, 80, 30);
 	    bonusLabel.setBounds(centerOffset +15, 245, 200, 30);
 
