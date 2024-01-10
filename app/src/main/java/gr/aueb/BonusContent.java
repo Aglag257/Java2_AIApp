@@ -17,8 +17,8 @@ public class BonusContent {
         try {
 
             String searchUrl = "https://www.googleapis.com/youtube/v3/search?part=snippet&q=" +
-                    URLEncoder.encode(searchQuery + " " + category, StandardCharsets.UTF_8 ) +
-                    "&type=video&key=" + apiKey;
+                    URLEncoder.encode(searchQuery + " " + category, StandardCharsets.UTF_8 ) + apiKey ;
+                    
 
             InputStream input = new URL(searchUrl).openStream();
             JsonArray items = JsonParser.parseReader(new InputStreamReader(input)).getAsJsonObject().getAsJsonArray("items");
