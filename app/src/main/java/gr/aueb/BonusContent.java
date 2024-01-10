@@ -17,14 +17,15 @@ public class BonusContent {
         try {
 
             String searchUrl = "https://www.googleapis.com/youtube/v3/search?part=snippet&q=" +
-                    URLEncoder.encode(searchQuery + " " + category, StandardCharsets.UTF_8) +
+                    URLEncoder.encode(searchQuery+ " " + category, StandardCharsets.UTF_8)   +
                     "&type=video&key=" + apiKey;
-
+            
             InputStream input = new URL(searchUrl).openStream();
-            JsonArray items = JsonParser.parseReader(new InputStreamReader(input)).getAsJsonObject().getAsJsonArray("items");
+            JsonArray items = JsonParser.parseReader(new InputStreamReader(input, "UTF-8")).getAsJsonObject().getAsJsonArray("items");
+
 
             if (items.size() > 0) {
-                System.out.println("Βίντεο για την κατηγορία '" + category + "':");
+                System.out.println("Videos for category: '" + category + "':");
 
                 for (int i = 0; i < Math.min(3, items.size()); i++) {
                     JsonObject item = items.get(i).getAsJsonObject();
@@ -40,13 +41,13 @@ public class BonusContent {
                         String videoTitle = snippet.get("title").getAsString();
                         System.out.println(category + " " + (i + 1) + ": " + videoTitle + " - " + videoUrl);
                     } else {
-                        System.out.println("Δεν βρέθηκε αναγνωριστικό βίντεο για την κατηγορία '" + category + "'.");
+                        System.out.println("We did not find videos for category: '" + category + "'.");
                     }
                     
 
                 }
             } else {
-                System.out.println("Δεν βρέθηκαν βίντεο για την κατηγορία '" + category + "'.");
+                System.out.println("We did not find videos for category:  '" + category + "'.");
             }
 
         } catch (IOException e) {
