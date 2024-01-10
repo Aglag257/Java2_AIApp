@@ -78,6 +78,147 @@ public class App {
         }
     }
 
+<<<<<<< Updated upstream
+=======
+    private static boolean mainCase2(Scanner scanner) throws Exception {
+        int choice = 0;
+        int choice2;
+        System.out.println("\nType your search or press 0 to retun to main menu ");
+        String userMessage = scanner.nextLine();
+        userMessage = encodeMovieTitle(userMessage);
+        
+        if(!userMessage.equals("0")) {
+            do {
+                ArrayList<Integer> ids = search(userMessage);
+                if(!ids.isEmpty()) {
+                    Object o = pick(scanner, ids);
+                    if(!o.equals(0)){
+                        System.out.println(o);
+                        do {
+                            System.out.println(o);
+                            if(o instanceof Movie) {
+                                displayMovieMenu();
+                                // check for input
+                                choice2 = scanner.nextInt();
+                                scanner.nextLine();
+                                movieCase(scanner, choice2, o);
+                            } else {
+                                displayPersonMenu();
+                                choice2 = scanner.nextInt();
+                                scanner.nextLine();
+                                personCase(scanner, choice2, o);
+                            }                       
+                        } while (choice2 != 0);
+                    } else break;
+                }       
+            } while(choice == 0);
+        } else return false;
+        return true;
+    }
+
+    public static void personCase(Scanner scanner, int choice2, Object o) throws Exception {
+        switch (choice2) {
+            case 0:
+                break;
+            case 1: 
+                ArrayList<Integer> ids2 = ((Person)o).getMovieIds();
+                ArrayList<String> titles = ((Person)o).getMovieTitles();
+                ArrayList<String> dates = ((Person)o).getMovieDates();
+                int choice3;
+                int choice4 = 1;
+                do {
+                    for (int i = 0; i < ids2.size(); i++) {
+                        if(!dates.get(i).isEmpty()) {
+                            int year = extractYear(dates.get(i));
+                            System.out.printf("%2d. %s (%d)\n", i + 1, titles.get(i), year);
+                        } else {
+                            System.out.printf("%2d. %s (%s)\n", i + 1, titles.get(i), "Release date not available");
+                        }
+                    }   
+                    Object ob = pick(scanner, ids2);
+                    if(ob instanceof Movie) {
+                        Movie m = (Movie)ob;
+                        System.out.println(m);
+                        do {
+                            displayMovieMenu();
+                            choice3 = scanner.nextInt();
+                            scanner.nextLine();
+                            movieCase(scanner, choice3, ob);
+                        } while (choice3 != 0);
+                    } else choice4 = 0;
+                } while(choice4 != 0 );
+                
+                
+                break;
+            default:
+                System.out.println("Invalid choice. Please enter a valid option");
+                break;
+        }
+    }
+
+    public static void movieCase(Scanner scanner , int choice2, Object o) throws Exception {
+        switch (choice2) {
+            case 0:
+                break;
+            case 1: 
+                int choice3;
+                do {
+                    Movie m = (Movie)o;
+                    m.printFullCast();
+                    displayFullContributorsMenu();
+                    choice3 = scanner.nextInt();
+                    scanner.nextLine();
+                    switch (choice3) {
+                        case 0:
+                            break;
+                        case 1: 
+                            ArrayList<String> names = ((Movie)o).getPeopleName();
+                            ArrayList<String> jobs = ((Movie)o).getPeopleJob();
+                            ArrayList<Integer> originalIds = ((Movie) o).getPeopleId();
+                            ArrayList<Integer> ids2 = new ArrayList<>();
+                            for (Integer id : originalIds) { //negative values for prick()
+                                ids2.add(-id);
+                            }
+                            int choice4;
+                            int choice5 = 1;
+                            do {
+                                for (int i = 0; i < ids2.size(); i++) {
+                                    if(!jobs.get(i).isEmpty()) {
+                                        System.out.printf("%2d. %s (%s)\n", i + 1, names.get(i), jobs.get(i));
+                                    } else {
+                                        System.out.printf("%2d. %s (%s)\n", i + 1, jobs.get(i), "Known for department not available");
+                                    }
+                                }   
+                                Object ob = pick(scanner, ids2);
+                                if(ob instanceof Person) {
+                                    Person p = (Person)ob;
+                                    System.out.println(p);
+                                    do {
+                                        displayPersonMenu();
+                                        choice4 = scanner.nextInt();
+                                        scanner.nextLine();
+                                        personCase(scanner, choice4, ob);
+                                    } while (choice4 != 0);
+                                } else choice5 = 0;
+                            } while(choice5 != 0);
+                            break;
+                        default:
+                            System.out.println("Invalid choice. Please enter a valid option");
+                            break;
+                    }
+                }while(choice3 != 0);
+                break;
+            case 8:
+                 printBonusContent("Pulp Fiction" ,1995 ); 
+            break;   
+            default:
+                System.out.println("choice2 " + choice2);
+                System.out.println("Invalid choice. Please enter a valid option");
+                break;
+        }
+    } 
+
+>>>>>>> Stashed changes
     private static void loadApiKeys() {
         File tmdbFile = new File("C:\\Users\\Nick\\api_keys\\tmdb_api_key.txt");
         File chatgptFile = new File("C:\\Users\\Nick\\api_keys\\chat_gpt_key.txt");
