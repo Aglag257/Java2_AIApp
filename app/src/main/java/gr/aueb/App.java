@@ -3,8 +3,11 @@ package gr.aueb;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
+=======
+>>>>>>> master
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
@@ -13,91 +16,110 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+<<<<<<< HEAD
 import java.sql.Date;
 import java.time.LocalDate;
 >>>>>>> Stashed changes
+=======
+import java.time.LocalDate;
+>>>>>>> master
 import java.util.ArrayList;
 import java.util.Scanner;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 public class App {
-
-    private static String currentUser;
+// να φτιαξω τη στοιχιση για αποτελεσματα 100+
+    private static User currentUser;
     private static String tmdbApiKey;
     private static String chatgptApiKey;
-    private static String youtubeApiKey; 
+    private static String youtubeApiKey;
+    private static boolean skipStartMenu;
+    private static boolean guest;
 
     public static void main(String[] args) throws Exception {
         loadApiKeys(); // Load API keys from files
 
         Scanner scanner = new Scanner(System.in);
 
+        startCase(scanner);
+    }
+    
+
+    public static void startCase(Scanner scanner) throws Exception {
         while (true) {
             displayStartMenu();
-
             int startChoice = scanner.nextInt();
             scanner.nextLine(); // consume the newline character
 
             switch (startChoice) {
                 case 1:
                     //login
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
                     User user1 = new User("billymylo", "1111","greece");
                     skipStartMenu = true;
 >>>>>>> Stashed changes
+=======
+                    skipStartMenu = true;
+>>>>>>> master
                     break;
                 case 2:
                     //sign up
+                    skipStartMenu = true;
                     break;
                 case 3:
                     // Continue as a guest
-                    currentUser = "Guest";
+                    skipStartMenu = true;
+                    guest = true;
                     break;
                 case 4:
                     System.out.println("Exiting the application.");
                     System.exit(0);
                 default:
-                    System.out.println("Invalid choice. Please enter a valid option.");
+                    System.out.println("Invalid choice. Please enter a valid option");
             }
+            mainCase(scanner);
+        }
+    }
 
-            // If the user is logged in, display the main menu
-            if (isLoggedIn()) {
-                while (true) {
-                    displayMainMenu();
-
-                    int choice = scanner.nextInt();
-                    scanner.nextLine(); // consume the newline character
-
-                    switch (choice) {
-                        case 1:
-                            getAIRecommendation(scanner);
-                            break;
-                        case 2:
-                            searchForMovie(scanner);
-
-                            break;
-                        case 3:
-                            if(currentUser != "Guest") {
-                                logOut();
-                            } else {
-                                displayStartMenu();
-                                choice = scanner.nextInt();
-                                scanner.nextLine(); // consume the newline character
-                            }
-                            break;
-                        case 4:
-                            System.out.println("Exiting the application. Goodbye!");
-                            System.exit(0);
-                        default:
-                            System.out.println("Invalid choice. Please enter a valid option.");
-                    }
+    public static void mainCase(Scanner scanner) throws Exception  {
+        
+        // If the user is logged in or a guest, display the main menu
+        if (skipStartMenu) {
+            while (true) {
+                displayMainMenu();
+                int choice = scanner.nextInt();
+                scanner.nextLine(); // consume the newline character
+                switch (choice) {
+                    case 1:
+                        getAIRecommendation(scanner);
+                        break;
+                    case 2:
+                        boolean flag = true;
+                        while (flag) {
+                            flag = mainCase2(scanner);
+                        }
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        System.out.println("Exiting the application.");
+                        System.exit(0);
+                    default:
+                        System.out.println("Invalid choice. Please enter a valid option");
                 }
             }
         }
     }
 
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
+=======
+>>>>>>> master
     private static boolean mainCase2(Scanner scanner) throws Exception {
         int choice = 0;
         int choice2;
@@ -226,6 +248,7 @@ public class App {
                     }
                 }while(choice3 != 0);
                 break;
+<<<<<<< HEAD
             case 8:
 <<<<<<< Updated upstream
                  printBonusContent("Pulp Fiction" ,1995 ); 
@@ -234,6 +257,8 @@ public class App {
                  printBonusContent(((Movie)o).getMd().getOriginal_title());
                  break;
 >>>>>>> Stashed changes
+=======
+>>>>>>> master
             default:
                 System.out.println("choice2 " + choice2);
                 System.out.println("Invalid choice. Please enter a valid option");
@@ -241,11 +266,14 @@ public class App {
         }
     } 
 
+<<<<<<< HEAD
 >>>>>>> Stashed changes
+=======
+>>>>>>> master
     private static void loadApiKeys() {
-        File tmdbFile = new File("C:\\Users\\Nick\\api_keys\\tmdb_api_key.txt");
-        File chatgptFile = new File("C:\\Users\\Nick\\api_keys\\chat_gpt_key.txt");
-        File youtubeFile = new File("C:\\Users\\Nick\\api_keys\\youtube_key.txt");
+        File tmdbFile = new File("c:\\Users\\Βασιλης\\Downloads\\tmdb_api_key.txt");
+        File chatgptFile = new File("c:\\\\Users\\\\Βασιλης\\\\Downloads\\chat_gpt_key.txt");
+        File youtubeFile = new File("c:\\\\Users\\\\Βασιλης\\\\Downloads\\youtube_key.txt");
 
         try (BufferedReader br = new BufferedReader(new FileReader(tmdbFile))) {
             tmdbApiKey = br.readLine();
@@ -275,61 +303,157 @@ public class App {
         System.out.println("2. Sign Up");
         System.out.println("3. Continue as a Guest");
         System.out.println("4. Exit");
-        System.out.print("Enter your choice: ");
+        System.out.print("Enter your choice ");
     }
 
     private static void displayMainMenu() {
         System.out.println("\nMain Menu:");
         System.out.println("1. Get AI recommendation for a movie");
-        System.out.println("2. Search for a movie");
-        if(currentUser != "Guest") {
-            System.out.println("3. Log Out");
-            
+        System.out.println("2. Search for a movie or movie contributor");
+        System.out.println("3. Search for friends");
+        
+        if(!guest) {
+            System.out.println("4. Your profile");
+            System.out.println("5. Create list");
+            System.out.println("5. Chatrooms");
+            System.out.println("6. Exit");
         } else {
-            System.out.println("3. Login");
+            System.out.println("4. Login");
+            System.out.println("5. Exit");
         }
-        System.out.println("4. Exit");
-        System.out.print("Enter your choice: ");
+        System.out.print("Enter your choice ");
     }
 
-    private static boolean isLoggedIn() {
-        return currentUser != null;
+    private static void displayMovieMenu() {
+        System.out.println("0. Back");
+        System.out.println("1. See full Cast and Crew");
+        System.out.println("2. See reviews");
+        System.out.println("3. Add review");
+        System.out.println("4. Add to Watchlist");
+        System.out.println("5. Add to Seen");
+        System.out.println("6. Add to Favourites");
+        System.out.println("7. Add to list");
+        System.out.println("8. Get Bonus content");
+        System.out.println("Enter your choice ");
     }
 
-    private static void logOut() {
-        currentUser = null;
-        System.out.println("Logged out successfully.");
+    private static void displayReviewTypeMenu() {
+        System.out.println("Does your review contain spoilers?");
+        System.out.println("0. Back");
+        System.out.println("1. YES");
+        System.out.println("2. NO");
+    }
+
+    private static void displayFullContributorsMenu() {
+        System.out.println("0. Back");
+        System.out.println("1. Details for a contributor");
+        System.out.println("Enter your choice ");
+    }
+
+    private static void displayPersonMenu() {
+        System.out.println("0. Back");
+        System.out.println("1. Details for a movie");
+        System.out.println("Enter your choice ");
+    }
+
+    private static void userMenu() {
+        System.out.println("0. Back");
+        System.out.println("1. Choose a list");
+        System.out.println("2. Follow"); //or unfollow
+        System.out.println("Enter your choice ");
+    }
+
+    private static void displayProfileMenu() {
+        System.out.println("\nProfile Menu:");
+        System.out.println("0. Back");
+        System.out.println("1. Logout");
+        System.out.println("2. Your 4 favourite movies");
+        System.out.println("3. Your 4 favourite movie contributors");
+        System.out.println("4. Your 4 favourite genres");
+        System.out.println("5. Watchlist");
+        System.out.println("6. Seen");
+        System.out.println("7. Favourites");
+        System.out.println("8. Your lists");
+        System.out.println("9 your reviews");
+        System.out.println("10. Your followers");
+        System.out.println("11. You follow");
+        System.out.println("12. Your country");
+        System.out.print("Enter your choice ");
+    }
+
+    private static void displayListContentMenu() {
+        System.out.println("0. Back");
+        System.out.println("1. Modify");
+        System.out.println("2. View details"); //not for genres
+        System.out.println("Enter your choice ");
+    }
+
+    private static void displayReviewContentMenu() {
+        System.out.println("0. Back");
+        System.out.println("1. Modify");
+        System.out.println("2. Remove");
+        System.out.println("3. View");
+        System.out.println("Enter your choice ");
+    }
+
+    private static void displayCountryMenu() {
+        System.out.println("0. Back");
+        System.out.println("1. Change country");
+        System.out.println("Enter your choice ");
+    }
+
+    private static void displayChatroomMenu() {
+        System.out.println("0. Back");
+        System.out.println("1. Your chatrooms");
+        System.out.println("2. Find chatrooms");
+        System.out.println("3. Create chatroom"); //not sure what happens with members when creating
+        System.out.println("Enter your choice ");
+    }
+
+    private static void displayYourChatroomMenu() {
+        System.out.println("0. Back");
+        System.out.println("1. Write a message");
+        System.out.println("2. Delete a Message");
+        System.out.println("3. Leave chatroom");
+        System.out.println("4. Rename chatroom");
+        System.out.println("5. Delete chatroom"); //if creator
+        System.out.println("6. Add friends"); // not sure if it is a function
+        System.out.println("Enter your choice ");
+    }
+
+    private static void displayChatroomFindMenu() {
+        System.out.println("0. Back");
+        System.out.println("1. Search for a chatroom");
+        System.out.println("2. See existing chatrooms");
     }
 
     private static void getAIRecommendation(Scanner scanner) throws Exception {
         System.out.println("\nType your preferences for movie recommendations.");
         String userMessage = scanner.nextLine();
         AiRecommendation2.testChatCompletions(userMessage + " (Only movie titles, no description or other movie details, no apologies for your previous responses or things you can't do as an AI.)", chatgptApiKey);
-        System.out.println("\nChoose your title");
+        System.out.println("\nEnter your choice ");
         scanner.nextInt();
-
     }
 
-    private static void searchForMovie(Scanner scanner) throws Exception {
-        System.out.println("\nType your search. \n");
-        String userMessage = scanner.nextLine();
-        ArrayList<?> ids = Movie.movieSearch(userMessage, tmdbApiKey, "id");
-        ArrayList<?> titles = Movie.movieSearch(userMessage, tmdbApiKey, "title");
-        ArrayList<?> years = Movie.movieSearch(userMessage, tmdbApiKey, "year");
-        System.out.println("\nChoose your title. \n");
+    private static Object pick(Scanner scanner, ArrayList<Integer> ids) throws Exception {
+        System.out.print("Enter your choice or press 0 to go back ");
         int answer = scanner.nextInt();
-        Movie m = new Movie((int)ids.get(answer - 1), tmdbApiKey);
-        System.out.println(m);
-        System.out.println("\nDo you want bonus content for your movie? (yes/no)");
-        scanner.nextLine(); // consume the newline character
-        String bonusContentChoice = scanner.nextLine();
-        if (bonusContentChoice.equals("yes")) {
-            String title = (String) titles.get(answer - 1);
-            int year = (int) years.get(answer - 1);
-            printBonusContent(title, year);
+        scanner.nextLine(); //consume next line character
+        if(answer == 0) return 0;
+        if(ids.get(answer - 1) > 0) {
+            Movie m = new Movie(ids.get(answer - 1), tmdbApiKey);
+            return m;
+        } else {
+            Person p = new Person(-ids.get(answer - 1), tmdbApiKey);
+            return p;
         }
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 }
+=======
+    }
+    
+>>>>>>> master
     public static void printBonusContent(String movieTitle, int year) {
         if(year != -1) {
             BonusContent.searchAndPrintVideo(movieTitle + "  movie " + year, "Fun Facts", youtubeApiKey);
@@ -350,4 +474,115 @@ public class App {
             BonusContent.searchAndPrintVideo(movieTitle + "  movie " , "Interviews", youtubeApiKey);
 >>>>>>> Stashed changes
     }
+
+    private static String encodeMovieTitle(String title) {
+        try {
+            return URLEncoder.encode(title, StandardCharsets.UTF_8.toString());
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return title;
+        }
+    }
+
+    private static ArrayList<Integer> search(String userMessage) {
+        Gson gson = new Gson();
+        ArrayList<Integer> idsList = new ArrayList<>();
+        ArrayList<String> prints = new ArrayList<>();
+        ArrayList<Float> popularity = new ArrayList<>();
+        HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create("https://api.themoviedb.org/3/search/multi?query="+ userMessage + "&include_adult=false&language=en-US&page=1"))
+            .header("accept", "application/json")
+            .header("Authorization", "Bearer " + tmdbApiKey)
+            .method("GET", HttpRequest.BodyPublishers.noBody())
+            .build();
+        HttpResponse<String> response;
+        try {
+            response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+            
+            JsonObject jsonObject = gson.fromJson(response.body(), JsonObject.class);
+
+            if (jsonObject.has("results") && jsonObject.get("results").isJsonArray()) {
+                JsonArray resultsArray = jsonObject.getAsJsonArray("results");
+
+                if (!resultsArray.isEmpty()) {
+                    for (int i = 0; i < resultsArray.size(); i++) {
+                        JsonObject resultObject = resultsArray.get(i).getAsJsonObject();
+                        if (resultObject.has("media_type")) {
+                            String mediaType = resultObject.get("media_type").getAsString();
+                            if (mediaType.equals("movie")) {
+                                String releaseDate = resultObject.get("release_date").getAsString();
+                                if(!releaseDate.isEmpty()) {
+                                    int year = extractYear(releaseDate);
+                                    prints.add(String.format("%s (%s)", resultObject.get("original_title").getAsString(), "Movie, " + year));
+                                } else {
+                                    prints.add(String.format("%s (%s)", resultObject.get("original_title").getAsString(), "Release date not available"));
+                                } 
+                                idsList.add(resultObject.get("id").getAsInt());
+                                popularity.add(resultObject.get("popularity").getAsFloat());
+                            } else if(mediaType.equals("person")) {
+                                idsList.add(-resultObject.get("id").getAsInt());
+                                popularity.add(resultObject.get("popularity").getAsFloat());
+                                String job = resultObject.get("known_for_department").getAsString();
+                                if(!job.isEmpty()) {
+                                    prints.add(String.format("%s (%s)", resultObject.get("original_name").getAsString(), job));
+                                } else {
+                                    prints.add(String.format("%s (%s)", resultObject.get("original_name").getAsString(), "Known for department not available"));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            idsList = sortResultsOnPopul(idsList, prints, popularity);
+
+        } catch (IOException e) {
+            System.err.println("Check your internet connection!");
+            e.printStackTrace();
+            System.exit(1);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+        return idsList;
+    }
+
+    private static void printResults(ArrayList<String> prints) {
+        if(!prints.isEmpty()) {
+            System.out.println();
+            for (int i = 0; i < prints.size(); i++) {
+                String newPrint = String.format("%2d. %s", i + 1, prints.get(i));
+                prints.set(i, newPrint);
+                System.out.println(prints.get(i));
+            }
+        }
+    }
+
+    private static ArrayList<Integer> sortResultsOnPopul(ArrayList<Integer> idsList, ArrayList<String> prints, ArrayList<Float> popularity) {
+        int n = idsList.size();
+        if(n >= 2){
+            for (int i = 1; i <= n - 1; i++) {
+                for (int j = n - 1; j >= i; j--) {
+                    if(popularity.get(j - 1) < popularity.get(j)) {
+                        float temp1 = popularity.get(j - 1);
+                        popularity.set(j - 1, popularity.get(j));
+                        popularity.set(j, temp1);
+                        int temp2 = idsList.get(j - 1);
+                        idsList.set(j - 1, idsList.get(j));
+                        idsList.set(j, temp2);
+                        String temp3 = prints.get(j - 1);
+                        prints.set(j - 1, prints.get(j));
+                        prints.set(j, temp3);
+                    }
+                }
+            }
+        }
+        printResults(prints);
+        return idsList;
+    }
+
+    private static int extractYear(String d){
+        LocalDate date = LocalDate.parse(d);
+        int year = date.getYear();
+        return year;
+    } 
 }

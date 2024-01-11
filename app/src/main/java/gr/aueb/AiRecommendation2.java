@@ -1,6 +1,9 @@
 package gr.aueb;
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
+=======
+>>>>>>> master
 /*
 import com.cloudurable.jai.OpenAIClient;
 import com.cloudurable.jai.model.text.completion.chat.ChatRequest;
@@ -10,8 +13,11 @@ import com.cloudurable.jai.model.text.completion.chat.Role;
 import com.cloudurable.jai.model.text.completion.chat.function.*;
 import com.cloudurable.jai.util.JsonSerializer;
 import io.nats.jparse.node.ObjectNode;*/
+<<<<<<< HEAD
 import java.util.concurrent.TimeUnit;
 >>>>>>> Stashed changes
+=======
+>>>>>>> master
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,6 +26,10 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
+import java.util.HashMap;
+
+import javax.management.relation.Role;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
@@ -111,5 +121,14 @@ public class AiRecommendation2 {
 
         System.out.println("\n\n" + content);
     }
-    
+   /* public static void chatGPT(String userMessage, String apiKey) {
+                
+        final var message = Message.builder().role(Role.USER)
+                .content(userMessage + "I want 10 movies suggestions and their tmdb ids of them").build();
+
+        final var chatBuilder = ChatRequest.builder()
+                .model("gpt-3.5-turbo-0613")
+                .addMessage(message)  
+                .functionalCall(ChatRequest.AUTO);
+    }*/
 }

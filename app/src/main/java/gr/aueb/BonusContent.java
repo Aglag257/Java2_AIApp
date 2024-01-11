@@ -13,10 +13,11 @@ import java.nio.charset.StandardCharsets;
 public class BonusContent {
 
 
-    public static void searchAndPrintVideo(String searchQuery, String category, String apiKey) {
+    public static void searchAndPrintVideo(String searchQuery, String category, String apiKey ) {
         try {
 
             String searchUrl = "https://www.googleapis.com/youtube/v3/search?part=snippet&q=" +
+<<<<<<< HEAD
 <<<<<<< Updated upstream
                     URLEncoder.encode(searchQuery+ " " + category, StandardCharsets.UTF_8)   +
 =======
@@ -24,6 +25,11 @@ public class BonusContent {
 >>>>>>> Stashed changes
                     "&type=video&key=" + apiKey;
             
+=======
+                    URLEncoder.encode(searchQuery + " " + category, StandardCharsets.UTF_8 ) + apiKey ;
+                    
+
+>>>>>>> master
             InputStream input = new URL(searchUrl).openStream();
             JsonArray items = JsonParser.parseReader(new InputStreamReader(input, "UTF-8")).getAsJsonObject().getAsJsonArray("items");
 
