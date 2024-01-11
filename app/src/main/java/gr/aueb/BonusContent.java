@@ -22,14 +22,7 @@ public class BonusContent {
                     URLEncoder.encode(searchQuery+ " " + category, StandardCharsets.UTF_8)   +
 =======
                     URLEncoder.encode( searchQuery + " " + category, StandardCharsets.UTF_8)   +
->>>>>>> Stashed changes
                     "&type=video&key=" + apiKey;
-            
-=======
-                    URLEncoder.encode(searchQuery + " " + category, StandardCharsets.UTF_8 ) + apiKey ;
-                    
-
->>>>>>> master
             InputStream input = new URL(searchUrl).openStream();
             JsonArray items = JsonParser.parseReader(new InputStreamReader(input, "UTF-8")).getAsJsonObject().getAsJsonArray("items");
 
