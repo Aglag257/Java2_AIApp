@@ -3,6 +3,19 @@ package gr.aueb;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+<<<<<<< Updated upstream
+=======
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URLEncoder;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
+import java.sql.Date;
+import java.time.LocalDate;
+>>>>>>> Stashed changes
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -27,6 +40,11 @@ public class App {
             switch (startChoice) {
                 case 1:
                     //login
+<<<<<<< Updated upstream
+=======
+                    User user1 = new User("billymylo", "1111","greece");
+                    skipStartMenu = true;
+>>>>>>> Stashed changes
                     break;
                 case 2:
                     //sign up
@@ -209,8 +227,13 @@ public class App {
                 }while(choice3 != 0);
                 break;
             case 8:
+<<<<<<< Updated upstream
                  printBonusContent("Pulp Fiction" ,1995 ); 
             break;   
+=======
+                 printBonusContent(((Movie)o).getMd().getOriginal_title());
+                 break;
+>>>>>>> Stashed changes
             default:
                 System.out.println("choice2 " + choice2);
                 System.out.println("Invalid choice. Please enter a valid option");
@@ -305,6 +328,7 @@ public class App {
             int year = (int) years.get(answer - 1);
             printBonusContent(title, year);
         }
+<<<<<<< Updated upstream
 }
     public static void printBonusContent(String movieTitle, int year) {
         if(year != -1) {
@@ -316,5 +340,14 @@ public class App {
             BonusContent.searchAndPrintVideo(movieTitle + "  movie ", "Behind the Scenes", youtubeApiKey);
             BonusContent.searchAndPrintVideo(movieTitle + "  movie ", "Interviews", youtubeApiKey);
         }
+=======
+    }
+    
+    public static void printBonusContent(String movieTitle) {
+        
+            BonusContent.searchAndPrintVideo(movieTitle + "  movie " , "Fun Facts", youtubeApiKey);
+            BonusContent.searchAndPrintVideo(movieTitle + "  movie " ,  "Behind the Scenes", youtubeApiKey);
+            BonusContent.searchAndPrintVideo(movieTitle + "  movie " , "Interviews", youtubeApiKey);
+>>>>>>> Stashed changes
     }
 }

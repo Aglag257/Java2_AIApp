@@ -17,7 +17,11 @@ public class BonusContent {
         try {
 
             String searchUrl = "https://www.googleapis.com/youtube/v3/search?part=snippet&q=" +
+<<<<<<< Updated upstream
                     URLEncoder.encode(searchQuery+ " " + category, StandardCharsets.UTF_8)   +
+=======
+                    URLEncoder.encode( searchQuery + " " + category, StandardCharsets.UTF_8)   +
+>>>>>>> Stashed changes
                     "&type=video&key=" + apiKey;
             
             InputStream input = new URL(searchUrl).openStream();
