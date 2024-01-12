@@ -299,8 +299,7 @@ public class App {
                         case 3:
                             int x4=-1;
                             do{
-                            // methodos pou tha kanei view ta reviews px get reviews
-                            // mallon tha prepei epishs na kanei modify reviews opws k epishs na epileksei sygkekrimena ena review na to diavasei
+                            // methodos p tha diagrafei ena review
                             System.out.println("0. Back");
                             System.out.println("Enter your choice");
                              x4 = scanner.nextInt();
@@ -311,6 +310,10 @@ public class App {
                                 }
                             }while(x4!=0);
                             break;
+                        case 4:
+                          // methodos pou tha kanei view ta reviews px get reviews
+                            // mallon tha prepei epishs na kanei modify reviews opws k epishs na epileksei sygkekrimena ena review na to diavasei
+                        break;
                         default:
                             System.out.println("Invalid choice");
                             System.out.println("Enter your choice");
