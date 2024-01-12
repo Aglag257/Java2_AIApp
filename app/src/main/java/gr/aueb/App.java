@@ -233,33 +233,38 @@ public class App {
             }
             break;
             case 3:
+            int x=-1;
+            do {
             if (!guest){
                 Review r = new Review(112, ((Movie)o).getMd().getId() );
                 displayReviewContentMenu();
-                int x = scanner.nextInt();
-                do {
+                 x = scanner.nextInt();
                     switch(x){
                         case 0:
                             break;
                         case 1:
+                        int x2=-1;
+                        do{
                             r.giveUserRating();
                             displayAddAnotherReviewMenu();
-                            int x2 = scanner.nextInt();
-                            do{
+                             x2 = scanner.nextInt();
                                 switch (x2){
                                     case 0:
                                        break;
                                     case 1:
                                         r.editUserRating();
+                                        displayAddAnotherReviewMenu();
+                                        x2 = scanner.nextInt();
                                         break;
                                     case 2:
-                                       // kapoia methodo pou tha kanei delete review
+                                       // kapoia methodo pou tha kanei delete review1
                                         break;
                                     case 3:
                                        //kapoia methodos p tha kanei view ola ta reviews
                                         break;
                                     default:
                                         System.out.println("Invalid input");
+                                        displayAddAnotherReviewMenu();
                                         System.out.println("Enter your choice:");
                                         x2 = scanner.nextInt();
                                         break;  
@@ -267,12 +272,13 @@ public class App {
                             } while (x2!=0);
                             break;
                         case 2:
+                        int x3=-1;
+                        do{
                             r.editUserRating();
                             System.out.println("0. Back");
                             System.out.println("1. View your review");
                             System.out.println("Enter your choice");
-                            int x3 = scanner.nextInt();
-                                while (x3!=0){
+                             x3 = scanner.nextInt();
                                     switch(x3){
                                         case 0:
                                             break;
@@ -281,41 +287,45 @@ public class App {
                                             break;
                                         default:
                                             System.out.println("Invalid Input");
+                                            System.out.println("0. Back");
+                                            System.out.println("1. View your review");
+                                            System.out.println("Enter your choice");
                                             System.out.println("Enter your choice");
                                             x3 = scanner.nextInt();
                                             break;
                                     }
-                                }
+                                }while (x3!=0);
                             break;
                         case 3:
+                            int x4=-1;
+                            do{
                             // methodos pou tha kanei view ta reviews px get reviews
                             // mallon tha prepei epishs na kanei modify reviews opws k epishs na epileksei sygkekrimena ena review na to diavasei
                             System.out.println("0. Back");
                             System.out.println("Enter your choice");
-                            int x4 = scanner.nextInt(); 
-                            while(x4!=0){
+                             x4 = scanner.nextInt();
                                 if (x4!=0){
                                     System.out.println("Invalid choice");
                                     System.out.println("Enter your choice");
                                     x4 = scanner.nextInt();
                                 }
-                            }
+                            }while(x4!=0);
                             break;
                         default:
                             System.out.println("Invalid choice");
                             System.out.println("Enter your choice");
                             x = scanner.nextInt();
                             break;
-                        }
-                    }while (x!=0);
+                    }
                 }
+            }while (x!=0);
                 break;
             case 8:
                  printBonusContent(((Movie)o).getMd().getOriginal_title(),((Movie)o).getMd().getRelease_date());
                  System.out.println("0.Back");
                  System.out.println("Enter your choice:");
-                 int x = scanner.nextInt();
-                 while (x!=0){
+                 int x2 = scanner.nextInt();
+                 while (x2!=0){
                 System.out.println("Enter your choice:");
                 x = scanner.nextInt();
                  }
