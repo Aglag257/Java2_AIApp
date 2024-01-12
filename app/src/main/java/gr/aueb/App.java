@@ -3,11 +3,6 @@ package gr.aueb;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-=======
-=======
->>>>>>> master
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
@@ -16,13 +11,8 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
-<<<<<<< HEAD
 import java.sql.Date;
 import java.time.LocalDate;
->>>>>>> Stashed changes
-=======
-import java.time.LocalDate;
->>>>>>> master
 import java.util.ArrayList;
 import java.util.Scanner;
 import com.google.gson.Gson;
@@ -56,15 +46,8 @@ public class App {
             switch (startChoice) {
                 case 1:
                     //login
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-=======
-                    User user1 = new User("billymylo", "1111","greece");
+                    User user1 = new User("billymylo", "1111","greece");                  
                     skipStartMenu = true;
->>>>>>> Stashed changes
-=======
-                    skipStartMenu = true;
->>>>>>> master
                     break;
                 case 2:
                     //sign up
@@ -115,11 +98,7 @@ public class App {
         }
     }
 
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-=======
-=======
->>>>>>> master
+
     private static boolean mainCase2(Scanner scanner) throws Exception {
         int choice = 0;
         int choice2;
@@ -248,28 +227,107 @@ public class App {
                     }
                 }while(choice3 != 0);
                 break;
-<<<<<<< HEAD
+            case 2:
+            if (!guest){
+             
+            }
+            break;
+            case 3:
+            if (!guest){
+                Review r = new Review(112, ((Movie)o).getMd().getId() );
+                displayReviewContentMenu();
+                int x = scanner.nextInt();
+                do {
+                    switch(x){
+                        case 0:
+                            break;
+                        case 1:
+                            r.giveUserRating();
+                            displayAddAnotherReviewMenu();
+                            int x2 = scanner.nextInt();
+                            do{
+                                switch (x2){
+                                    case 0:
+                                       break;
+                                    case 1:
+                                        r.editUserRating();
+                                        break;
+                                    case 2:
+                                       // kapoia methodo pou tha kanei delete review
+                                        break;
+                                    case 3:
+                                       //kapoia methodos p tha kanei view ola ta reviews
+                                        break;
+                                    default:
+                                        System.out.println("Invalid input");
+                                        System.out.println("Enter your choice:");
+                                        x2 = scanner.nextInt();
+                                        break;  
+                                }
+                            } while (x2!=0);
+                            break;
+                        case 2:
+                            r.editUserRating();
+                            System.out.println("0. Back");
+                            System.out.println("1. View your review");
+                            System.out.println("Enter your choice");
+                            int x3 = scanner.nextInt();
+                                while (x3!=0){
+                                    switch(x3){
+                                        case 0:
+                                            break;
+                                        case 1:
+                                            // kapoia methodos na kanei view to review tou
+                                            break;
+                                        default:
+                                            System.out.println("Invalid Input");
+                                            System.out.println("Enter your choice");
+                                            x3 = scanner.nextInt();
+                                            break;
+                                    }
+                                }
+                            break;
+                        case 3:
+                            // methodos pou tha kanei view ta reviews px get reviews
+                            // mallon tha prepei epishs na kanei modify reviews opws k epishs na epileksei sygkekrimena ena review na to diavasei
+                            System.out.println("0. Back");
+                            System.out.println("Enter your choice");
+                            int x4 = scanner.nextInt(); 
+                            while(x4!=0){
+                                if (x4!=0){
+                                    System.out.println("Invalid choice");
+                                    System.out.println("Enter your choice");
+                                    x4 = scanner.nextInt();
+                                }
+                            }
+                            break;
+                        default:
+                            System.out.println("Invalid choice");
+                            System.out.println("Enter your choice");
+                            x = scanner.nextInt();
+                            break;
+                        }
+                    }while (x!=0);
+                }
+                break;
             case 8:
-<<<<<<< Updated upstream
-                 printBonusContent("Pulp Fiction" ,1995 ); 
-            break;   
-=======
-                 printBonusContent(((Movie)o).getMd().getOriginal_title());
+                 printBonusContent(((Movie)o).getMd().getOriginal_title(),((Movie)o).getMd().getRelease_date());
+                 System.out.println("0.Back");
+                 System.out.println("Enter your choice:");
+                 int x = scanner.nextInt();
+                 while (x!=0){
+                System.out.println("Enter your choice:");
+                x = scanner.nextInt();
+                 }
                  break;
->>>>>>> Stashed changes
-=======
->>>>>>> master
             default:
                 System.out.println("choice2 " + choice2);
                 System.out.println("Invalid choice. Please enter a valid option");
                 break;
         }
-    } 
+    }
+ 
 
-<<<<<<< HEAD
->>>>>>> Stashed changes
-=======
->>>>>>> master
     private static void loadApiKeys() {
         File tmdbFile = new File("c:\\Users\\Βασιλης\\Downloads\\tmdb_api_key.txt");
         File chatgptFile = new File("c:\\\\Users\\\\Βασιλης\\\\Downloads\\chat_gpt_key.txt");
@@ -305,7 +363,7 @@ public class App {
         System.out.println("4. Exit");
         System.out.print("Enter your choice ");
     }
-
+ 
     private static void displayMainMenu() {
         System.out.println("\nMain Menu:");
         System.out.println("1. Get AI recommendation for a movie");
@@ -390,12 +448,19 @@ public class App {
 
     private static void displayReviewContentMenu() {
         System.out.println("0. Back");
-        System.out.println("1. Modify");
-        System.out.println("2. Remove");
+        System.out.println("1. Add review");
+        System.out.println("2. Modify review");
+        System.out.println("3. Remove review");
+        System.out.println("4. View reviews");
+        System.out.println("Enter your choice ");
+    }
+    private static void displayAddAnotherReviewMenu(){
+        System.out.println("0. Back");
+        System.out.println("1. Modify review");
+        System.out.println("2. Remove review");
         System.out.println("3. View");
         System.out.println("Enter your choice ");
     }
-
     private static void displayCountryMenu() {
         System.out.println("0. Back");
         System.out.println("1. Change country");
@@ -426,7 +491,8 @@ public class App {
         System.out.println("1. Search for a chatroom");
         System.out.println("2. See existing chatrooms");
     }
-
+   
+    
     private static void getAIRecommendation(Scanner scanner) throws Exception {
         System.out.println("\nType your preferences for movie recommendations.");
         String userMessage = scanner.nextLine();
@@ -447,34 +513,19 @@ public class App {
             Person p = new Person(-ids.get(answer - 1), tmdbApiKey);
             return p;
         }
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-}
-=======
     }
     
->>>>>>> master
-    public static void printBonusContent(String movieTitle, int year) {
-        if(year != -1) {
-            BonusContent.searchAndPrintVideo(movieTitle + "  movie " + year, "Fun Facts", youtubeApiKey);
-            BonusContent.searchAndPrintVideo(movieTitle + "  movie " + year, "Behind the Scenes", youtubeApiKey);
-            BonusContent.searchAndPrintVideo(movieTitle + "  movie " + year, "Interviews", youtubeApiKey);
+    public static void printBonusContent(String movieTitle, String year) {
+        if(year != null) {
+            BonusContent.searchAndPrintVideo(movieTitle + "  movie " +year , "Fun Facts", youtubeApiKey);
+            BonusContent.searchAndPrintVideo(movieTitle + "  movie " , "Behind the Scenes", youtubeApiKey);
+            BonusContent.searchAndPrintVideo(movieTitle + "  movie " , "Interviews", youtubeApiKey);
         } else{
             BonusContent.searchAndPrintVideo(movieTitle + "  movie ", "Fun Facts", youtubeApiKey);
             BonusContent.searchAndPrintVideo(movieTitle + "  movie ", "Behind the Scenes", youtubeApiKey);
             BonusContent.searchAndPrintVideo(movieTitle + "  movie ", "Interviews", youtubeApiKey);
         }
-=======
     }
-    
-    public static void printBonusContent(String movieTitle) {
-        
-            BonusContent.searchAndPrintVideo(movieTitle + "  movie " , "Fun Facts", youtubeApiKey);
-            BonusContent.searchAndPrintVideo(movieTitle + "  movie " ,  "Behind the Scenes", youtubeApiKey);
-            BonusContent.searchAndPrintVideo(movieTitle + "  movie " , "Interviews", youtubeApiKey);
->>>>>>> Stashed changes
-    }
-
     private static String encodeMovieTitle(String title) {
         try {
             return URLEncoder.encode(title, StandardCharsets.UTF_8.toString());

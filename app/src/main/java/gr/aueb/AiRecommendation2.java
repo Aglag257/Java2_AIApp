@@ -1,9 +1,5 @@
 package gr.aueb;
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-=======
-=======
->>>>>>> master
+
 /*
 import com.cloudurable.jai.OpenAIClient;
 import com.cloudurable.jai.model.text.completion.chat.ChatRequest;
@@ -13,11 +9,8 @@ import com.cloudurable.jai.model.text.completion.chat.Role;
 import com.cloudurable.jai.model.text.completion.chat.function.*;
 import com.cloudurable.jai.util.JsonSerializer;
 import io.nats.jparse.node.ObjectNode;*/
-<<<<<<< HEAD
+
 import java.util.concurrent.TimeUnit;
->>>>>>> Stashed changes
-=======
->>>>>>> master
 
 import java.io.BufferedReader;
 import java.io.IOException;

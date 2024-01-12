@@ -60,7 +60,7 @@ public class Review {
         this.userID = userID;
     }
 
-    public void setMovieID(int movieID) {
+    public void setMovieID (int movieID) {
         this.movieID = movieID;
     }
 

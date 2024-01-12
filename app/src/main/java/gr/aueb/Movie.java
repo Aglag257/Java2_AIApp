@@ -202,7 +202,7 @@ public class Movie {
 
         if(this.getImdbRating() != -1) returnString.append("Imdb Rating: " + this.getImdbRating() + "\n \n");
         
-        if(this.md.getRuntime() != null) {
+        if(this.md.getRuntime() != 0) {
             returnString.append("Runtime: " + this.md.getRuntime() + "m" + "\n\n");
         }
 
