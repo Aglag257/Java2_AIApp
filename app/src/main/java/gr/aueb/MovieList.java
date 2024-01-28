@@ -1,3 +1,8 @@
+/*
+ * MovieList
+ * 
+ * Copyright 2024 Bugs Bunny
+ */
 package gr.aueb;
 
 import java.sql.Connection;
@@ -10,12 +15,37 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Represents a list of movies.
+ * The list includes various attributes including the list type
+ * (public or private),
+ * the ID of the list creator, the list name, and the unique list ID.
+ *
+ * @version 1.8 28 January 2024
+ * @author Νίκος Ραγκούσης, Άγγελος Λαγός, Γιώργος Αναγνωστόπουλος
+ */
 public class MovieList {
-    private String listType; // Τύπος λίστας (public ή private)
-    private final int creatorId;
-    private String listName;
-    private final int listId; // ID του δημιουργού της λίστας
+    /** The type of the movie list, either public or private. */
+    private String listType;
 
+    /** The ID of the user who created the list. */
+    private final int creatorId;
+
+    /** The name of the movie list. */
+    private String listName;
+
+    /** The unique ID of the movie list. */
+    private final int listId;
+
+    /**
+     * Constructs a MovieList object with the specified list type, creator ID, list
+     * name, and list ID.
+     *
+     * @param listType  The type of the movie list.
+     * @param creatorId The ID of the user who created the list.
+     * @param listName  The name of the movie list.
+     * @param listId    The unique ID of the movie list.
+     */
     public MovieList(String listType, int creatorId, String listName, int listId) {
         this.listType = listType;
         this.creatorId = creatorId;
@@ -23,22 +53,51 @@ public class MovieList {
         this.listId = listId;
     }
 
+    /**
+     * Gets the type of the movie list (public or private).
+     *
+     * @return The type of the movie list.
+     */
     public String getListType() {
         return listType;
     }
 
+    /**
+     * Gets the ID of the user who created the list.
+     *
+     * @return The ID of the list creator.
+     */
     public int getCreatorId() {
         return creatorId;
     }
 
+    /**
+     * Gets the name of the movie list.
+     *
+     * @return The name of the movie list.
+     */
     public String getListName() {
         return listName;
     }
 
+    /**
+     * Gets the unique ID of the movie list.
+     *
+     * @return The unique ID of the movie list.
+     */
     public int getListId() {
         return listId;
     }
 
+    /**
+     * Sets the type of the movie list. Only the creator is allowed to change the
+     * list type.
+     *
+     * @param listType The new type of the movie list.
+     * @param userId   The ID of the user making the change.
+     * @throws Exception If the user does not have permission to change the list
+     *                   type.
+     */
     public void setListType(String listType, int userId) throws Exception {
         if (userId == creatorId) {
             this.listType = listType;
@@ -48,6 +107,15 @@ public class MovieList {
         }
     }
 
+    /**
+     * Sets the name of the movie list. Only the creator is allowed to change the
+     * list name.
+     *
+     * @param listName The new name of the movie list.
+     * @param userId   The ID of the user making the change.
+     * @throws Exception If the user does not have permission to change the list
+     *                   name.
+     */
     public void setListName(String listName, int userId) throws Exception {
         if (userId == creatorId) {
             this.listName = listName;
@@ -57,7 +125,12 @@ public class MovieList {
         }
     }
 
-    // Database update methods
+    /**
+     * Updates the list type in the database.
+     *
+     * @throws Exception If an error occurs while updating the list type in the
+     *                   database.
+     */
     private void updateListTypeInDatabase() throws Exception {
         try (DB db = new DB();
                 Connection con = db.getConnection();
@@ -73,6 +146,12 @@ public class MovieList {
         }
     }
 
+    /**
+     * Updates the list name in the database.
+     *
+     * @throws Exception If an error occurs while updating the list name in the
+     *                   database.
+     */
     private void updateListNameInDatabase() throws Exception {
         try (DB db = new DB();
                 Connection con = db.getConnection();
@@ -88,7 +167,15 @@ public class MovieList {
         }
     }
 
-    // Create List Method
+    /**
+     * Creates a new movie list and adds it to the database.
+     *
+     * @param listType  The type of the new movie list.
+     * @param listName  The name of the new movie list.
+     * @param creatorId The ID of the user creating the list.
+     * @return The created MovieList object.
+     * @throws Exception If an error occurs during the creation of the movie list.
+     */
     public static MovieList createList(String listType, String listName, int creatorId) throws Exception {
         int listId;
 
@@ -135,7 +222,14 @@ public class MovieList {
         return new MovieList(listType, creatorId, listName, listId);
     }
 
-    // Add to List Method
+    /**
+     * Adds a movie to the movie list.
+     *
+     * @param movieName The name of the movie to be added.
+     * @param movieId   The ID of the movie to be added.
+     * @param userId    The ID of the user making the addition.
+     * @throws Exception If an error occurs while adding the movie to the list.
+     */
     public void addToList(String movieName, int movieId, int userId) throws Exception {
         int listId;
 
@@ -168,7 +262,12 @@ public class MovieList {
         }
     }
 
-    // Get Movies From List Method
+    /**
+     * Gets the movies from the movie list.
+     *
+     * @return A map containing movie IDs as keys and movie names as values.
+     * @throws Exception If an error occurs while retrieving movies from the list.
+     */
     public Map<Integer, String> getMoviesFromList() throws Exception {
         Map<Integer, String> movies = new HashMap<>();
 
@@ -193,7 +292,12 @@ public class MovieList {
         }
     }
 
-    // Delete List Method
+    /**
+     * Deletes the movie list.
+     *
+     * @param userId The ID of the user deleting the list.
+     * @throws Exception If an error occurs while deleting the list.
+     */
     public void deleteList(int userId) throws Exception {
         try (DB db = new DB(); Connection con = db.getConnection()) {
             String sql = "DELETE FROM list WHERE userId=? AND list_id=?;";
@@ -213,7 +317,14 @@ public class MovieList {
         }
     }
 
-    // Remove movie from List Method
+    /**
+     * Removes a movie from the movie list.
+     *
+     * @param movieName The name of the movie to be removed.
+     * @param movieId   The ID of the movie to be removed.
+     * @param userId    The ID of the user making the removal.
+     * @throws Exception If an error occurs while removing the movie from the list.
+     */
     public void removeMovie(String movieName, int movieId, int userId) throws Exception {
         try (DB db = new DB(); Connection con = db.getConnection()) {
             String query = "SELECT userId FROM List WHERE list_id=?;";
@@ -247,7 +358,13 @@ public class MovieList {
         }
     }
 
-    // Retrieve Movie Lists Method
+    /**
+     * Gets a list of movie lists for a specific user.
+     *
+     * @param userId The ID of the user for whom to retrieve movie lists.
+     * @return A list of MovieList objects associated with the user.
+     * @throws Exception If an error occurs while retrieving movie lists.
+     */
     public static List<MovieList> getMovieLists(int userId) throws Exception {
         List<MovieList> movieLists = new ArrayList<>();
         try (DB db = new DB();
@@ -279,20 +396,14 @@ public class MovieList {
         return movieLists;
     }
 
-    // Helper method to check if the user is a follower of the list creator
-    private static boolean isFollower(int userId, int creatorId, Connection con) throws SQLException {
-        String followerSql = "SELECT * FROM Followers WHERE followedId=? AND followerId=?";
-        try (PreparedStatement followerStmt = con.prepareStatement(followerSql)) {
-            followerStmt.setInt(1, creatorId);
-            followerStmt.setInt(2, userId);
-
-            try (ResultSet followerRs = followerStmt.executeQuery()) {
-                return followerRs.next();
-            }
-        }
-    }
-
-    // Check if the movie with the given name or ID exists in the list
+    /**
+     * Checks if the MovieList contains a movie with the given name or ID.
+     *
+     * @param movieName The name of the movie to check.
+     * @param movieId   The ID of the movie to check.
+     * @return True if the MovieList contains the movie, false otherwise.
+     * @throws Exception If an error occurs during the database query.
+     */
     public boolean containsMovie(String movieName, int movieId) throws Exception {
         try (DB db = new DB(); Connection con = db.getConnection()) {
             String sql = "SELECT COUNT(*) AS count FROM MoviesList WHERE list_id=? AND (movieName=? OR movieId=?);";
@@ -315,6 +426,11 @@ public class MovieList {
         return false;
     }
 
+    /**
+     * Generates a String representation of the MovieList.
+     *
+     * @return A String representation of the MovieList.
+     */
     @Override
     public String toString() {
         return "MovieList{" +
