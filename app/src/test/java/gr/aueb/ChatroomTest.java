@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -70,42 +71,53 @@ private static Message message2;
         } catch (SQLException e) {
             fail("Exception thrown during setup: " + e.getMessage());
         }
+        try (PreparedStatement insertStmt7 = connection.prepareStatement("INSERT INTO unseenmessage (userId, roomid, unseenmessageid) VALUES (2, 1, 1)")) {
+            insertStmt7.executeUpdate();
+        } catch (SQLException e) {
+            fail("Exception thrown during setup: " + e.getMessage());
+        }
+        
 
         }
 @AfterAll
     public static void DeleteAllInserts() throws Exception {
-        try (PreparedStatement insertStmt1 = connection.prepareStatement("DELETE FROM message WHERE userid = 1")) {
+        try (PreparedStatement insertStmt1 = connection.prepareStatement("DELETE FROM unseenmessage WHERE userid = 2")) {
             insertStmt1.executeUpdate();
         } catch (SQLException e) {
             fail("Exception thrown during setup: " + e.getMessage());
         }
-        try (PreparedStatement insertStmt1 = connection.prepareStatement("DELETE FROM message WHERE userid = 2")) {
-            insertStmt1.executeUpdate();
-        } catch (SQLException e) {
-            fail("Exception thrown during setup: " + e.getMessage());
-        }
-        try (PreparedStatement insertStmt2 = connection.prepareStatement("DELETE FROM chatroomuser WHERE userid = 1")) {
+        try (PreparedStatement insertStmt2 = connection.prepareStatement("DELETE FROM message WHERE userid = 1")) {
             insertStmt2.executeUpdate();
         } catch (SQLException e) {
             fail("Exception thrown during setup: " + e.getMessage());
         }
-        try (PreparedStatement insertStmt3 = connection.prepareStatement("DELETE FROM chatroomuser WHERE userid = 2")) {
+        try (PreparedStatement insertStmt3 = connection.prepareStatement("DELETE FROM message WHERE userid = 2")) {
             insertStmt3.executeUpdate();
         } catch (SQLException e) {
             fail("Exception thrown during setup: " + e.getMessage());
         }
-        try (PreparedStatement insertStmt4 = connection.prepareStatement("DELETE FROM chatroom WHERE creatorid = 1")) {
+        try (PreparedStatement insertStmt4 = connection.prepareStatement("DELETE FROM chatroomuser WHERE userid = 1")) {
             insertStmt4.executeUpdate();
         } catch (SQLException e) {
             fail("Exception thrown during setup: " + e.getMessage());
         }
-        try (PreparedStatement insertStmt6 = connection.prepareStatement("DELETE FROM appuser WHERE userid = 1")) {
+        try (PreparedStatement insertStmt5 = connection.prepareStatement("DELETE FROM chatroomuser WHERE userid = 2")) {
+            insertStmt5.executeUpdate();
+        } catch (SQLException e) {
+            fail("Exception thrown during setup: " + e.getMessage());
+        }
+        try (PreparedStatement insertStmt6 = connection.prepareStatement("DELETE FROM chatroom WHERE creatorid = 1")) {
             insertStmt6.executeUpdate();
         } catch (SQLException e) {
             fail("Exception thrown during setup: " + e.getMessage());
         }
-        try (PreparedStatement insertStmt7 = connection.prepareStatement("DELETE FROM appuser WHERE userid = 2")) {
+        try (PreparedStatement insertStmt7 = connection.prepareStatement("DELETE FROM appuser WHERE userid = 1")) {
             insertStmt7.executeUpdate();
+        } catch (SQLException e) {
+            fail("Exception thrown during setup: " + e.getMessage());
+        }
+        try (PreparedStatement insertStmt8 = connection.prepareStatement("DELETE FROM appuser WHERE userid = 2")) {
+            insertStmt8.executeUpdate();
         } catch (SQLException e) {
             fail("Exception thrown during setup: " + e.getMessage());
         }
@@ -328,7 +340,7 @@ public void testGetChatrooms() {
         fail("Exception during test: " + e.getMessage());
     }
 }
-@Test
+// wrong , why am i registering a new user and join him to the chatroom? @Test
     public void testShowChatroomMembers() throws Exception {
         user2= User.register("User2","Password2" , "Greece");
         user2.joinChatroom(1);
@@ -349,37 +361,125 @@ public void testGetChatrooms() {
         }
     }
 
+        @Test
+        void testShowChatroomMembers2() {
+            try {
+              
+    
+                // Call the method to get chatroom members by roomId
+                ArrayList<User> members = chatroom.showChatroomMembers();
+    
+                // Assertions
+                assertNotNull(members);
+                assertFalse(members.isEmpty());
+    
+                // Customize assertions based on the actual values
+                // For example, check if the list contains the expected number of members
+                User member1 = members.get(0);
+               assertEquals("TestUser",member1.getUsername());
+             User member2 = members.get(1);
+             assertEquals("TestUser2",member2.getUsername());
+
+            } catch (Exception e) {
+                fail("Exception during test: " + e.getMessage());
+            }
+        }
+    
     
 
-@Test // this is not correct, i will not be using the addMessage nor the register method since i cant check the messageid or the userid (Autoincremented variables )
-public void testGetMessages() throws Exception {
-    try {
+@Test 
+    public void testGetMessages() throws Exception {
+        try {
 
-        List<Message> messages = chatroom.getMessages();
+            List<Message> messages = chatroom.getMessages();
 
-        // Έλεγχος του αποτελέσματος
-        assertNotNull(messages);
-        assertEquals(2, messages.size());
+            // Έλεγχος του αποτελέσματος
+            assertNotNull(messages);
+            assertEquals(2, messages.size());
 
-        // Έλεγχος του περιεχομένου του πρώτου μηνύματος 
-        Message firstMessage = messages.get(0);
-        assertEquals("great Movie!", firstMessage.getText());
-        assertFalse(firstMessage.getSpoiler());
-        assertEquals("TestUser", firstMessage.getUsername());
+            // Έλεγχος του περιεχομένου του πρώτου μηνύματος  
+            Message firstMessage = messages.get(0);
+            assertEquals("TestText", firstMessage.getText());
+            assertFalse(firstMessage.getSpoiler());
+            assertEquals("TestUser", firstMessage.getUsername());
 
-        // Έλεγχος του περιεχομένου του δεύτερου μηνύματος
-        Message secondMessage = messages.get(1);
-        assertEquals("Haha yeah agree", secondMessage.getText());
-        assertFalse(secondMessage.getSpoiler());
-        assertEquals("User1", secondMessage.getUsername());
+            // Έλεγχος του περιεχομένου του δεύτερου μηνύματος
+            Message secondMessage = messages.get(1);
+            assertEquals("TestText2", secondMessage.getText());
+            assertTrue(secondMessage.getSpoiler());
+            assertEquals("TestUser2", secondMessage.getUsername());
 
     
 
-    } catch (Exception e) {
-        fail("Exception during test: " + e.getMessage());
+        } catch (Exception e) {
+           fail("Exception during test: " + e.getMessage());
+        }
     }
+ @Test
+    void testGetUnseenMessages() {
+        try {
+        
+            
+
+            // Get unseen messages for the user
+            ArrayList<Message> unseenMessages = chatroom.getUnseenMessages(2);
+
+            // Assertions
+            assertNotNull(unseenMessages);
+
+          
+            Message newUnseenMessage = unseenMessages.get(0);
+
+
+            assertEquals(1, newUnseenMessage.getMessageId());
+            assertEquals(1, newUnseenMessage.getChatroomId());
+            assertEquals(1,newUnseenMessage.getUserId());
+            assertFalse(newUnseenMessage.getSpoiler());
+            assertEquals("TestText", newUnseenMessage.getText());
+            assertEquals("TestUser", newUnseenMessage.getUsername());
+
+        // after calling the method get unseen messages , the messages should be deleted 
+         unseenMessages = chatroom.getUnseenMessages(2);
+          assertTrue(unseenMessages.isEmpty());
+
+        } catch (Exception e) {
+            fail("Exception during test: " + e.getMessage());
+        }
+    }
+@Test
+     public void testGetChatroomByName() {
+        try {
+            chatroom = Chatroom.getChatroomByName("ChatroomTest");
+
+            // Assertions
+            assertNotNull(chatroom);
+            assertEquals("ChatroomTest", chatroom.getName());
+
+            // Customize the assertions based on the actual values
+            // Check if the chatroom has the expected properties
+            // For example, check the roomId and creatorId
+
+        } catch (Exception e) {
+            fail("Exception during test: " + e.getMessage());
+        }
+    }
+@Test
+     public void isUserInChatroomTest(){
+        try {
+          assertTrue(chatroom.isUserInChatroom(2));
+          assertFalse(chatroom.isUserInChatroom(3));
+
+        }catch (Exception e) {
+            fail("Exception during test: " + e.getMessage());
+        }
+     }
+
+
+
+
 }
-}
+
+
 
 
 
