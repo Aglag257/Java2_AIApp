@@ -9,7 +9,6 @@ import com.google.gson.annotations.SerializedName;
 
 /**
  * Represents contributors associated with a movie.
- * 
  * The class includes information such as contributor ID, an array of cast
  * members and an array of crew members.
  * 

@@ -10,7 +10,6 @@ import com.google.gson.annotations.SerializedName;
 
 /**
  * Represents information about cast members in movies.
- * 
  * Container for cast details in media applications. Provides names, characters,
  * IDs, titles,
  * release dates, and popularity scores.

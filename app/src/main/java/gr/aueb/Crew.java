@@ -9,7 +9,6 @@ import com.google.gson.annotations.SerializedName;
 
 /**
  * Represents information about crew members associated with a movie.
- * 
  * The class includes details such as crew member name, job role, department,
  * unique identifier,
  * title, release date, and popularity score. It is designed to be used in the
