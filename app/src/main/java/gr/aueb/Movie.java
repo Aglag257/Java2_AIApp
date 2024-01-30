@@ -19,7 +19,6 @@ import com.google.gson.Gson;
 /**
  * Represents information about a movie, including credits, details, and
  * availability.
- * 
  * The class includes methods to get information about a movie,
  * covering credits, details, and availability.
  * Connects the application to The Movie Database (TMDb) API using an API key.
@@ -45,19 +44,19 @@ public class Movie {
     /** The details of the movie. */
     private MovieDetails md;
     /** The IMDb rating of the movie. */
-    private double imdbRating;
+    private final double imdbRating;
     /** The list of people IDs associated with the movie. */
-    private ArrayList<Integer> peopleId;
+    private final ArrayList<Integer> peopleId;
     /** The list of people names associated with the movie. */
-    private ArrayList<String> peopleName;
+    private final ArrayList<String> peopleName;
     /** The list of people job roles associated with the movie. */
-    private ArrayList<String> peopleJob;
+    private final ArrayList<String> peopleJob;
     /**
      * A map associating people IDs with their details (name, job role, popularity).
      */
-    private HashMap<Integer, Object[]> people;
+    private final HashMap<Integer, Object[]> people;
     /** The list of people popularity values associated with the movie. */
-    private ArrayList<Float> peoplePopularity;
+    private final ArrayList<Float> peoplePopularity;
     /** The FilmBro rating of the movie. */
     private double filmBroRating;
 
@@ -92,7 +91,7 @@ public class Movie {
         } catch (IOException e) {
             System.err.println("Check your internet connection!");
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            System.exit(1);
         }
 
         // Response for movie details
@@ -108,9 +107,9 @@ public class Movie {
                     .send(request, HttpResponse.BodyHandlers.ofString());
             md = gson.fromJson(response2.body(), MovieDetails.class);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Check your internet connection!");
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            System.exit(1);
         }
 
         // Response for movie availability
@@ -126,9 +125,9 @@ public class Movie {
                     .send(request, HttpResponse.BodyHandlers.ofString());
             av = gson.fromJson(response3.body(), Availability.class);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Check your internet connection!");
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            System.exit(1);
         }
 
         filmBroRating = MovieDAO.getAverageRatingForMovie(this.getMd().getId());
@@ -136,7 +135,7 @@ public class Movie {
         imdbRating = getImdbRatingFromID(md.getImdb_id());
 
         if (co.getCast() != null) {
-            Object temp[];
+            Object[] temp;
             for (Cast c : co.getCast()) {
                 temp = new Object[3];
                 temp[0] = c.getName();
@@ -147,7 +146,7 @@ public class Movie {
         }
 
         if (co.getCrew() != null) {
-            Object temp[];
+            Object[] temp;
             for (Crew c : co.getCrew()) {
                 temp = new Object[3];
                 temp[0] = c.getName();
@@ -157,9 +156,7 @@ public class Movie {
             }
         }
 
-        for (Integer i : people.keySet()) {
-            peopleId.add(i);
-        }
+        peopleId.addAll(people.keySet());
 
         for (Object[] i : people.values()) {
             peopleName.add((String) i[0]);
@@ -259,11 +256,11 @@ public class Movie {
     private String printResult(String countryName, String countryKey) {
         StringBuilder returnString = new StringBuilder();
         if (this.md.getOriginal_title() != null) {
-            returnString.append("Title: " + this.md.getOriginal_title() + "\n\n");
+            returnString.append("Title: ").append(this.md.getOriginal_title()).append("\n\n");
         }
 
         if (this.md.getOverview() != null) {
-            returnString.append(this.md.getOverview() + "\n \n");
+            returnString.append(this.md.getOverview()).append("\n \n");
         }
 
         if (this.md.getGenres() != null) {
@@ -279,22 +276,22 @@ public class Movie {
         }
 
         if (this.filmBroRating != 0.0) {
-            returnString.append("FilmBro Eating: " + this.getFilmBroRating() + "\n");
+            returnString.append("FilmBro Eating: ").append(this.getFilmBroRating()).append("\n");
         }
 
         if (this.getImdbRating() != -1)
-            returnString.append("Imdb Rating: " + this.getImdbRating() + "\n");
+            returnString.append("Imdb Rating: ").append(this.getImdbRating()).append("\n");
 
         if (this.md.getVote_average() != 0.0) {
-            returnString.append("Tmdb rating: " + this.getMd().getVote_average() + "\n\n");
+            returnString.append("Tmdb rating: ").append(this.getMd().getVote_average()).append("\n\n");
         }
 
         if (this.md.getRuntime() != 0) {
-            returnString.append("Runtime: " + this.md.getRuntime() + "m" + "\n\n");
+            returnString.append("Runtime: ").append(this.md.getRuntime()).append("m").append("\n\n");
         }
 
         if (this.md.getRelease_date() != null) {
-            returnString.append("Release Date: " + this.md.getRelease_date() + "\n\n");
+            returnString.append("Release Date: ").append(this.md.getRelease_date()).append("\n\n");
         }
 
         if (getDirectors() != null) {
@@ -329,8 +326,9 @@ public class Movie {
             }
             returnString.append("\n\n");
         }
-
-        returnString.append(av.toString(countryName, countryKey));
+        if(countryKey != null) {
+            returnString.append(av.toString(countryName, countryKey));
+        } 
         return returnString.toString();
     }
 
@@ -365,24 +363,6 @@ public class Movie {
     public String toString(String countryName, String countryKey) {
         String s = printResult(countryName, countryKey);
         return "\n\n" + s;
-    }
-
-    /**
-     * Gets the availability information for the movie.
-     * 
-     * @return The Availability object.
-     */
-    public Availability getAv() {
-        return av;
-    }
-
-    /**
-     * Gets the contributors (cast and crew) information for the movie.
-     * 
-     * @return The Contributors object.
-     */
-    public Contributors getCo() {
-        return co;
     }
 
     /**

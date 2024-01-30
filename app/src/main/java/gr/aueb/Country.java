@@ -26,7 +26,7 @@ public class Country {
     private ArrayList<Provider> rent;
 
 
-    public static TreeMap<String, String> getAllCountriesNames(String apiKey)  {
+    public static TreeMap<String, String> getAllCountriesNames(String apiKey) {
         TreeMap<String, String> countries = new TreeMap<>();
         
         HttpRequest request = HttpRequest.newBuilder()
@@ -52,10 +52,8 @@ public class Country {
 
         } catch (IOException e) {
             System.err.println("Check your internet connection!");
-            e.printStackTrace();
-        
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            System.exit(1);
         }
         
         return countries;

@@ -17,7 +17,6 @@ import com.google.gson.Gson;
 
 /**
  * Represents details about a person, including their movie credits.
- * 
  * This class fetches data from The Movie Database (TMDb) API using a given
  * person ID
  * and API key, providing details such as personal information, movie credits as
@@ -36,21 +35,21 @@ public class Person {
     private PersonCredits pc;
 
     /** List of movie IDs associated with the person. */
-    private ArrayList<Integer> movieIds;
+    private final ArrayList<Integer> movieIds;
 
     /** List of movie titles associated with the person. */
-    private ArrayList<String> movieTitles;
+    private final ArrayList<String> movieTitles;
 
     /** List of movie release dates associated with the person. */
-    private ArrayList<String> movieDates;
+    private final ArrayList<String> movieDates;
 
     /**
      * Map of movie IDs to an array of details (title, release date, popularity).
      */
-    private HashMap<Integer, Object[]> movies;
+    private final HashMap<Integer, Object[]> movies;
 
     /** List of movie popularity values associated with the person. */
-    private ArrayList<Float> moviePopularity;
+    private final ArrayList<Float> moviePopularity;
 
     /**
      * Constructs a Person object with the given ID and API key.
@@ -94,13 +93,13 @@ public class Person {
                     HttpResponse.BodyHandlers.ofString());
             pc = gson.fromJson(response2.body(), PersonCredits.class);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Check your internet connection!");
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            System.exit(1);
         }
 
         if (pc.getCast() != null) {
-            Object temp[];
+            Object[] temp;
             for (Cast c : pc.getCast()) {
                 temp = new Object[3];
                 temp[0] = c.getTitle();
@@ -111,7 +110,7 @@ public class Person {
         }
 
         if (pc.getCrew() != null) {
-            Object temp[];
+            Object[] temp;
             for (Crew c : pc.getCrew()) {
                 temp = new Object[3];
                 temp[0] = c.getTitle();
@@ -121,9 +120,7 @@ public class Person {
             }
         }
 
-        for (Integer i : movies.keySet()) {
-            movieIds.add(i);
-        }
+        movieIds.addAll(movies.keySet());
 
         for (Object[] i : movies.values()) {
             movieTitles.add((String) i[0]);
@@ -132,40 +129,12 @@ public class Person {
         }
     }
 
-    @Override
     /**
      * Returns a string representation of the person, including details and credits.
      */
+    @Override
     public String toString() {
         return "\n\n" + pd.toString() + pc.toString();
-    }
-
-    /**
-     * Returns details about the person.
-     * 
-     * @return PersonDetails object.
-     */
-    public PersonDetails getPd() {
-        return pd;
-    }
-
-    /**
-     * Returns credits of the person.
-     * 
-     * @return PersonCredits object.
-     */
-    public PersonCredits getPc() {
-        return pc;
-    }
-
-    /**
-     * Returns a map of movie IDs to an array of details (title, release date,
-     * popularity).
-     * 
-     * @return Map<Integer, Object[]>.
-     */
-    public HashMap<Integer, Object[]> getMovies() {
-        return movies;
     }
 
     /**

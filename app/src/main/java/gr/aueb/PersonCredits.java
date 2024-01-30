@@ -10,16 +10,13 @@ import com.google.gson.annotations.SerializedName;
 
 /**
  * Represents the movie credits of a person, including both cast and crew roles.
- * 
  * This class provides information about the roles a person has played in
  * movies,
  * distinguishing between cast roles (e.g., actor) and crew roles (e.g.,
  * director).
- *
  * The class includes methods to retrieve the array of cast roles, the array of
  * crew roles,
  * and the associated ID for the person's credits.
- *
  * The toString() method generates a human-readable string representation of the
  * person's movie credits,
  * including details such as the title, character name (for cast roles), job
@@ -39,11 +36,11 @@ public class PersonCredits {
     @SerializedName("id")
     private int id;
 
-    @Override
     /**
      * Returns a string representation of the person's movie credits, including cast
      * and crew roles.
      */
+    @Override
     public String toString() {
         StringBuilder returnString = new StringBuilder();
 
@@ -51,7 +48,7 @@ public class PersonCredits {
         if (cast.length > 0) {
             returnString.append("Actor\n");
             for (Cast c : cast) {
-                returnString.append("Title: " + c.getTitle() + "\n" + "Character name: " + c.getCharacter() + "\n\n");
+                returnString.append("Title: ").append(c.getTitle()).append("\n").append("Character name: ").append(c.getCharacter()).append("\n\n");
             }
         }
 
@@ -61,9 +58,9 @@ public class PersonCredits {
             for (Crew c : crew) {
                 if (!uniqueValues.contains(c.getJob())) {
                     uniqueValues.add(c.getJob());
-                    returnString.append("\n" + c.getJob() + "\n");
+                    returnString.append("\n").append(c.getJob()).append("\n");
                 }
-                returnString.append("Title: " + c.getTitle() + "\n\n");
+                returnString.append("Title: ").append(c.getTitle()).append("\n\n");
             }
         }
         return returnString.toString();
