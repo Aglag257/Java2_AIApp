@@ -32,7 +32,7 @@ public class AvailabilityTest {
     //    results.put("TestCountry", country);
     //    availability.results = results;
 
-        String resultString = availability.toString("TestCountry");
+        String resultString = availability.toString();
 
         assertEquals("Free: Provider1, Provider2\n" +
                 "Ads: Provider1, Provider2\n" +
@@ -49,7 +49,7 @@ public class AvailabilityTest {
    //             new ArrayList<>(), new ArrayList<>()));
     //    availability.results = results;
 
-        String resultString = availability.toString("NotAvailableCountry");
+        String resultString = availability.toString();
 
         assertEquals("\nNot available in NotAvailableCountry", resultString);
     }

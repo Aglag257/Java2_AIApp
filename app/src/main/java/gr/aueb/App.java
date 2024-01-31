@@ -715,6 +715,9 @@ public class App {
                         choice4 = 0;
                 } while (choice4 != 0);
                 break;
+            case 2: 
+                handleMainMenu(scanner);
+                break;
         }
     }
 
@@ -785,12 +788,7 @@ public class App {
                 } 
                 printBonusContent(m.getMd().getOriginal_title(), year);
                 System.out.print("\nPress 0 to go back ");
-                int choice4 = scanner.nextInt();
-                scanner.nextLine(); // consume newline character
-                while (choice4!=0){
-                    System.out.print("Invalid choice. Please enter a valid option ");
-                    choice4 = scanner.nextInt();
-                }
+                int choice4 = choose(0, 0, scanner);
                 break;
             case 7: 
                 handleMainMenu(scanner);
@@ -847,7 +845,10 @@ public class App {
                         choice5 = 0;
                 } while (choice5 != 0);
                 break;
-        }
+            case 2: 
+                handleMainMenu(scanner);
+                break;
+        }   
     }
 
     private static void displayReviewContentMenu() {
@@ -875,13 +876,7 @@ public class App {
                         System.out.println("No reviews for this movie!");
                     }
                     System.out.println("Press 0 to go back");
-                    int choice2 = scanner.nextInt();
-                    scanner.nextLine(); // consume newline character
-                    while (choice2 != 0) {
-                        System.out.print("Invalid choice. Please enter a valid option ");
-                        choice2 = scanner.nextInt();
-                        scanner.nextLine(); // consume newline character
-                    }
+                    int choice2 = choose(0, 0, scanner);
                 break;
             case 2:
                     if(!reviews.isEmpty()) {
@@ -893,13 +888,7 @@ public class App {
                         System.out.println("No spoiler-free reviews for this movie!");
                     }   
                     System.out.println("Press 0 to go back");
-                    int choice3 = scanner.nextInt();
-                    scanner.nextLine(); // consume newline character
-                    while (choice3 != 0) {
-                        System.out.print("Invalid choice. Please enter a valid option ");
-                        choice3 = scanner.nextInt();
-                        scanner.nextLine(); // consume newline character
-                    }
+                    int choice3 = choose(0, 0, scanner);
                     break;
             case 3:
                     if(!reviews.isEmpty()) {
@@ -919,8 +908,8 @@ public class App {
                         }
                     } else {
                         System.out.println("You have not reviewed this movie!");
-                        break;
                     }
+                    break;
             case 4: 
                 String reviewText;
                 float rating = -1;
@@ -937,12 +926,7 @@ public class App {
                                 spoilers = true;
                             }
                             System.out.print("Enter your rating from a scale 1-10 or press 0 to go back ");
-                            rating = scanner.nextFloat();
-                            scanner.nextLine(); // consume newline character
-                            while(rating < 0 || rating > 10) {
-                                System.out.print("Invalid choice. Please enter a valid option ");
-                                rating = chooseFloat(1, 10, scanner);
-                            }
+                            rating = choose(1, 10, scanner);
                         }
                     }
                 } while (!reviewText.equals("0") && (rating == 0 || choice5 == 0));
@@ -951,6 +935,9 @@ public class App {
                     System.out.println("Your review is published! ");
                     m.setFilmBroRating(MovieDAO.getAverageRatingForMovie(m.getMd().getId()));
                 }
+                break;
+            case 5: 
+                handleMainMenu(scanner);
                 break;
         }
     }
@@ -972,8 +959,6 @@ public class App {
             r = chooseReview(scanner, reviews);
             if(r != null) {
                 r.deleteReview(currentUser.getId());
-            } else {
-                System.out.println("No reviews to delete");
             }
     }
 
@@ -1029,7 +1014,7 @@ public class App {
             if (!userMessage.equals("0")) {
                 do {
                     ArrayList<User> users = User.getUsersWithPartialUsername(userMessage);
-                    if (!users.isEmpty()) {
+                    if (!users.isEmpty() && users.get(0).getId() != currentUser.getId()) {
                         for (int i = 0; i < users.size(); i++) {
                             System.out.printf("%3d. %s \n", i + 1, users.get(i).getUsername());
                         }
@@ -1092,6 +1077,9 @@ public class App {
                     } else {
                         currentUser.followUser(u.getUsername());
                     }
+                case 3: 
+                    handleMainMenu(scanner);
+                    break;
             }
         } while(choice != 0);
     }
@@ -1216,7 +1204,7 @@ public class App {
                     } while (true);
                     break;
                 case 2: 
-                    if(currentUser == u) {
+                    if(currentUser != u) {
                         handleMainMenu(scanner);
                         break;
                     }
@@ -1370,12 +1358,13 @@ public class App {
         do {
             System.out.println("\nEnter a name for your list or press 0 to go back");
             name = scanner.nextLine();
-            if(!name.equals("0") ) { // and method unique false
+            boolean isNameUnique = MovieList.isListNameExists(name, currentUser.getId());
+            if(!name.equals("0") && !isNameUnique) { 
                 System.out.println("\nChoose list type or 0 to go back");
                 displayListTypeMenu();
                 int choice = choose(0, 3, scanner);
                 type = handleListTypeCase(choice);
-            } else if(!name.equals("0")){ // and method true 
+            } else if(!name.equals("0") && isNameUnique) {
                 System.out.println("You already have a list with this name!");
             }
         } while (!name.equals("0") && type.equals("0"));        
@@ -1722,16 +1711,11 @@ public class App {
                             System.out.println(m);
                         } 
                     }
-                    int back = 1;
                     if(i == 0) {
                         System.out.println("You have no messages in this chatroom");
-                        back = 0;
                     }  
-                    while (back != 0) {
-                        System.out.println("\nPress 0 to go back");
-                        back = scanner.nextInt();
-                        scanner.nextLine(); // consume newline character
-                    }
+                    System.out.println("\nPress 0 to go back");
+                    int back = choose(0, 0, scanner);
                     break;
                 case 3:
                     messages = chatroom.getUnseenMessages(currentUser.getId());
@@ -1739,12 +1723,8 @@ public class App {
                         for (Message m : messages) {
                             System.out.println(m);
                         }
-                        int back2 = 1;
-                        while (back2 != 0) {
-                            System.out.println("\nPress 0 to go back");
-                            back2 = scanner.nextInt();
-                            scanner.nextLine(); // consume newline character
-                        }
+                        System.out.println("\nPress 0 to go back");
+                        int back2 = choose(0, 0, scanner);
                     } else {
                         System.out.println("You have no new messages!");
                     }
@@ -1755,12 +1735,8 @@ public class App {
                         for (Message m : messages) {
                             System.out.println(m);
                         }
-                        int back3 = 1;
-                        while (back3 != 0) {
-                            System.out.println("\nPress 0 to go back");
-                            back3 = scanner.nextInt();
-                            scanner.nextLine(); // consume newline character
-                        }
+                        System.out.println("\nPress 0 to go back");
+                        int back3 = choose(0, 0, scanner);
                     } else {
                         System.out.println("There are no messages!");
                     }
