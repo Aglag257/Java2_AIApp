@@ -9,13 +9,14 @@ package gr.aueb;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Represents information about cast members in movies.
+ * Represents information about cast members in movies retrieved from 
+ * The Movie Database (TMDb).
  * Container for cast details in media applications. Provides names, characters,
  * IDs, titles,
  * release dates, and popularity scores.
  * 
  * @version 1.8 released on 14th January 2024
- * @author Νίκος Ραγκούσης
+ * @author Νικόλαος Ραγκούσης
  */
 
 public class Cast {

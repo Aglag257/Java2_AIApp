@@ -20,7 +20,7 @@ import com.google.gson.Gson;
  * Represents information about a movie, including credits, details, and
  * availability.
  * The class includes methods to get information about a movie,
- * covering credits, details, and availability.
+ * credits, details, and availability.
  * Connects the application to The Movie Database (TMDb) API using an API key.
  * Utilizes Gson for JSON parsing from TMDb API, making HTTP requests to gather
  * data on movie credits, details, and availability.
@@ -29,11 +29,10 @@ import com.google.gson.Gson;
  * title, overview, genres, IMDb rating, runtime, release date, directors,
  * writers, and top-billed cast.
  * Fetches availability information on various platforms. IMDb rating is
- * obtained
- * by cross-referencing the IMDb ID from TMDb with an external file.
+ * obtained by cross-referencing the IMDb ID from TMDb with an external file.
  * 
  * @version 1.8 released on 15th January 2024
- * @author Νίκος Ραγκούσης και Γιώργος Καρανδρέας
+ * @author Νικόλαος Ραγκούσης και Γεώργιος Καρανδρέας
  */
 
 public class Movie {
@@ -70,10 +69,13 @@ public class Movie {
      */
     public Movie(int id, String apiKey) throws Exception {
         Gson gson = new Gson();
+        //temporary holds information of movie's contributors. 
+        //Is used to filter double values of people having multiple roles in the movie
+        people = new HashMap<>();
+        //parallel ArrayLists with movie's contributors information
         peopleId = new ArrayList<>();
         peopleName = new ArrayList<>();
         peopleJob = new ArrayList<>();
-        people = new HashMap<>();
         peoplePopularity = new ArrayList<>();
 
         // Response for movie credits
@@ -87,6 +89,7 @@ public class Movie {
         try {
             response1 = HttpClient.newHttpClient()
                     .send(request, HttpResponse.BodyHandlers.ofString());
+            //deserialize JSON response
             co = gson.fromJson(response1.body(), Contributors.class);
         } catch (IOException e) {
             System.err.println("Check your internet connection!");
@@ -105,6 +108,7 @@ public class Movie {
         try {
             response2 = HttpClient.newHttpClient()
                     .send(request, HttpResponse.BodyHandlers.ofString());
+            //deserialize JSON response
             md = gson.fromJson(response2.body(), MovieDetails.class);
         } catch (IOException e) {
             System.err.println("Check your internet connection!");
@@ -123,6 +127,7 @@ public class Movie {
         try {
             response3 = HttpClient.newHttpClient()
                     .send(request, HttpResponse.BodyHandlers.ofString());
+            //deserialize JSON response
             av = gson.fromJson(response3.body(), Availability.class);
         } catch (IOException e) {
             System.err.println("Check your internet connection!");
@@ -134,6 +139,7 @@ public class Movie {
 
         imdbRating = getImdbRatingFromID(md.getImdb_id());
 
+        //fill people HashMap with cast members
         if (co.getCast() != null) {
             Object[] temp;
             for (Cast c : co.getCast()) {
@@ -145,6 +151,7 @@ public class Movie {
             }
         }
 
+        //fill people HashMap with crew members
         if (co.getCrew() != null) {
             Object[] temp;
             for (Crew c : co.getCrew()) {
@@ -156,8 +163,10 @@ public class Movie {
             }
         }
 
+        //fill peopleId ArrayList with all contributor ids
         peopleId.addAll(people.keySet());
 
+        //fill ArrayLists with people's other information
         for (Object[] i : people.values()) {
             peopleName.add((String) i[0]);
             peopleJob.add((String) i[1]);
@@ -176,10 +185,10 @@ public class Movie {
         String line;
         double imdbRating = -1; // Default value if the ID is not found
 
+        //Read external file with IMDB ratings and give value to imdbRating
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             while ((line = br.readLine()) != null) {
                 String[] data = line.split("\t");
-
                 if (data.length >= 3 && data[0].equals(imdbID)) {
                     imdbRating = Double.parseDouble(data[1]);
                     break;
@@ -249,8 +258,11 @@ public class Movie {
     }
 
     /**
-     * Generates a string containing detailed information about the movie.
+     * Generates a string containing detailed information about the movie in user's country
+     * specidied by the parameters.
      * 
+     * @param countryName the name of the user's country
+     * @param countryKey the key of the user's country
      * @return The string with movie details.
      */
     private String printResult(String countryName, String countryKey) {

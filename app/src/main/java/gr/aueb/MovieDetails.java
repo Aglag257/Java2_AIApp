@@ -8,15 +8,16 @@ package gr.aueb;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * 
- * Represents details of a movie.
+ * Represents details of a movie retrieved from The Movie Database
+ * (TMDb).
  * Includes movie details such as genres, ID, title, overview,
  * release date, runtime, vote average, and IMDb ID.
  *
  * @version 1.8 28 January 2024
- * @author Νίκος Ραγκούσης
+ * @author Νικόλαος Ραγκούσης
  */
-public class MovieDetails {
+
+ public class MovieDetails {
     /** An array of genres associated with the movie. */
     @SerializedName("genres")
     private Genre[] genres;

@@ -9,7 +9,8 @@ import java.util.HashSet;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Represents the movie credits of a person, including both cast and crew roles.
+ * Represents the movie credits of a person, including both cast and crew roles 
+ * retrieved from The Movie Database (TMDb).
  * This class provides information about the roles a person has played in
  * movies,
  * distinguishing between cast roles (e.g., actor) and crew roles (e.g.,
@@ -23,7 +24,7 @@ import com.google.gson.annotations.SerializedName;
  * (for crew roles), and more.
  *
  * @version 1.8 28 January 2024
- * @author Νίκος Ραγκούσης
+ * @author Νικόλαος Ραγκούσης
  */
 public class PersonCredits {
     /** Array of cast roles performed by the person. */

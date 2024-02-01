@@ -926,7 +926,7 @@ public class App {
                                 spoilers = true;
                             }
                             System.out.print("Enter your rating from a scale 1-10 or press 0 to go back ");
-                            rating = choose(1, 10, scanner);
+                            rating = chooseFloat(1, 10, scanner);
                         }
                     }
                 } while (!reviewText.equals("0") && (rating == 0 || choice5 == 0));

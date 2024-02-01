@@ -20,7 +20,7 @@ import com.google.gson.annotations.SerializedName;
  * person, facilitating identification and retrieval.
  *
  * @version 1.8 28 January 2024
- * @author Νίκος Ραγκούσης
+ * @author Νικόλαος Ραγκούσης
  */
 public class PersonDetails {
     /** The name of the person. */

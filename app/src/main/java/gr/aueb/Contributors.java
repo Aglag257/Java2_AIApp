@@ -8,12 +8,13 @@ package gr.aueb;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Represents contributors associated with a movie.
+ * Represents contributors associated with a movie retrieved from 
+ * The Movie Database (TMDb).
  * The class includes information such as contributor ID, an array of cast
  * members and an array of crew members.
  * 
  * @version 1.8 released on 15th January 2024
- * @author Νίκος Ραγκούσης
+ * @author Νικόλαος Ραγκούσης
  */
 
 public class Contributors {

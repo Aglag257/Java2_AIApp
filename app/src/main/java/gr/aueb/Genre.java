@@ -10,8 +10,6 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Represents information about movie genres retrieved from The Movie Database
  * (TMDb).
- * The class includes methods to fetch and store genre information using the
- * TMDb API.
  * It provides a static method, getGenres, to retrieve a mapping of genre IDs to
  * names.
  * The attributes include the genre name and ID, and the class is designed to be
@@ -20,7 +18,7 @@ import com.google.gson.annotations.SerializedName;
  * essential.
  * 
  * @version 1.8 released on 15th January 2024
- * @author Νίκος Ραγκούσης
+ * @author Νικόλαος Ραγκούσης
  */
 
 public class Genre {

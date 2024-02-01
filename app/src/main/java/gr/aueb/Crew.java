@@ -8,7 +8,8 @@ package gr.aueb;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Represents information about crew members associated with a movie.
+ * Represents information about crew members associated with a movie 
+ * retrieved from The Movie Database (TMDb)
  * The class includes details such as crew member name, job role, department,
  * unique identifier,
  * title, release date, and popularity score. It is designed to be used in the
@@ -17,7 +18,7 @@ import com.google.gson.annotations.SerializedName;
  * production is essential.
  * 
  * @version 1.8 released on 15th January 2024
- * @author Νίκος Ραγκούσης
+ * @author Νικόλαος Ραγκούσης
  */
 
 public class Crew {
