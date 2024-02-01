@@ -11,7 +11,8 @@ import java.util.HashMap;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Represents the availability of content in different countries.
+ * Represents the availability of content in different countries retrieved from \
+ * The Movie Database (TMDb).
  * This class serves as a comprehensive representation of the availability of
  * digital content,
  * categorizing it based on various criteria such as Free, Ads-supported,
@@ -21,13 +22,13 @@ import com.google.gson.annotations.SerializedName;
  * of content across different providers and presents a structured view of the
  * digital content landscape
  * in a given country.
- * The class includes methods to retrieve and format availability data, offering
+ * The class includes methods to retrieve availability data, offering
  * a convenient way to
  * present information about the accessibility of content in specific categories
  * for a particular country.
  * 
  * @version 1.8, released on 14th January 2024
- * @author Νίκος Ραγκούσης
+ * @author Νικόλαος Ραγκούσης
  */
 public class Availability {
     /**
@@ -50,7 +51,6 @@ public class Availability {
             for (Provider provider : providers) {
                 formatted.append(provider).append(", ");
             }
-
             formatted.setLength(formatted.length() - 2);
             formatted.append("\n");
             return formatted.toString();

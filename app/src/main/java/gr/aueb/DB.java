@@ -34,7 +34,7 @@ public class DB implements AutoCloseable {
 	/** The username for connecting to the database. */
 	private final String dbUsername = "root";
 	/** The password for connecting to the database. */
-	private final String dbPassword = "120032003BbMp4";
+	private final String dbPassword = "F1234F";
 	/** The database connection object. */
 	private Connection con = null;
 

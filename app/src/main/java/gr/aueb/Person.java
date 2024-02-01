@@ -25,7 +25,7 @@ import com.google.gson.Gson;
  * dates, and popularity.
  *
  * @version 1.8 28 January 2024
- * @author Νίκος Ραγκούσης
+ * @author Νικόλαος Ραγκούσης
  */
 public class Person {
     /** Details about the person. */
@@ -59,12 +59,16 @@ public class Person {
      */
     public Person(int id, String apikey) {
         Gson gson = new Gson();
+        //temporary holds information of person's movies. 
+        //Is used to filter double values of movies the person is a part in multiple roles
+        movies = new HashMap<>();
+        //parallel ArrayLists with person's movies information
         movieIds = new ArrayList<>();
         movieTitles = new ArrayList<>();
         movieDates = new ArrayList<>();
-        movies = new HashMap<>();
         moviePopularity = new ArrayList<>();
 
+        //details response
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://api.themoviedb.org/3/person/" + id + "?language=en-US"))
                 .header("accept", "application/json")
@@ -74,14 +78,15 @@ public class Person {
         try {
             HttpResponse<String> response1 = HttpClient.newHttpClient().send(request,
                     HttpResponse.BodyHandlers.ofString());
+            //deserialize JSON response
             pd = gson.fromJson(response1.body(), PersonDetails.class);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Check your internet connection!");
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            System.exit(1);
         }
 
-        // credits
+        // credits response
         request = HttpRequest.newBuilder()
                 .uri(URI.create("https://api.themoviedb.org/3/person/" + id + "/movie_credits?language=en-US"))
                 .header("accept", "application/json")
@@ -91,6 +96,7 @@ public class Person {
         try {
             HttpResponse<String> response2 = HttpClient.newHttpClient().send(request,
                     HttpResponse.BodyHandlers.ofString());
+            //deserialize JSON response
             pc = gson.fromJson(response2.body(), PersonCredits.class);
         } catch (IOException e) {
             System.err.println("Check your internet connection!");
@@ -98,7 +104,8 @@ public class Person {
             System.exit(1);
         }
 
-        if (pc.getCast() != null) {
+        //fill movies HashMap with movies that the person is patt of the cast
+            if (pc.getCast() != null) {
             Object[] temp;
             for (Cast c : pc.getCast()) {
                 temp = new Object[3];
@@ -109,6 +116,7 @@ public class Person {
             }
         }
 
+        //fill movies HashMap with movies that the person is patt of the crew
         if (pc.getCrew() != null) {
             Object[] temp;
             for (Crew c : pc.getCrew()) {
@@ -120,8 +128,10 @@ public class Person {
             }
         }
 
+        //fill peopleId ArrayList with all person's movies
         movieIds.addAll(movies.keySet());
 
+        //fill ArrayLists with person's movies other information
         for (Object[] i : movies.values()) {
             movieTitles.add((String) i[0]);
             movieDates.add((String) i[1]);
