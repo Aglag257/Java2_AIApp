@@ -17,7 +17,7 @@ public class User {
         this.password = password;
         this.country = country;
     }
-
+ 
     // Setters
 
     public void setUsername(String newUsername, String currentPassword) throws Exception {
@@ -712,11 +712,10 @@ public class User {
         ArrayList<Review> userReviews = new ArrayList<>();
 
         try (DB db = new DB(); Connection con = db.getConnection()) {
-            String sql = "SELECT Review.reviewId, Review.movieId, Review.reviewText, Review.rating, Review.spoiler, " +
-                    "AppUser.username, Review.date, Movie.movieName " +
+            String sql = "SELECT Review.reviewId, Review.movieId, Review.review_Text, Review.rating, Review.spoiler, " +
+                    "AppUser.username, Review.date, Review.movieName " +
                     "FROM Review " +
-                    "JOIN AppUser ON Review.userId = AppUser.userId " +
-                    "JOIN Movie ON Review.movieId = Movie.movieId " +
+                    "JOIN AppUser ON Review.userId = AppUser.userId " + 
                     "WHERE Review.userId=? " +
                     "ORDER BY Review.movieId;";
 
