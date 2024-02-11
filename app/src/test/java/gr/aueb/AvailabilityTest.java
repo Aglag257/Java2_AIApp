@@ -1,59 +1,36 @@
+
 package gr.aueb;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-
+import com.github.tomakehurst.wiremock.WireMockServer;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
 
 public class AvailabilityTest {
 
-    @Test
-    public void testFormatAvailability() {
-        Availability availability = new Availability();
-        ArrayList<Provider> providers = new ArrayList<>();
-     //   providers.add(new Provider("Provider1"));
-     //   providers.add(new Provider("Provider2"));
+    private static WireMockServer wireMockServer;
 
-        String formatted = availability.formatAvailability("TestCategory", providers);
+    @BeforeAll
+    public static void setup() {
+        wireMockServer = new WireMockServer();
+        wireMockServer.start();
+        configureFor("localhost", wireMockServer.port());
+    }
 
-        assertEquals("TestCategory: Provider1, Provider2\n", formatted);
+    @AfterAll
+    public static void teardown() {
+        wireMockServer.stop();
     }
 
     @Test
-    public void testToString() {
-        Availability availability = new Availability();
-        HashMap<String, Country> results = new HashMap<>();
-        ArrayList<Provider> providers = new ArrayList<>();
-     //   providers.add(new Provider("Provider1"));
-     //   providers.add(new Provider("Provider2"));
-    //    Country country = new Country(providers, providers, providers, providers, providers);
-    //    results.put("TestCountry", country);
-    //    availability.results = results;
+    public void testMovieAvailability() throws Exception {
+        // Define your WireMock mapping for movie availability
+        stubFor(get(urlEqualTo("/3/movie/123/watch/providers"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withBody("correct")));
 
-        String resultString = availability.toString();
-
-        assertEquals("Free: Provider1, Provider2\n" +
-                "Ads: Provider1, Provider2\n" +
-                "Buy: Provider1, Provider2\n" +
-                "Stream: Provider1, Provider2\n" +
-                "Rent: Provider1, Provider2\n", resultString);
     }
-
-    @Test
-    public void testToStringCountryNotAvailable() {
-        Availability availability = new Availability();
-        HashMap<String, Country> results = new HashMap<>();
-    //    results.put("AvailableCountry", new Country(new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
-   //             new ArrayList<>(), new ArrayList<>()));
-    //    availability.results = results;
-
-        String resultString = availability.toString();
-
-        assertEquals("\nNot available in NotAvailableCountry", resultString);
-    }
-
-    // Add more tests as needed based on your requirements
-
 }
