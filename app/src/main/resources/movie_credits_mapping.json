@@ -1,0 +1,19 @@
+{
+    "request": {
+      "method": "GET",
+      "url": "/3/movie/123/credits",
+      "headers": {
+        "accept": {
+          "matches": "application/json"
+        },
+        "Authorization": {
+          "matches": "Bearer .+"
+        }
+      }
+    },
+    "response": {
+        "status": 200,
+        "body": "correct"
+      }
+    }
+  
