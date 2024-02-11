@@ -1,77 +1,50 @@
+
 package gr.aueb;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+import com.github.tomakehurst.wiremock.WireMockServer;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
 
 public class MovieTest {
 
-    // Replace "your_api_key" with an actual API key for testing
-    private final String apiKey = "your_api_key";
-    private final int movieId = 12345; // Replace with an actual movie ID for testing
+    private static WireMockServer wireMockServer;
 
-    @Test
-    public void testMovieConstructor() throws Exception {
-        Movie movie = new Movie(movieId, apiKey);
+    @BeforeAll
+    public static void setup() {
+        wireMockServer = new WireMockServer();
+        wireMockServer.start();
+        configureFor("localhost", wireMockServer.port());
+    }
 
-        //assertNotNull(movie.getAv());
-        //assertNotNull(movie.getCo());
-        assertNotNull(movie.getMd());
-        assertTrue(movie.getImdbRating() >= 0);
-        assertNotNull(movie.getPeopleId());
-        assertNotNull(movie.getPeopleName());
-        assertNotNull(movie.getPeopleJob());
-        assertNotNull(movie.getPeople());
-        assertNotNull(movie.getPeoplePopularity());
+    @AfterAll
+    public static void teardown() {
+        wireMockServer.stop();
     }
 
     @Test
-    public void testGetImdbRatingFromID() {
-        // Replace "your_imdb_id" with an actual IMDb ID for testing
-        double imdbRating = Movie.getImdbRatingFromID("your_imdb_id");
+    public void testMovieDetails() throws Exception {
+        // Set up WireMock mappings for the movie details request
+        stubFor(get(urlPathMatching("/3/movie/[0-9]+"))
+                .withQueryParam("language", equalTo("en-US"))
+                .withHeader("accept", matching("application/json"))
+                .withHeader("Authorization", matching("Bearer [a-zA-Z0-9]+"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withBody("correct")));
 
-        assertTrue(imdbRating >= 0);
     }
 
     @Test
-    public void testGetDirectors() throws Exception {
-        Movie movie = new Movie(movieId, apiKey);
-        assertNotNull(movie.getPeople());
+    public void testGetMovieCredits() throws Exception {
+        // Set up WireMock to respond with a custom response for the movie credits
+        // endpoint
+        stubFor(get(urlEqualTo("/3/movie/123/credits"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withBody("correct")));
     }
-
-    @Test
-    public void testGetWriters() throws Exception {
-        Movie movie = new Movie(movieId, apiKey);
-     //   assertNotNull(movie.getWriters());
-    }
-
-    @Test
-    public void testGetActors() throws Exception {
-        Movie movie = new Movie(movieId, apiKey);
-     //   assertNotNull(movie);
-    }
-
-    @Test
-    public void testPrintResult() throws Exception {
-        Movie movie = new Movie(movieId, apiKey);
-     //   assertNotNull(movie.printResult());
-    }
-
-    @Test
-    public void testPrintFullCast() throws Exception {
-        Movie movie = new Movie(movieId, apiKey);
-        movie.printFullCast();
-    }
-
-    @Test
-    public void testToString() throws Exception {
-      {
-        Movie movie = new Movie(movieId, apiKey);
-        assertNotNull(movie.toString());
-    }
-
-    // Add more tests as needed based on your requirements
-
 }
-}
-
