@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -38,7 +37,8 @@ public class DBTest {
             // Check that the connection is not null
             assertNotNull(connection);
 
-            // You can add more specific assertions based on the expected behavior of the method
+            // You can add more specific assertions based on the expected behavior of the
+            // method
 
         } catch (Exception e) {
             fail("Exception during test: " + e.getMessage());
@@ -46,16 +46,16 @@ public class DBTest {
     }
 
     @Test
-public void testClose() {
-    try (DB db = new DB()) {
-        Connection connection = db.getConnection();
-        assertNotNull(connection);
+    public void testClose() {
+        try (DB db = new DB()) {
+            Connection connection = db.getConnection();
+            assertNotNull(connection);
 
-        db.close();
-        assertTrue(connection.isClosed());
-    } catch (Exception e) {
-        fail("Exception during test: " + e.getMessage());
+            db.close();
+            assertTrue(connection.isClosed());
+        } catch (Exception e) {
+            fail("Exception during test: " + e.getMessage());
+        }
     }
-}
 
 }
