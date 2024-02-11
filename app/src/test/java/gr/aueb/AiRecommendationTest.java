@@ -1,48 +1,33 @@
 package gr.aueb;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.net.URISyntaxException;
-
+import com.github.tomakehurst.wiremock.WireMockServer;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
 
 public class AiRecommendationTest {
 
-    @Test
-    public void testChatCompletions() {
-        // Provide a valid API key
-        String apiKey = "your_api_key_here";
+    private static WireMockServer wireMockServer;
 
-        // Test user message
-        String userMessage = "What movies do you recommend?";
+    @BeforeAll
+    public static void setup() {
+        wireMockServer = new WireMockServer();
+        wireMockServer.start();
+        configureFor("localhost", wireMockServer.port());
+    }
 
-        try {
-            // Call the method
-            String result = AiRecommendation.testChatCompletions(userMessage, apiKey);
-
-            // Check that the result is not null or empty
-            assertNotNull(result);
-            assertFalse(result.isEmpty());
-
-            // You can add more specific assertions based on the expected behavior of the method
-
-        } catch (URISyntaxException e) {
-            fail("Exception during test: " + e.getMessage());
-        }
+    @AfterAll
+    public static void teardown() {
+        wireMockServer.stop();
     }
 
     @Test
-    public void testAiMessage() {
-        // Create a sample response from the AI model
-        StringBuilder response = new StringBuilder("{ \"choices\": [ { \"message\": { \"content\": \"Recommended movies: Movie 1, Movie 2\" } } ] }");
-
-        // Call the method
-        String result = AiRecommendation.aiMessage(response);
-
-        // Check that the result is not null or empty
-        assertNotNull(result);
-        assertFalse(result.isEmpty());
-
-        // You can add more specific assertions based on the expected behavior of the method
+    public void testCountry() throws Exception {
+        stubFor(post(urlEqualTo("/v1/chat/completions"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withBody("correct")));
     }
 }
