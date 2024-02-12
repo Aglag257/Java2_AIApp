@@ -23,10 +23,9 @@ Run java -jar "Java2_AIApp-1.0-SNAPSHOT-jar-with-dependencies.jar"
 ![alt text](Untitled.jpg)
 This simplified UML diagram depicts the most critical aspects of the code architecture and is designed solely for the purpose of understanding
 
-Overview of the data structures and algorithms used by the application:
+## Overview of the data structures and algorithms used by the application:
 
-In terms of data structures we are using arrays and lists and in terms of algorithms we have used ton algorithmo tis fisalidas gia to search
-You sent
+In terms of data structures we are using arrays and lists and in terms of algorithms we have used the algorithm of "fisalidas" for the search
 
 
 ## Usage
