@@ -14,6 +14,12 @@ Run java -jar "Java2_AIApp-1.0-SNAPSHOT-jar-with-dependencies.jar"
 2. The application uses OpenAI API to get Artifficial Intelligence moview recommendations, TMDB API to get all details about the movies and YouTube API to get bonus content videos rilated to the Movie. Everyone who uses the code must create their own API keys for those services, put them in an external file and add their file path in the method loadApiKeys in App class. 
 3. The application uses a mySQL data base for data storage. Everyone who uses the code must create their own local data base using mySQL by running the code in the project's SQL folder.
 
+## Stracture
+1. The app folder contains src, target folders and the pom.xml file. 
+2. The pom.xml file contains the building stracture of the maven project.
+3. The src folder contains folders with project's classes and external files folder (resources) in main.
+4. The target folder contains the .class files of the project and the executable jar file.
+
 ## Usage
 1. The login menu is printed in command line when running.
 2. The user makes a selection from the menu (Sign-up, Login, Continue as a guest or Exit). All selections are made inputting the corresponding selections number in the terminal.
