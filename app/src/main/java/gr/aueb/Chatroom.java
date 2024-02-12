@@ -216,7 +216,7 @@ public class Chatroom {
                 stmt2.setInt(1, roomId);
                 stmt2.setInt(2, creatorId);
                 stmt2.executeUpdate();
-                System.out.println("Chatroom " + name + " created successfully");
+                System.out.println("\nChatroom " + name + " created successfully!");
             }
 
             return new Chatroom(roomId, name, creatorId);

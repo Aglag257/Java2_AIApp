@@ -26,7 +26,7 @@ import java.net.URLEncoder;
  * category.
  * 
  * @version 1.8 released on 14th January 2024
- * @author Νίκος Ραγκούσης
+ * @author Βασίλειος Μυλωνάς
  */
 public class BonusContent {
 
@@ -61,7 +61,7 @@ public class BonusContent {
 
 
             if (items.size() > 0) {
-                System.out.println("Videos for the category '" + category + "':");
+                System.out.println("\nVideos for the category '" + category + "':");
 
                 for (int i = 0; i < Math.min(3, items.size()); i++) {
                     JsonObject item = items.get(i).getAsJsonObject();

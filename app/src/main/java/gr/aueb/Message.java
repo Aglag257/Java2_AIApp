@@ -302,7 +302,7 @@ public class Message {
             stmtDeleteUnSeenMessage.setInt(1, messageId);
             stmtDeleteUnSeenMessage.executeUpdate();
 
-            System.out.println("Message deleted successfully.");
+            System.out.println("\nMessage deleted successfully!");
         } catch (Exception e) {
             throw new Exception("Error deleting message: " + e.getMessage());
         }
@@ -316,6 +316,6 @@ public class Message {
     @Override
     public String toString() {
         String spoilerStatus = spoiler ? "Yes" : "No";
-        return String.format("Username: \"%s\"\nSpoiler: %s\ntext: %s", username, spoilerStatus, text);
+        return String.format("Author: %s\nSpoiler: %s\n%s", username, spoilerStatus, text);
     }
 }

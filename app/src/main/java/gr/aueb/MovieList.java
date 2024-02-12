@@ -105,7 +105,7 @@ public class MovieList {
                 checkStmt.setInt(2, creatorId);
                 ResultSet rs = checkStmt.executeQuery();
                 if (rs.next()) {
-                    throw new Exception("List " + listName + " already exists");
+                    throw new Exception("List " + listName + " already exists!");
                 }
             }
 
@@ -126,7 +126,7 @@ public class MovieList {
                 }
             }
 
-            System.out.println("List: " + listName + " created successfully");
+            System.out.println("List " + listName + " created successfully!");
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
@@ -161,7 +161,7 @@ public class MovieList {
                 stmt1.setString(2, movieName);
                 stmt1.setInt(3, movieId);
                 stmt1.executeUpdate();
-                System.out.println(movieName + " added to your list " + listName);
+                System.out.println("\n" + movieName + " added to your list " + listName + "!");
             }
         } catch (Exception e) {
             throw new Exception(e.getMessage());
