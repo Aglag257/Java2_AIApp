@@ -1,6 +1,6 @@
 # Programming II Application
 ## About
-This repository includes a java AI Movie recommendation application which constitutes the semester project for the Programming II class 
+This repository includes a java Artifficial Intelligence Movie recommendation application which constitutes the semester project for the Programming II class 
 ## Building
 
 Run mvn clean compile assembly:single
@@ -8,6 +8,11 @@ Run mvn clean compile assembly:single
 ## Running
 
 Run java -jar "Java2_AIApp-1.0-SNAPSHOT-jar-with-dependencies.jar"
+
+## External resources
+1. The application uses a file from IMDB official website that provides IMDB ratings matched with the movie title (resources folder).
+2. The application uses OpenAI API to get Artifficial Intelligence moview recommendations, TMDB API to get all details about the movies and YouTube API to get bonus content videos rilated to the Movie. Everyone who uses the code must create their own API keys for those services, put them in an external file and add their file path in the method loadApiKeys in App class. 
+3. The application uses a mySQL data base for data storage. Everyone who uses the code must create their own local data base using mySQL by running the code in the project's SQL folder.
 
 ## Usage
 1. The login menu is printed in command line when running.
@@ -18,8 +23,8 @@ Run java -jar "Java2_AIApp-1.0-SNAPSHOT-jar-with-dependencies.jar"
 
 ## Contributing
 - Feel free to contribute your ideas or suggestions by opening an issue
-- Make sure to keep in mind what is stated in [CONTRIBUTING.md](!!!!!!)
+- Make sure to keep in mind what is stated in [CONTRIBUTING.md]
 
 ## Licensing
 - This project is licensed under the EUPL 1.2
-- More info about the licence can be found in [LICENSE.md](!!!!)
+- More info about the licence can be found in [LICENSE.md]
