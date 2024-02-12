@@ -1,5 +1,6 @@
 package gr.aueb;
 
+import org.apiguardian.api.API;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import java.util.ArrayList;
@@ -11,11 +12,17 @@ import java.io.FileReader;
 import java.io.PrintStream;
 import java.net.URISyntaxException;
 
+/*The BonusContentTest class is a test class that contains test methods for testing the functionality of the BonusContent class.
+ It tests various scenarios such as null or empty inputs, list size, and output validation. */
 public class BonusContentTest {
     private static String youtubeApiKey;
 
-    // τεστάρω αν κάποια απο 3 ορισματα που εχουν δωθει στην μεθοδο ειναι null ή
-    // λαθος
+    /*
+     * testSearchAndPrintVideo_NullSearchQuery: Tests the searchAndPrintVideo method
+     * with a null search query.
+     * Expects an IllegalArgumentException to be thrown with the message
+     * "Search Query cannot be null or empty."
+     */
 
     @Test
     public void testSearchAndPrintVideo_NullSearchQuery() throws URISyntaxException {
@@ -38,6 +45,12 @@ public class BonusContentTest {
         }
     }
 
+    /*
+     * testSearchAndPrintVideo_EmptyCategory: Tests the searchAndPrintVideo method
+     * with an empty category.
+     * Expects an IllegalArgumentException to be thrown with the message
+     * "category cannot be null or empty."
+     */
     @Test
     public void testSearchAndPrintVideo_EmptyCategory() throws URISyntaxException {
         String searchQuery = "Pulp Fiction";
@@ -58,6 +71,12 @@ public class BonusContentTest {
         }
     }
 
+    /*
+     * testSearchAndPrintVideo_NullApiKey: Tests the searchAndPrintVideo method with
+     * a null API key.
+     * Expects an IllegalArgumentException to be thrown with the message
+     * "ApiKey cannot be null or empty."
+     */
     @Test
     public void testSearchAndPrintVideo_NullApiKey() throws URISyntaxException {
         String searchQuery = "Barbie";
@@ -72,7 +91,11 @@ public class BonusContentTest {
         }
     }
 
-    // ελεγχος για την items
+    /*
+     * testCheckItemsSize_NotEmptyList: Tests the checkItemsSize method with a
+     * non-empty list.
+     * Expects the list size to be greater than 0.
+     */
     @Test
     public void testCheckItemsSize_NotEmptyList() {
         List<Object> items = new ArrayList<>();
@@ -81,6 +104,11 @@ public class BonusContentTest {
         assertTrue(items.size() > 0);
     }
 
+    /*
+     * testCheckItemsSize_EmptyList: Tests the checkItemsSize method with an empty
+     * list.
+     * Expects the list size to be 0.
+     */
     @Test
     public void testCheckItemsSize_EmptyList() {
         List<Object> items = new ArrayList<>();
@@ -88,6 +116,11 @@ public class BonusContentTest {
         assertFalse(items.size() > 0);
     }
 
+    /*
+     * testIterateAndPrint_NonEmptyList: Tests the iterateAndPrintWrapper method
+     * with a non-empty list.
+     * Verifies that the expected output is printed to the console.
+     */
     @Test
     public void testIterateAndPrint_NonEmptyList() {
         List<String> items = new ArrayList<>();
@@ -108,6 +141,11 @@ public class BonusContentTest {
         assertEquals(expectedOutput, outContent.toString());
     }
 
+    /*
+     * testIterateAndPrint_EmptyList: Tests the iterateAndPrintWrapper method with
+     * an empty list.
+     * Verifies that no output is printed to the console.
+     */
     @Test
     public void testIterateAndPrint_EmptyList() {
         List<String> items = new ArrayList<>();

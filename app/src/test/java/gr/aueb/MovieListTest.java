@@ -12,6 +12,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+/*The MovieListTest class is a test class that tests the functionality of the MovieList class. It includes test methods for various functionalities of the MovieList class, such as getting list type, creator ID, list name, and list ID, creating a new list, adding movies to a list, getting movies from a list, deleting a list, removing a movie from a list, getting movie lists for a user, checking if a movie is present in a list, and checking if a list name exists for a user. */
 class MovieListTest {
     private static Connection connection;
     private static MovieList movielist;
@@ -150,15 +151,19 @@ class MovieListTest {
         } catch (SQLException e) {
             fail("Exception thrown during setup: " + e.getMessage());
         }
-        // Κλείσιμο της σύνδεσης
+
         if (connection != null) {
             connection.close();
         }
     }
 
+    /*
+     * getListTypeTest(): Tests the getListType() method of the MovieList class by
+     * comparing the retrieved list type with the value in the database.
+     */
     @Test
     public void getListTypeTest() throws SQLException {
-        // // Έλεγχος της μεθόδου getListTypeTest
+
         try (PreparedStatement stmt = connection.prepareStatement("SELECT listType FROM list WHERE list_id = 1")) {
             System.out.println(movielist.getListType());
             try (ResultSet resultSet = stmt.executeQuery()) {
@@ -174,9 +179,13 @@ class MovieListTest {
         }
     }
 
+    /*
+     * getCreatorIdTest(): Tests the getCreatorId() method of the MovieList class by
+     * comparing the retrieved creator ID with the value in the database.
+     */
     @Test
     public void getCreatorIdTest() throws SQLException {
-        // // Έλεγχος της μεθόδου getCreatorId
+
         try (PreparedStatement stmt = connection.prepareStatement("SELECT userid FROM list WHERE list_Id = 1")) {
             try (ResultSet resultSet = stmt.executeQuery()) {
                 if (resultSet.next()) {
@@ -190,9 +199,13 @@ class MovieListTest {
         }
     }
 
+    /*
+     * getCreatorIdTest(): Tests the getCreatorId() method of the MovieList class by
+     * comparing the retrieved creator ID with the value in the database.
+     */
     @Test
     public void getListNameTest() throws SQLException {
-        // // Έλεγχος της μεθόδου getListName
+
         try (PreparedStatement stmt = connection.prepareStatement("SELECT name FROM list WHERE list_Id = 1")) {
             try (ResultSet resultSet = stmt.executeQuery()) {
                 if (resultSet.next()) {
@@ -206,9 +219,13 @@ class MovieListTest {
         }
     }
 
+    /*
+     * getListIdTest(): Tests the getListId() method of the MovieList class by
+     * comparing the retrieved list ID with the value in the database.
+     */
     @Test
     public void getListIdTest() throws SQLException {
-        // // Έλεγχος της μεθόδου getCreatorId
+
         try (PreparedStatement stmt = connection.prepareStatement("SELECT list_id FROM list WHERE list_Id = 1")) {
             try (ResultSet resultSet = stmt.executeQuery()) {
                 if (resultSet.next()) {
@@ -222,6 +239,10 @@ class MovieListTest {
         }
     }
 
+    /*
+     * testCreateList(): Tests the createList() method of the MovieList class by
+     * creating a new list and verifying its properties.
+     */
     @Test
     public void testCreateList() {
         try {
@@ -237,6 +258,11 @@ class MovieListTest {
         }
     }
 
+    /*
+     * testGetMoviesFromList(): Tests the getMoviesFromList() method of the
+     * MovieList class by adding movies to a list and verifying the retrieved
+     * movies.
+     */
     @Test
     public void testGetMoviesFromList() {
         try {
@@ -265,6 +291,10 @@ class MovieListTest {
         }
     }
 
+    /*
+     * testDeleteList(): Tests the deleteList() method of the MovieList class by
+     * creating a new list and deleting it, and verifying that the list is deleted.
+     */
     @Test
     public void testDeleteList() {
         try {
@@ -281,6 +311,11 @@ class MovieListTest {
         }
     }
 
+    /*
+     * testRemoveMovie(): Tests the removeMovie() method of the MovieList class by
+     * adding a movie to a list and removing it, and verifying that the movie is
+     * removed from the list.
+     */
     @Test
     public void testRemoveMovie() {
         try {
@@ -297,6 +332,12 @@ class MovieListTest {
         }
     }
 
+    /*
+     * testGetMovieListsWhenNotFollower(): Tests the getMovieLists() method of the
+     * MovieList class by retrieving movie lists for a user who is not a follower of
+     * the list creator, and verifying that only the appropriate lists are
+     * retrieved.
+     */
     @Test
     public void testGetMovieListsWhenNotFollower() {
         try {
@@ -321,6 +362,11 @@ class MovieListTest {
 
     }
 
+    /*
+     * testGetMovieListsWhenFollower(): Tests the getMovieLists() method of the
+     * MovieList class by retrieving movie lists for a user who is a follower of the
+     * list creator, and verifying that the appropriate lists are retrieved.
+     */
     @Test
     public void testGetMovieListsWhenFollower() {
         try (PreparedStatement insertStmt1 = connection
@@ -358,6 +404,10 @@ class MovieListTest {
         }
     }
 
+    /*
+     * testContainsMovie(): Tests the containsMovie() method of the MovieList class
+     * by checking if a movie is present in a list, and verifying the result.
+     */
     @Test
     public void testContainsMovie() {
         try {
@@ -374,6 +424,10 @@ class MovieListTest {
         }
     }
 
+    /*
+     * testIsListNameExists(): Tests the isListNameExists() method of the MovieList
+     * class by checking if a list name exists for a user, and verifying the result.
+     */
     @Test
     public void testIsListNameExists() {
         try {
