@@ -38,7 +38,7 @@ import com.google.gson.JsonObject;
  * functionalities.
  * 
  * @version 1.8 3 February 2024
- * @author Νίκος Ραγκούσης
+ * @author Νικόλαος Ραγκούσης
  */
 public class App {
     /** The currently logged-in user */
@@ -71,10 +71,10 @@ public class App {
      * Loads API keys from files.
      */
     private static void loadApiKeys() {
-        // Load TMDB, ChatGPT, and YouTube API keys from files
-        File tmdbFile = new File("C:\\Users\\Nick\\api_keys\\tmdb_api_key.txt");
-        File chatgptFile = new File("C:\\Users\\Nick\\api_keys\\chat_gpt_key_2.txt");
-        File youtubeFile = new File("C:\\Users\\Nick\\api_keys\\youtube_key.txt");
+        // Add your file path
+        File tmdbFile = new File(""); // Your path
+        File chatgptFile = new File(""); // Your path
+        File youtubeFile = new File(""); // Your path
 
         try (BufferedReader br = new BufferedReader(new FileReader(tmdbFile))) {
             tmdbApiKey = br.readLine();
@@ -220,7 +220,8 @@ public class App {
                 } else {
                     flag = true;
                 }
-            } while (!name.equals("0") && password.equals("0"));
+            } while (!name.equals("0") && password.equals("0")); // case where user entered a username but pressed back
+                                                                 // before entering password
             if (!password.equals("0") && !name.equals("0")) {
                 currentUser = User.login(name, password);
                 if (currentUser != null) {
@@ -256,7 +257,8 @@ public class App {
             } else if (!name.equals("0") && User.doesUsernameExist(name)) {
                 System.out.println("This username is taken!");
             }
-        } while (!name.equals("0") && country.equals("0"));
+        } while (!name.equals("0") && country.equals("0")); // case where user entered username but pressed back before
+                                                            // choosing country
         if (!password.equals("0")) {
             currentUser = User.register(name, password, country);
             System.out.println("\nWelcome to Filmbro!");
@@ -268,7 +270,7 @@ public class App {
      * Displays a list of countries and prompts the user to choose one.
      *
      * @param scanner The scanner object for user input.
-     * @return The chosen country code.
+     * @return The chosen country key.
      */
     private static String chooseCountry(Scanner scanner) throws InterruptedException {
         TreeMap<String, String> countries = Country.getAllCountriesNames(tmdbApiKey);
@@ -371,14 +373,14 @@ public class App {
             System.out.println("\nType your preferences for movie recommendations or press 0 to go back");
             userMessage = scanner.nextLine();
             if (!userMessage.equals("0")) {
-                boolean flag = false;
+                boolean flag = false; // Shows if AI model returned any results
                 for (int i = 0; i <= 2; i++) {
                     String result = AiRecommendation.testChatCompletions(
                             userMessage + "Don't include summaries and director names. Include release year",
                             chatgptApiKey);
                     ArrayList<String> movieTitles = extractMovieTitles(result);
                     if (!movieTitles.isEmpty()) {
-                        String title;
+                        String title; // The title of the movie that user chose
                         do {
                             System.out.println(result);
                             flag = true;
@@ -427,6 +429,7 @@ public class App {
      */
     private static ArrayList<String> extractMovieTitles(String response) {
         ArrayList<String> movieTitles = new ArrayList<>();
+        // A pattern that covers most possible types of answers the AI model might give
         Pattern pattern = Pattern.compile("\\d+\\.\\s+\"?([^\",(]+)\"?(?:\\s+\\(\\d{4}\\))?,?.*");
         Matcher matcher = pattern.matcher(response);
         while (matcher.find()) {
@@ -465,7 +468,7 @@ public class App {
                 do {
                     ArrayList<Integer> ids = search(userMessage, true);
                     if (!ids.isEmpty()) {
-                        Object o = chooseMoviePerson(scanner, ids);
+                        Object o = chooseMoviePerson(scanner, ids); // Might be a Person or a Movie
                         if (!o.equals(0)) {
                             checkObjectType(scanner, o);
                         } else
@@ -488,9 +491,11 @@ public class App {
      */
     private static ArrayList<Integer> search(String userMessage, boolean flag) {
         Gson gson = new Gson();
-        ArrayList<Integer> idsList = new ArrayList<>();
-        ArrayList<String> prints = new ArrayList<>();
-        ArrayList<Float> popularity = new ArrayList<>();
+        ArrayList<Integer> idsList = new ArrayList<>(); // TMDB ids of the results
+        ArrayList<String> prints = new ArrayList<>(); // Information to be printed for each result
+        ArrayList<Float> popularity = new ArrayList<>(); // Popularity of each result (based on TMDB)
+        // Request for most relevant results (Movie titles or People's names) for the
+        // keyword the user provided
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://api.themoviedb.org/3/search/multi?query=" + userMessage
                         + "&include_adult=false&language=en-US&page=1"))
@@ -503,7 +508,8 @@ public class App {
             response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
 
             JsonObject jsonObject = gson.fromJson(response.body(), JsonObject.class);
-
+            // JSON response is organized in a Collection of results. Each result is a movie
+            // or a person (or some other media types returned from the API)
             if (jsonObject.has("results") && jsonObject.get("results").isJsonArray()) {
                 JsonArray resultsArray = jsonObject.getAsJsonArray("results");
 
@@ -512,7 +518,7 @@ public class App {
                         JsonObject resultObject = resultsArray.get(i).getAsJsonObject();
                         if (resultObject.has("media_type")) {
                             String mediaType = resultObject.get("media_type").getAsString();
-                            if (mediaType.equals("movie")) {
+                            if (mediaType.equals("movie")) { // Only keep movies (to filter from other media types)
                                 String releaseDate = resultObject.get("release_date").getAsString();
                                 if (!releaseDate.isEmpty()) {
                                     int year = extractYear(releaseDate);
@@ -525,8 +531,11 @@ public class App {
                                 }
                                 idsList.add(resultObject.get("id").getAsInt());
                                 popularity.add(resultObject.get("popularity").getAsFloat());
-                            } else if (mediaType.equals("person")) {
-                                idsList.add(-resultObject.get("id").getAsInt());
+                            } else if (mediaType.equals("person")) { // Only keep persons (to filter from other media
+                                                                     // types)
+                                idsList.add(-resultObject.get("id").getAsInt()); // Person IDs are added as negative
+                                                                                 // integers to seperate them from Movie
+                                                                                 // IDs
                                 popularity.add(resultObject.get("popularity").getAsFloat());
                                 String job = resultObject.get("known_for_department").getAsString();
                                 if (!job.isEmpty()) {
@@ -623,7 +632,7 @@ public class App {
         int answer = choose(0, ids.size(), scanner);
         if (answer == 0)
             return 0;
-        if (ids.get(answer - 1) > 0) {
+        if (ids.get(answer - 1) > 0) { // Movie IDs are positive integers and Person IDs are negative
             return new Movie(ids.get(answer - 1), tmdbApiKey);
         } else {
             return new Person(-ids.get(answer - 1), tmdbApiKey);
@@ -633,8 +642,11 @@ public class App {
     /**
      * Displays the menu options for interacting with a movie, including viewing
      * cast and crew, reviews,
-     * adding reviews, managing watchlist and seen status, adding to favorites and
-     * lists, and getting bonus content.
+     * adding reviews, managing watchlist and favorites status, adding movie to
+     * lists, and getting bonus content for the movie.
+     *
+     * @param flag1 Indicates whether the movie is in the user's watchlist.
+     * @param flag2 Indicates whether the movie is in the user's favorites.
      */
     private static void displayMovieMenu(boolean flag1, boolean flag2) {
         System.out.println("Movie Menu");
@@ -673,7 +685,7 @@ public class App {
         do {
             if (o instanceof Movie) {
                 Movie m = (Movie) o;
-                TreeMap<String, String> countries = Country.getAllCountriesNames(tmdbApiKey);// temporary!!!!!
+                TreeMap<String, String> countries = Country.getAllCountriesNames(tmdbApiKey);
                 if (currentUser != null) {
                     String countryName = countries.get(currentUser.getCountry());
                     System.out.println(m.toString(countryName, currentUser.getCountry()));
@@ -719,17 +731,19 @@ public class App {
      *
      * @param scanner The scanner object for user input.
      * @param choice2 The user's choice.
+     * @param p       The person.
      */
     private static void handlePersonCase(Scanner scanner, int choice2, Person p) throws Exception {
         switch (choice2) {
             case 0:
                 break;
             case 1:
-                ArrayList<Integer> ids2 = p.getMovieIds();
-                ArrayList<String> titles = p.getMovieTitles();
-                ArrayList<String> dates = p.getMovieDates();
-                ArrayList<Float> popularity = new ArrayList<>(p.getMoviePopularity());
-                ArrayList<String> prints = new ArrayList<>();
+                ArrayList<Integer> ids2 = p.getMovieIds(); // The IDs of the movies the person is in
+                ArrayList<String> titles = p.getMovieTitles(); // The titles of the movies the person is in
+                ArrayList<String> dates = p.getMovieDates(); // The release dates of the movies the person is in
+                ArrayList<Float> popularity = new ArrayList<>(p.getMoviePopularity()); // The popularities of the movies
+                                                                                       // the person is in
+                ArrayList<String> prints = new ArrayList<>(); // The print results for each movie
                 int choice3;
                 int choice4 = 1;
                 do {
@@ -745,7 +759,7 @@ public class App {
                     Object ob = chooseMoviePerson(scanner, ids2);
                     if (ob instanceof Movie) {
                         Movie m = (Movie) ob;
-                        TreeMap<String, String> countries = Country.getAllCountriesNames(tmdbApiKey);// temporary!!!!!
+                        TreeMap<String, String> countries = Country.getAllCountriesNames(tmdbApiKey);
                         String countryName = countries.get(currentUser.getCountry());
                         System.out.println(m.toString(countryName, currentUser.getCountry()));
                         do {
@@ -777,6 +791,9 @@ public class App {
      *
      * @param scanner The scanner object for user input.
      * @param choice  The user's choice.
+     * @param m       The movie.
+     * @param flag1   Shows if movie is in watchlist
+     * @param flag2   Shows if movie in in favorites
      */
     private static void handleMovieCase(Scanner scanner, int choice, Movie m, boolean flag1, boolean flag2)
             throws Exception {
@@ -830,7 +847,7 @@ public class App {
                 MovieList l;
                 do {
                     System.out.println("\nLists: ");
-                    l = chooseList(scanner, currentUser, 1);
+                    l = chooseList(scanner, currentUser, 1); //allLists = 1, user chooses between all lists except from watchlist and favorites
                     if (l != null) {
                         boolean flag = l.containsMovie(m.getMd().getOriginal_title(), m.getMd().getId());
                         if (!flag) {
@@ -862,7 +879,7 @@ public class App {
     }
 
     /**
-     * Displays the menu options for obtaining details about a contributor.
+     * Displays the menu options for obtaining details about movie contributors.
      */
     private static void displayFullContributorsMenu() {
         System.out.println("0. Back");
@@ -885,12 +902,14 @@ public class App {
             case 0:
                 break;
             case 1:
-                ArrayList<String> names = m.getPeopleName();
-                ArrayList<String> jobs = m.getPeopleJob();
-                ArrayList<Integer> originalIds = m.getPeopleId();
-                ArrayList<Float> popularity = new ArrayList<>(m.getPeoplePopularity());
-                ArrayList<String> prints = new ArrayList<>();
-                ArrayList<Integer> ids2 = new ArrayList<>();
+                ArrayList<String> names = m.getPeopleName(); // The names of the movie's contributors
+                ArrayList<String> jobs = m.getPeopleJob(); // The jobs of the movie's contributors
+                ArrayList<Integer> originalIds = m.getPeopleId(); // The IDs of the movie's contributors
+                ArrayList<Float> popularity = new ArrayList<>(m.getPeoplePopularity()); // The popularities of the
+                                                                                        // movie's contributors
+                ArrayList<String> prints = new ArrayList<>(); //// The print results for each of the movie's
+                                                              //// contributors
+                ArrayList<Integer> ids2 = new ArrayList<>(); // The negative values of the movie's contributors IDs
                 int choice5 = 1;
                 for (Integer id : originalIds) { // negative values for pick()
                     ids2.add(-id);
@@ -927,7 +946,7 @@ public class App {
 
     /**
      * 
-     * Shows a menu to help user choose which reviews wants to see.
+     * Shows a menu to help user choose a review-related function.
      * 
      */
     private static void displayReviewContentMenu() {
@@ -1021,7 +1040,10 @@ public class App {
                             rating = chooseFloat(1, 10, scanner);
                         }
                     }
-                } while (!reviewText.equals("0") && (rating == 0 || choice5 == 0));
+                } while (!reviewText.equals("0") && (rating == 0 || choice5 == 0)); // Case that user wrote a review
+                                                                                    // text but pressed back before
+                                                                                    // entering a rating or spoiler
+                                                                                    // status
                 if (!reviewText.equals("0") && rating != 0 && rating != -1) {
                     Review.addReview(currentUser.getId(), m.getMd().getId(), reviewText, rating, spoilers,
                             currentUser.getUsername(), m.getMd().getOriginal_title());
@@ -1071,11 +1093,11 @@ public class App {
      */
     private static Review chooseReview(Scanner scanner, ArrayList<Review> reviews) {
         if (!reviews.isEmpty()) {
-            int currentId = 0;
+            int currentId = 0; // The ID of the movie that have been reviewed by the current user
             int i = 0;
             for (Review r : reviews) {
                 i++;
-                if (r.getMovieId() != currentId) {
+                if (r.getMovieId() != currentId) { // next movie
                     System.out.println("\n\nMovie: " + r.getMovieName() + "\n");
                     currentId = r.getMovieId();
                 }
@@ -1197,7 +1219,7 @@ public class App {
                 case 0:
                     break;
                 case 1:
-                    showListsCase(scanner, u, 1);
+                    showListsCase(scanner, u, 1); //allLists = 1, user chooses between all lists except from watchlist and favorites
                     break;
                 case 2:
                     if (flag) {
@@ -1252,6 +1274,9 @@ public class App {
 
     /**
      * Displays the menu options for managing the content of a user's list.
+     *
+     * @param flag a boolean indicating whether the user that owns the list is the
+     *             current user.
      */
     private static void displayListContentMenu(boolean flag) {
         System.out.println("0. Back");
@@ -1294,10 +1319,10 @@ public class App {
             ArrayList<MovieList> tempLists = new ArrayList<>();
             for (int j = 2; j < movieLists.size(); j++) {
                 if (user.equals(currentUser)) {
-                    tempLists.add(movieLists.get(j));
+                    tempLists.add(movieLists.get(j)); //Current user can see all their lists
                 } else {
                     String currentList = movieLists.get(j).getListType();
-                    if (currentUser.isFollowing(user)) {
+                    if (currentUser.isFollowing(user)) { //Determine which lists will be visible, based on the follow status between the current user and the searched user
                         if (currentList.equals("Public") || currentList.equals("Protected")) {
                             tempLists.add(movieLists.get(j));
                         }
@@ -1385,8 +1410,7 @@ public class App {
                     Object o = chooseMoviePerson(scanner, movieIds);
                     if (!o.equals(0)) {
                         Movie m = (Movie) o;
-                        list.removeMovie(m.getMd().getOriginal_title(), m.getMd().getId(), currentUser.getId()); // and
-                                                                                                                 // movieID
+                        list.removeMovie(m.getMd().getOriginal_title(), m.getMd().getId(), currentUser.getId()); 
                     }
                     break;
                 case 3:
@@ -1402,8 +1426,7 @@ public class App {
     }
 
     /**
-     * Displays the profile menu options for a user, including various preferences
-     * and statistics.
+     * Displays the profile menu options for a user.
      */
     private static void displayProfileMenu() {
         System.out.println("\nProfile Menu:");
@@ -1421,7 +1444,7 @@ public class App {
     }
 
     /**
-     * Handles the user options related to the profile menu.
+     * Handles the user options related to the main menu option 4.
      *
      * @param scanner The scanner object for user input.
      * @throws Exception If an exception occurs during processing.
@@ -1457,10 +1480,10 @@ public class App {
                 handleStartMenu(scanner);
                 break;
             case 2:
-                showListsCase(scanner, currentUser, 2);
+                showListsCase(scanner, currentUser, 2); //allLists = 2, choose watchlist
                 break;
             case 3:
-                showListsCase(scanner, currentUser, 3);
+                showListsCase(scanner, currentUser, 3); //allLists = 2, choose favorites
                 break;
             case 4:
                 handleListsCase(scanner);
@@ -1511,7 +1534,7 @@ public class App {
                 case 0:
                     break;
                 case 1:
-                    showListsCase(scanner, currentUser, 1); // 1 = all lists
+                    showListsCase(scanner, currentUser, 1); //allLists = 1, user chooses between all lists except from watchlist and favorites
                     break;
                 case 2:
                     deleteListCase(scanner);
@@ -1535,7 +1558,7 @@ public class App {
         MovieList l;
         do {
             System.out.println("\nLists:");
-            l = chooseList(scanner, currentUser, 1);
+            l = chooseList(scanner, currentUser, 1); //allLists = 1, user chooses between all lists except from watchlist and favorites
             if (l != null) {
                 l.deleteList(currentUser.getId());
             }

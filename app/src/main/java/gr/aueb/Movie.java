@@ -184,7 +184,7 @@ public class Movie {
      * @return The IMDb rating or -1 if not found.
      */
     public static double getImdbRatingFromID(String imdbID) {
-        String filePath = "/title.rating.tsv";  // Adjust the path based on your file location in resources
+        String filePath = "/title.rating.tsv";
         String line;
         double imdbRating = -1; // Default value if the ID is not found
 
