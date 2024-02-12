@@ -7,9 +7,12 @@ package gr.aueb;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -181,12 +184,14 @@ public class Movie {
      * @return The IMDb rating or -1 if not found.
      */
     public static double getImdbRatingFromID(String imdbID) {
-        String filePath = "C:\\Users\\Nick\\api_keys\\title.rating.tsv"; // Replace this with your file path
+        String filePath = "/title.rating.tsv";  // Adjust the path based on your file location in resources
         String line;
         double imdbRating = -1; // Default value if the ID is not found
 
-        //Read external file with IMDB ratings and give value to imdbRating
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+        try (InputStream is = App.class.getResourceAsStream(filePath);
+            InputStreamReader isr = new InputStreamReader(Objects.requireNonNull(is));
+            BufferedReader br = new BufferedReader(isr)) {
+
             while ((line = br.readLine()) != null) {
                 String[] data = line.split("\t");
                 if (data.length >= 3 && data[0].equals(imdbID)) {
@@ -194,7 +199,8 @@ public class Movie {
                     break;
                 }
             }
-        } catch (IOException | NumberFormatException e) {
+
+        } catch (IOException | NullPointerException | NumberFormatException e) {
             e.printStackTrace();
         }
 
@@ -288,14 +294,14 @@ public class Movie {
         }
 
         if (this.filmBroRating != 0.0) {
-            returnString.append("FilmBro Eating: ").append(this.getFilmBroRating()).append("\n");
+            returnString.append("FilmBro Rating: ").append(this.getFilmBroRating()).append("\n");
         }
 
         if (this.getImdbRating() != -1)
             returnString.append("Imdb Rating: ").append(this.getImdbRating()).append("\n");
 
         if (this.md.getVote_average() != 0.0) {
-            returnString.append("Tmdb rating: ").append(this.getMd().getVote_average()).append("\n\n");
+            returnString.append("Tmdb Rating: ").append(this.getMd().getVote_average()).append("\n\n");
         }
 
         if (this.md.getRuntime() != 0) {
