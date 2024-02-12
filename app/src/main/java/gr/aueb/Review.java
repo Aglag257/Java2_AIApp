@@ -342,7 +342,7 @@ public class Review {
                 int rowsAffected = stmt.executeUpdate();
 
                 if (rowsAffected > 0) {
-                    System.out.println("Review deleted successfully");
+                    System.out.println("\nReview deleted successfully!");
                 } else {
                     System.out.println("Review not found or you do not have permission to delete it.");
                 }
@@ -401,7 +401,7 @@ public class Review {
         String spoilerStatus = spoiler ? "Yes" : "No";
 
         return String.format(
-                "Username: \"%s\"\nMovie Name: \"%s\"\nSpoiler: %s\nDate: \"%s\"\nRating: \"%s\"\nReview Text: \"%s\"",
+                "Author: %s\nMovie Title: %s\nSpoiler: %s\nPublish date: %s\nRating: %s\n%s",
                 username, movieName, spoilerStatus, date, rating, reviewText);
     }
 }

@@ -201,7 +201,7 @@ public class User {
                 stmt2.setInt(3, movieId);
                 stmt2.executeUpdate();
 
-                System.out.println(movieName + " added to your favorites.");
+                System.out.println("\nMovie added to your favorites!");
             } else {
                 throw new Exception("User's 'favorites' list not found.");
             }
@@ -233,7 +233,7 @@ public class User {
                 stmt2.setInt(2, movieId);
                 stmt2.executeUpdate();
 
-                System.out.println("Movie removed from your favorites.");
+                System.out.println("\nMovie removed from your favorites!");
             } else {
                 throw new Exception("User's 'favorites' list not found.");
             }
@@ -267,7 +267,7 @@ public class User {
                 stmt2.setInt(3, movieId);
                 stmt2.executeUpdate();
 
-                System.out.println(movieName + " added to your watchlist.");
+                System.out.println("\nMovie added to your watchlist!");
             } else {
                 throw new Exception("User's 'watchlist' list not found.");
             }
@@ -300,7 +300,7 @@ public class User {
                 stmt2.setInt(2, movieId);
                 stmt2.executeUpdate();
 
-                System.out.println("Movie removed from your watchlist.");
+                System.out.println("\nMovie removed from your watchlist!");
             } else {
                 throw new Exception("User's 'watchlist' list not found.");
             }
@@ -404,7 +404,7 @@ public class User {
                 stmt2.setInt(1, follow_id);
                 stmt2.setInt(2, id);
                 stmt2.executeUpdate();
-                System.out.println("You follow " + follow_user);
+                System.out.println("\nYou now follow " + follow_user + "!");
             }
 
         } catch (SQLException e) {
@@ -432,7 +432,7 @@ public class User {
                 stmt2.setInt(1, unfollow_id);
                 stmt2.setInt(2, id);
                 stmt2.executeUpdate();
-                System.out.println("You have just unfollow " + unfollow_user);
+                System.out.println("\nYou unfollowed " + unfollow_user + "!");
             }
 
         } catch (SQLException e) {
@@ -522,7 +522,7 @@ public class User {
                 stmt.setInt(1, chatroomId);
                 stmt.setInt(2, this.id); // Assuming id is the user's ID
                 stmt.executeUpdate();
-                System.out.println("You can now send messages in the chatroom.");
+                System.out.println("\nYou can now send messages in the chatroom!\n");
             }
         } catch (Exception e) {
             throw new Exception(e.getMessage());
@@ -773,7 +773,7 @@ public class User {
             try (PreparedStatement deleteChatroomStmt = con.prepareStatement(deleteChatroomSql)) {
                 deleteChatroomStmt.setInt(1, chatroomId);
                 deleteChatroomStmt.executeUpdate();
-                System.out.println("Chatroom deleted successfully.");
+                System.out.println("\nChatroom deleted successfully!");
             }
         } catch (Exception e) {
             throw new Exception(e.getMessage());
