@@ -11,9 +11,14 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+/*The MovieDAOTest class is a test class that tests the functionality of the MovieDAO class. It includes test methods for retrieving all reviews for a movie, retrieving spoiler-free reviews for a movie, and calculating the average rating for a movie. */
 public class MovieDAOTest {
     private static Connection connection;
 
+    /*
+     * CreateInserts(): This method is annotated with @BeforeAll and is responsible
+     * for setting up the test environment by inserting test data into the database.
+     */
     @BeforeAll
     public static void CreateInserts() throws Exception {
         DB db = new DB();
@@ -46,6 +51,11 @@ public class MovieDAOTest {
 
     }
 
+    /*
+     * DeleteAllInserts(): This method is annotated with @AfterAll and is
+     * responsible for cleaning up the test environment by deleting the test data
+     * from the database.
+     */
     @AfterAll
     public static void DeleteAllInserts() throws Exception {
         try (PreparedStatement insertStmt1 = connection.prepareStatement("DELETE FROM review WHERE reviewid = 1")) {
@@ -68,12 +78,18 @@ public class MovieDAOTest {
         } catch (SQLException e) {
             fail("Exception thrown during setup: " + e.getMessage());
         }
-        // Κλείσιμο της σύνδεσης
+
         if (connection != null) {
             connection.close();
         }
     }
 
+    /*
+     * getAllReviewsForMovieTest(): This method is annotated with @Test and tests
+     * the functionality of the getAllReviewsForMovie() method in the MovieDAO
+     * class. It retrieves all reviews for a specific movie and asserts that the
+     * expected reviews are returned.
+     */
     @Test
     public void getAllReviewsForMovieTest() throws SQLException {
         try {
@@ -82,26 +98,24 @@ public class MovieDAOTest {
 
             assertNotNull(reviews);
 
-            // Έλεγχος του πρώτου review
             if (reviews.size() >= 1) {
                 Review firstReview = reviews.get(0);
-                assertEquals(1, firstReview.getReviewId()); // Αναμένεται ότι το reviewId θα είναι 1
-                assertEquals(1, firstReview.getUserId()); // Αναμένεται ότι το userId θα είναι 1
-                assertEquals(1, firstReview.getMovieId()); // Επαληθεύουμε το movieId
-                assertEquals("Sample review text", firstReview.getReviewText()); // Επαληθεύουμε το review text
-                assertEquals(8, firstReview.getRating()); // Επαληθεύουμε το rating
-                assertFalse(firstReview.isSpoiler()); // Επαληθεύουμε ότι το spoiler είναι false
+                assertEquals(1, firstReview.getReviewId());
+                assertEquals(1, firstReview.getUserId());
+                assertEquals(1, firstReview.getMovieId());
+                assertEquals("Sample review text", firstReview.getReviewText());
+                assertEquals(8, firstReview.getRating());
+                assertFalse(firstReview.isSpoiler());
             }
 
-            // Έλεγχος του δεύτερου review
             if (reviews.size() >= 2) {
                 Review secondReview = reviews.get(1);
-                assertEquals(2, secondReview.getReviewId()); // Αναμένεται ότι το reviewId θα είναι 2
-                assertEquals(2, secondReview.getUserId()); // Αναμένεται ότι το userId θα είναι 2
-                assertEquals(1, secondReview.getMovieId()); // Επαληθεύουμε το movieId
-                assertEquals("Sample review text", secondReview.getReviewText()); // Επαληθεύουμε το review text
-                assertEquals(8.5, secondReview.getRating()); // Επαληθεύουμε το rating
-                assertTrue(secondReview.isSpoiler()); // Επαληθεύουμε ότι το spoiler είναι true
+                assertEquals(2, secondReview.getReviewId());
+                assertEquals(2, secondReview.getUserId());
+                assertEquals(1, secondReview.getMovieId());
+                assertEquals("Sample review text", secondReview.getReviewText());
+                assertEquals(8.5, secondReview.getRating());
+                assertTrue(secondReview.isSpoiler());
             }
 
         } catch (Exception e) {
@@ -109,6 +123,12 @@ public class MovieDAOTest {
         }
     }
 
+    /*
+     * getSpoilerFreeReviewsForMovieTest(): This method is annotated with @Test and
+     * tests the functionality of the getSpoilerFreeReviewsForMovie() method in the
+     * MovieDAO class. It retrieves spoiler-free reviews for a specific movie and
+     * asserts that the expected reviews are returned.
+     */
     @Test
     public void getSpoilerFreeReviewsForMovieTest() {
         try {
@@ -117,9 +137,8 @@ public class MovieDAOTest {
 
             assertNotNull(spoilerFreeReviews);
 
-            // Έλεγχος των σχολίων για spoilers
             for (Review review : spoilerFreeReviews) {
-                assertFalse(review.isSpoiler()); // Ελέγχουμε ότι το σχόλιο δεν περιέχει spoilers
+                assertFalse(review.isSpoiler());
             }
 
         } catch (Exception e) {
@@ -127,14 +146,20 @@ public class MovieDAOTest {
         }
     }
 
+    /*
+     * getSpoilerFreeReviewsForMovieTest(): This method is annotated with @Test and
+     * tests the functionality of the getSpoilerFreeReviewsForMovie() method in the
+     * MovieDAO class. It retrieves spoiler-free reviews for a specific movie and
+     * asserts that the expected reviews are returned.
+     */
     @Test
     public void getAverageRatingForMovieTest() {
         try {
 
             double averageRating = MovieDAO.getAverageRatingForMovie(1);
 
-            assertEquals(8.25, averageRating); // Προσδιορίζουμε την αναμενόμενη μέση βαθμολογία με rating1= 8 και
-                                               // rating2=8.5
+            assertEquals(8.25, averageRating);
+            // rating2=8.5
 
         } catch (Exception e) {
             fail("Exception during test: " + e.getMessage());
