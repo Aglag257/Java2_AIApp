@@ -19,13 +19,6 @@ Run java -jar "Java2_AIApp-1.0-SNAPSHOT-jar-with-dependencies.jar"
 2. The pom.xml file contains the building stracture of the maven project.
 3. The src folder contains folders with project's classes and external files folder (resources) in main.
 4. The target folder contains the .class files of the project and the executable jar file.
-## UML 
-![alt text](Untitled.jpg)
-This simplified UML diagram depicts the most critical aspects of the code architecture and is designed solely for the purpose of understanding
-
-## Overview of the data structures and algorithms used by the application:
-
-In terms of data structures we are using arrays and lists and in terms of algorithms we have used the algorithm of "fisalidas" for the search
 
 
 ## Usage
@@ -34,6 +27,15 @@ In terms of data structures we are using arrays and lists and in terms of algori
 3. If they choose 1 or 2, they enter the app and the main menu after inserting their credentials. If they choose 3 they enter but with limited functionalities. If they choose 4 the application is terminated.
 4. The main menu offers some basic functionalities which all have many sub-functionalities. All of them are displayed numbered and the user enters the number of the functionality they wish to run or type text when they are asked to, based on their preferences. 
 5. At each point, the user has the option to return to the exact previous menu by pressing 0 or to return to the main menu (home) by pressing the number of the final option of each menu.
+
+## UML 
+![alt text](Untitled.jpg)
+This simplified UML diagram depicts the most critical aspects of the code architecture and is designed solely for the purpose of understanding
+
+## Overview of the data structures and algorithms used by the application:
+
+In terms of data structures we are using arrays and lists and in terms of algorithms we have used the algorithm of "fisalidas" for the search
+
 
 ## Contributing
 - Feel free to contribute your ideas or suggestions by opening an issue
