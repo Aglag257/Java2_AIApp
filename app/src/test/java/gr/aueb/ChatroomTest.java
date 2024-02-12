@@ -12,6 +12,10 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+/*The ChatroomTest class is a test class that tests the functionality of the Chatroom class.
+ It includes test methods for various functionalities such as getting the room ID, getting the name, 
+ getting the creator ID, checking if a user is the creator of the chatroom, setting the name of the chatroom, 
+ checking if a name is unique, creating a chatroom, getting the chatroom members, getting the messages, and getting the unseen messages. */
 public class ChatroomTest {
     private static User user;
     private static User user2;
@@ -120,7 +124,6 @@ public class ChatroomTest {
             fail("Exception thrown during setup: " + e.getMessage());
         }
 
-        // Κλείσιμο της σύνδεσης
         if (connection != null) {
             connection.close();
         }
@@ -137,9 +140,13 @@ public class ChatroomTest {
 
     }
 
+    /*
+     * getRoomIdTest(): Tests the getRoomId() method of the Chatroom class by
+     * checking if
+     * the retrieved room ID matches the expected value.
+     */
     @Test
     public void getRoomIdTest() throws SQLException {
-        // // Έλεγχος της μεθόδου getRoomId
 
         try (PreparedStatement stmt = connection.prepareStatement("SELECT roomid FROM chatroom WHERE roomid = 1")) {
             try (ResultSet resultSet = stmt.executeQuery()) {
@@ -154,9 +161,13 @@ public class ChatroomTest {
         }
     }
 
+    /*
+     * getNameTest(): Tests the getName() method of the Chatroom class by checking
+     * if the retrieved name
+     * matches the expected value.
+     */
     @Test
     public void getNameTest() throws SQLException {
-        // // Έλεγχος της μεθόδου getName
 
         try (PreparedStatement stmt = connection.prepareStatement("SELECT name FROM chatroom WHERE roomid = 1")) {
             try (ResultSet resultSet = stmt.executeQuery()) {
@@ -171,10 +182,14 @@ public class ChatroomTest {
         }
     }
 
+    /*
+     * getCreatorIdTest(): Tests the getCreatorId() method of the Chatroom class by
+     * checking
+     * if the retrieved creator ID matches the expected value.
+     */
     @Test
 
     public void getCreatorIdTest() throws SQLException {
-        // // Έλεγχος της μεθόδου getCreatorId
 
         try (PreparedStatement stmt = connection.prepareStatement("SELECT creatorid FROM chatroom WHERE roomid = 1")) {
             try (ResultSet resultSet = stmt.executeQuery()) {
@@ -189,9 +204,14 @@ public class ChatroomTest {
         }
     }
 
+    /*
+     * testIsChatroomCreator(): Tests the isChatroomCreator() method of the Chatroom
+     * class by checking if
+     * a user is the creator of the chatroom.
+     */
     @Test
     public void testIsChatroomCreator() throws SQLException, Exception {
-        // Έλεγχος για την περίπτωση όταν ο χρήστης είναι ο δημιουργός του chatroom
+
         try (PreparedStatement stmt = connection
                 .prepareStatement("SELECT COUNT(*) FROM chatroom WHERE roomId = ? AND creatorId = ?")) {
             stmt.setInt(1, chatroom.getRoomId());
@@ -212,16 +232,20 @@ public class ChatroomTest {
         }
     }
 
+    /*
+     * testIsNotChatroomCreator(): Tests the isChatroomCreator() method of the
+     * Chatroom class
+     * by checking if a user is not the creator of the chatroom.
+     */
     @Test
     public void testIsNotChatroomCreator() throws SQLException, Exception {
-        // Έλεγχος για την περίπτωση όταν ο χρήστης δεν είναι ο δημιουργός του chatroom
+
         DB db = new DB();
         try (Connection con = db.getConnection();
                 PreparedStatement stmt = con
                         .prepareStatement("SELECT COUNT(*) FROM Chatroom WHERE roomId = ? AND creatorId = ?")) {
             stmt.setInt(1, chatroom.getRoomId());
-            stmt.setInt(2, 2); // δεν υπαρχει ο χρηστης 2 /ακομα και αν υπηρχε δεν ειναι ο creator του chatroom
-                               // με id = 1
+            stmt.setInt(2, 2);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     assertFalse(rs.getInt(1) > 0);
@@ -232,35 +256,45 @@ public class ChatroomTest {
         }
     }
 
+    /*
+     * testSetNameAsCreator(): Tests the setName() method of the Chatroom class
+     * when the user is the creator of the chatroom.
+     */
     @Test
     public void testSetNameAsCreator() throws Exception {
-        // Προετοιμασία των δεδομένων
+
         try {
-            // Εκτέλεση της setName με τον δημιουργό του chatroom
+
             chatroom.setName("NewName", 1);
         } catch (SQLException e) {
             fail("Exception thrown during select: " + e.getMessage());
         }
-        // Έλεγχος αν το όνομα του chatroom έχει ενημερωθεί σωστά
+
         assertEquals("NewName", chatroom.getName());
     }
 
+    /*
+     * testSetNameAsNonCreator(): Tests the setName() method of the Chatroom class
+     * when the user is not the creator of the chatroom.
+     */
     @Test
     public void testSetNameAsNonCreator() throws Exception {
-        // Προετοιμασία των δεδομένων
+
         try {
-            // Εκτέλεση της setName με μη δημιουργό του chatroom
             chatroom.setName("NewName", 2);
         } catch (SQLException e) {
             fail("Exception thrown during select: " + e.getMessage());
         }
-        // Έλεγχος αν το όνομα του chatroom ΔΕΝ έχει αλλάξει
+
         assertNotEquals("NewName", chatroom.getName());
     }
 
+    /*
+     * testIsNameUniqueWhenNotUnique(): Tests the isNameUnique() method of the
+     * Chatroom class when the name is not unique.
+     */
     @Test
     public void testIsNameUniqueWhenUniqueTrue() {
-        // Τεστ για την περίπτωση όταν το όνομα είναι μοναδικό
         DB db = new DB();
         try (Connection con = db.getConnection();
                 PreparedStatement stmt = con.prepareStatement("SELECT COUNT(*) FROM Chatroom WHERE name = ?")) {
@@ -275,11 +309,13 @@ public class ChatroomTest {
         }
     }
 
+    /*
+     * testIsNameUniqueWhenNotUnique(): Tests the isNameUnique() method of the
+     * Chatroom class when the name is not unique.
+     */
     @Test
     public void testIsNameUniqueWhenNotUnique() {
-        // Τεστ για την περίπτωση όταν το όνομα δεν είναι μοναδικό
         DB db = new DB();
-        // Έλεγχος αν το όνομα του chatroom υπάρχει
         try (Connection con = db.getConnection();
                 PreparedStatement stmt = con.prepareStatement("SELECT COUNT(*) FROM Chatroom WHERE name = ?")) {
             stmt.setString(1, chatroom.getName());
@@ -292,14 +328,17 @@ public class ChatroomTest {
         }
     }
 
+    /*
+     * testUpdateNameInDatabaseCorrect(): Tests the updateNameInDatabase() method of
+     * the Chatroom class by checking if the name is updated correctly in the
+     * database.
+     */
     @Test
     public void testUpdateNameInDatabaseCorrect() throws Exception {
-        // αλλαζω το ονομα του chatroom απο τον χρήστη 1 ( εχω ηδη τεσταρει την
-        // λειτουργια της setName)
+
         chatroom.setName("name2", 1);
         DB db = new DB();
         Connection con = db.getConnection();
-        // Έλεγχος αν το όνομα του chatroom έχει ενημερωθεί σωστά στη βάση δεδομένων
         try (PreparedStatement stmt = con.prepareStatement("SELECT name FROM Chatroom WHERE roomId = 1")) {
             try (ResultSet resultSet = stmt.executeQuery()) {
                 if (resultSet.next()) {
@@ -314,15 +353,19 @@ public class ChatroomTest {
 
     }
 
+    /*
+     * testCreateChatroom(): Tests the createChatroom() method of the Chatroom class
+     * by creating a
+     * chatroom and verifying its properties and existence in the database.
+     */
     @Test
     public void testCreateChatroom() throws Exception {
-        // Έλεγχος εάν το chatroom δημιουργήθηκε σωστά
+
         chatroom1 = Chatroom.createChatroom("CreatedChatroomTest", 1);
         assertNotNull(chatroom1);
         assertEquals("CreatedChatroomTest", chatroom1.getName());
         assertEquals(1, chatroom1.getCreatorId());
 
-        // Έλεγχος εάν τα δεδομένα έχουν καταχωρηθεί στη βάση δεδομένων
         try (DB db = new DB(); Connection con = db.getConnection()) {
             try (PreparedStatement stmt = con.prepareStatement("SELECT * FROM Chatroom WHERE roomId = ?")) {
                 stmt.setInt(1, chatroom1.getRoomId());
@@ -337,18 +380,20 @@ public class ChatroomTest {
         }
     }
 
+    /*
+     * testGetChatrooms(): Tests the getChatrooms() method of
+     * the Chatroom class by retrieving the chatrooms and verifying their
+     * properties.
+     */
     @Test
     public void testGetChatrooms() {
         try {
             List<Chatroom> chatrooms = Chatroom.getChatrooms();
 
-            // Έλεγχος εάν η λίστα δεν είναι null
             assertNotNull(chatrooms);
 
-            // Έλεγχος εάν το πλήθος των chatrooms είναι σωστό
             assertEquals(1, chatrooms.size());
 
-            // Έλεγχος εάν τα δεδομένα είναι σωστά
             assertEquals("ChatroomTest", chatrooms.get(0).getName());
             assertEquals(1, chatrooms.get(0).getCreatorId());
 
@@ -357,6 +402,11 @@ public class ChatroomTest {
         }
     }
 
+    /*
+     * testShowChatroomMembers(): Tests the showChatroomMembers() method of the
+     * Chatroom class by
+     * retrieving the chatroom members and verifying their properties.
+     */
     @Test
     void testShowChatroomMembers() {
         try {
@@ -380,23 +430,24 @@ public class ChatroomTest {
         }
     }
 
+    /*
+     * testGetMessages(): Tests the getMessages() method of the Chatroom class by
+     * retrieving the messages and verifying their properties.
+     */
     @Test
     public void testGetMessages() throws Exception {
         try {
 
             List<Message> messages = chatroom.getMessages();
 
-            // Έλεγχος του αποτελέσματος
             assertNotNull(messages);
             assertEquals(2, messages.size());
 
-            // Έλεγχος του περιεχομένου του πρώτου μηνύματος
             Message firstMessage = messages.get(0);
             assertEquals("TestText", firstMessage.getText());
             assertFalse(firstMessage.getSpoiler());
             assertEquals("TestUser", firstMessage.getUsername());
 
-            // Έλεγχος του περιεχομένου του δεύτερου μηνύματος
             Message secondMessage = messages.get(1);
             assertEquals("TestText2", secondMessage.getText());
             assertTrue(secondMessage.getSpoiler());
@@ -407,6 +458,11 @@ public class ChatroomTest {
         }
     }
 
+    /*
+     * testGetUnseenMessages(): Tests the getUnseenMessages() method of the Chatroom
+     * class
+     * by retrieving the unseen messages and verifying their properties.
+     */
     @Test
     void testGetUnseenMessages() {
         try {
@@ -453,6 +509,11 @@ public class ChatroomTest {
      * fail("Exception during test: " + e.getMessage());
      * }
      * }
+     */
+
+    /*
+     * isUserInChatroomTest(): Tests the isUserInChatroom() method of the Chatroom
+     * class by checking if a user is in the chatroom.
      */
     @Test
     public void isUserInChatroomTest() {

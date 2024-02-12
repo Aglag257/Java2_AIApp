@@ -9,6 +9,9 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+/*The MessageTest class is a JUnit test class that tests the functionality of the Message class. 
+It includes test methods for various methods in the Message class, such as getMessageId, getUserId, 
+getSpoiler, getText, getChatroomId, getUsername, addMessage, deleteMessage, and deleteOtherUserMessage. */
 public class MessageTest {
 
     private static Connection connection;
@@ -104,15 +107,18 @@ public class MessageTest {
             fail("Exception thrown during setup: " + e.getMessage());
         }
 
-        // Κλείσιμο της σύνδεσης
         if (connection != null) {
             connection.close();
         }
     }
 
+    /*
+     * getMessageIdTest: Tests the getMessageId method of the Message
+     * class by querying the database and comparing the result with the expected
+     * value.
+     */
     @Test
     public void getMessageIdTest() throws SQLException {
-        // // Έλεγχος της μεθόδου getMessageId
         try (PreparedStatement stmt = connection.prepareStatement("SELECT id FROM message WHERE id = 1")) {
             try (ResultSet resultSet = stmt.executeQuery()) {
                 if (resultSet.next()) {
@@ -124,9 +130,13 @@ public class MessageTest {
         }
     }
 
+    /*
+     * getUserIdTest: Tests the getUserId method of the Message class by querying
+     * the database and comparing the result with the expected value.
+     */
     @Test
     public void getUserIdTest() throws SQLException {
-        // // Έλεγχος της μεθόδου getUserId
+
         try (PreparedStatement stmt = connection.prepareStatement("SELECT userid FROM message WHERE id = 1")) {
             try (ResultSet resultSet = stmt.executeQuery()) {
                 if (resultSet.next()) {
@@ -138,10 +148,14 @@ public class MessageTest {
         }
     }
 
+    /*
+     * getSpoilerTest: Tests the getSpoiler method of the Message class by querying
+     * the database and comparing the result with the expected value.
+     */
     @Test
     public void getSpoilerTest() throws SQLException {
         boolean t = false;
-        // // Έλεγχος της μεθόδου getSpoiler
+
         try (PreparedStatement stmt = connection.prepareStatement("SELECT spoiler FROM message WHERE id = 1")) {
             try (ResultSet resultSet = stmt.executeQuery()) {
                 if (resultSet.next()) {
@@ -161,9 +175,13 @@ public class MessageTest {
         }
     }
 
+    /*
+     * getTextTest: Tests the getText method of the Message class by querying the
+     * database and comparing the result with the expected value.
+     */
     @Test
     public void getTextTest() throws SQLException {
-        // // Έλεγχος της μεθόδου getText
+
         try (PreparedStatement stmt = connection.prepareStatement("SELECT text FROM message WHERE Id = 1")) {
             try (ResultSet resultSet = stmt.executeQuery()) {
                 if (resultSet.next()) {
@@ -175,9 +193,13 @@ public class MessageTest {
         }
     }
 
+    /*
+     * getChatroomIdTest: Tests the getChatroomId method of the Message class by
+     * querying the database and comparing the result with the expected value.
+     */
     @Test
     public void getChatroomIdTest() throws SQLException {
-        // // Έλεγχος της μεθόδου getRoomId
+
         try (PreparedStatement stmt = connection.prepareStatement("SELECT roomid FROM message WHERE id = 1")) {
             try (ResultSet resultSet = stmt.executeQuery()) {
                 if (resultSet.next()) {
@@ -191,9 +213,13 @@ public class MessageTest {
         }
     }
 
+    /*
+     * getUsernameTest: Tests the getUsername method of the Message class by
+     * querying the database and comparing the result with the expected value.
+     */
     @Test
     public void getUsernameTest() throws SQLException {
-        // // Έλεγχος της μεθόδου getUsername
+
         try (PreparedStatement stmt = connection.prepareStatement("SELECT username FROM message WHERE Id = 1")) {
             try (ResultSet resultSet = stmt.executeQuery()) {
                 if (resultSet.next()) {
@@ -207,6 +233,10 @@ public class MessageTest {
         }
     }
 
+    /*
+     * addMessageTest: Tests the addMessage method of the Message class by adding a
+     * new message, querying the database, and verifying its insertion.
+     */
     @Test
     public void addMessageTest() {
         try {
@@ -238,6 +268,10 @@ public class MessageTest {
         }
     }
 
+    /*
+     * unseenMessageTest: Tests the functionality of adding an unseen message to the
+     * database and verifying its insertion.
+     */
     public void unseenMessageTest() {
         try {
             // Query the database to check if the useenmessage was inserted
@@ -263,6 +297,10 @@ public class MessageTest {
         }
     }
 
+    /*
+     * deleteMessageTest: Tests the deleteMessage method of the Message class by
+     * deleting a message, querying the database, and verifying its deletion.
+     */
     @Test
     public void deleteMessageTest() {
         try {
@@ -285,6 +323,11 @@ public class MessageTest {
         }
     }
 
+    /*
+     * deleteOtherUserMessageTest: Tests the functionality of deleting another
+     * user's message by passing the
+     * current user's ID and verifying that it throws an exception.
+     */
     @Test
     public void deleteOtherUserMessageTest() {
         // Create a second message by another user

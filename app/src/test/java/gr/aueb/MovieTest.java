@@ -8,10 +8,16 @@ import org.junit.jupiter.api.Test;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 
+/*The MovieTest class is a test class that uses WireMock to set up mock responses for movie details and movie credits endpoints. It is used to test the functionality of these endpoints in a controlled environment. */
 public class MovieTest {
 
     private static WireMockServer wireMockServer;
 
+    /*
+     * setup(): This method is annotated with @BeforeAll and is responsible for
+     * starting the WireMock server and configuring it to listen on the localhost
+     * and a specific port.
+     */
     @BeforeAll
     public static void setup() {
         wireMockServer = new WireMockServer();
@@ -19,11 +25,21 @@ public class MovieTest {
         configureFor("localhost", wireMockServer.port());
     }
 
+    /*
+     * teardown(): This method is annotated with @AfterAll and is responsible for
+     * stopping the WireMock server.
+     */
     @AfterAll
     public static void teardown() {
         wireMockServer.stop();
     }
 
+    /*
+     * testMovieDetails(): This method is annotated with @Test and is used to test
+     * the movie details endpoint. It sets up a WireMock stub mapping for the
+     * endpoint, specifying the expected request parameters and headers, and the
+     * response status and body.
+     */
     @Test
     public void testMovieDetails() throws Exception {
         // Set up WireMock mappings for the movie details request
@@ -37,6 +53,11 @@ public class MovieTest {
 
     }
 
+    /*
+     * testGetMovieCredits(): This method is annotated with @Test and is used to
+     * test the movie credits endpoint. It sets up a WireMock stub mapping for the
+     * endpoint, specifying the response status, headers, and body.
+     */
     @Test
     public void testGetMovieCredits() throws Exception {
         // Set up WireMock to respond with a custom response for the movie credits
