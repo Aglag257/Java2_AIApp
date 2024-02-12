@@ -1,0 +1,19 @@
+{
+    "request": {
+      "method": "GET",
+      "url": "/3/person/123/movie_credits",
+      "headers": {
+        "accept": {
+          "matches": "application/json"
+        },
+        "Authorization": {
+          "matches": "Bearer .+"
+        }
+      }
+    },
+    "response": {
+      "status": 200,
+      "body": "correct"
+    }
+  }
+  

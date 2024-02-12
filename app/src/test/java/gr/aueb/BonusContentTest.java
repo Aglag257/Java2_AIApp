@@ -9,16 +9,16 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileReader;
 import java.io.PrintStream;
-
+import java.net.URISyntaxException;
 
 public class BonusContentTest {
-   private static String youtubeApiKey;
-       
-      
-// τεστάρω αν κάποια απο 3 ορισματα που εχουν δωθει στην μεθοδο ειναι null ή λαθος
+    private static String youtubeApiKey;
+
+    // τεστάρω αν κάποια απο 3 ορισματα που εχουν δωθει στην μεθοδο ειναι null ή
+    // λαθος
 
     @Test
-    public void testSearchAndPrintVideo_NullSearchQuery() {
+    public void testSearchAndPrintVideo_NullSearchQuery() throws URISyntaxException {
         String searchQuery = null;
         String category = "Fun facts";
         File youtubeFile = new File("c:/Users/Βασιλης/OneDrive/Υπολογιστής/apiKeys/youtube_key.txt");
@@ -29,7 +29,7 @@ public class BonusContentTest {
             System.err.println("Error reading YouTube API key file.");
             System.exit(1);
         }
-    
+
         try {
             BonusContent.searchAndPrintVideo(searchQuery, category, youtubeApiKey);
             fail("Expected IllegalArgumentException, but no exception was thrown.");
@@ -39,10 +39,17 @@ public class BonusContentTest {
     }
 
     @Test
-    public void testSearchAndPrintVideo_EmptyCategory() {
+    public void testSearchAndPrintVideo_EmptyCategory() throws URISyntaxException {
         String searchQuery = "Pulp Fiction";
         String category = null;
-       
+        File youtubeFile = new File("c:/Users/Βασιλης/OneDrive/Υπολογιστής/apiKeys/youtube_key.txt");
+
+        try (BufferedReader br = new BufferedReader(new FileReader(youtubeFile))) {
+            youtubeApiKey = br.readLine();
+        } catch (Exception e) {
+            System.err.println("Error reading YouTube API key file.");
+            System.exit(1);
+        }
         try {
             BonusContent.searchAndPrintVideo(searchQuery, category, youtubeApiKey);
             fail("Expected IllegalArgumentException, but no exception was thrown.");
@@ -52,7 +59,7 @@ public class BonusContentTest {
     }
 
     @Test
-    public void testSearchAndPrintVideo_NullApiKey() {
+    public void testSearchAndPrintVideo_NullApiKey() throws URISyntaxException {
         String searchQuery = "Barbie";
         String category = "Behind the Scenes";
         String apiKey = null;
@@ -64,7 +71,8 @@ public class BonusContentTest {
             assertEquals("ApiKey cannot be null or empty.", e.getMessage());
         }
     }
-// ελεγχος για την items
+
+    // ελεγχος για την items
     @Test
     public void testCheckItemsSize_NotEmptyList() {
         List<Object> items = new ArrayList<>();
@@ -80,7 +88,6 @@ public class BonusContentTest {
         assertFalse(items.size() > 0);
     }
 
-
     @Test
     public void testIterateAndPrint_NonEmptyList() {
         List<String> items = new ArrayList<>();
@@ -91,12 +98,13 @@ public class BonusContentTest {
         // Εκτέλεση της μεθόδου iterateAndPrint και αποθήκευση της έξοδου
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
-        
+
         // Καλείστε τη στατική μέθοδο wrapper στην κλάση δοκιμών
         BonusContentTest.iterateAndPrintWrapper(items);
 
         // Ελέγχουμε αν η έξοδος περιέχει τα αναμενόμενα κείμενα
-        String expectedOutput = String.format("Item 1%sItem 2%sItem 3%s", System.lineSeparator(), System.lineSeparator(), System.lineSeparator());
+        String expectedOutput = String.format("Item 1%sItem 2%sItem 3%s", System.lineSeparator(),
+                System.lineSeparator(), System.lineSeparator());
         assertEquals(expectedOutput, outContent.toString());
     }
 
@@ -107,26 +115,19 @@ public class BonusContentTest {
         // Εκτέλεση της μεθόδου iterateAndPrint και αποθήκευση της έξοδου
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
-        
+
         // Καλείστε τη στατική μέθοδο wrapper στην κλάση δοκιμών
         BonusContentTest.iterateAndPrintWrapper(items);
 
         // Ελέγχουμε αν η έξοδος είναι κενή
         assertEquals("", outContent.toString());
     }
-// Wrapper γύρω από την iterateAndPrint για την κλάση δοκιμών
-private static void iterateAndPrintWrapper(List<String> items) {
-    for (String item : items) {
-        System.out.println(item);
+
+    // Wrapper γύρω από την iterateAndPrint για την κλάση δοκιμών
+    private static void iterateAndPrintWrapper(List<String> items) {
+        for (String item : items) {
+            System.out.println(item);
+        }
     }
-}
 
 }
-
-
-
-
- 
-
-
-

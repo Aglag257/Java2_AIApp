@@ -1,4 +1,3 @@
-
 package gr.aueb;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
@@ -8,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 
-public class MovieTest {
+public class PersonTest {
 
     private static WireMockServer wireMockServer;
 
@@ -25,12 +24,9 @@ public class MovieTest {
     }
 
     @Test
-    public void testMovieDetails() throws Exception {
-        // Set up WireMock mappings for the movie details request
-        stubFor(get(urlPathMatching("/3/movie/[0-9]+"))
-                .withQueryParam("language", equalTo("en-US"))
-                .withHeader("accept", matching("application/json"))
-                .withHeader("Authorization", matching("Bearer [a-zA-Z0-9]+"))
+    public void testPersonDetails() throws Exception {
+        // Define your WireMock mapping for movie availability
+        stubFor(get(urlEqualTo("/3/person/123"))
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withBody("correct")));
@@ -38,13 +34,12 @@ public class MovieTest {
     }
 
     @Test
-    public void testGetMovieCredits() throws Exception {
-        // Set up WireMock to respond with a custom response for the movie credits
-        // endpoint
-        stubFor(get(urlEqualTo("/3/movie/123/credits"))
+    public void testPersonCredits() throws Exception {
+        // Define your WireMock mapping for movie availability
+        stubFor(get(urlEqualTo("/3/person/123/movie_credits"))
                 .willReturn(aResponse()
                         .withStatus(200)
-                        .withHeader("Content-Type", "application/json")
                         .withBody("correct")));
+
     }
 }
