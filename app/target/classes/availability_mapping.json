@@ -1,0 +1,19 @@
+{
+    "request": {
+      "method": "GET",
+      "urlPattern": "/3/movie/[0-9]+/watch/providers",
+      "headers": {
+        "accept": {
+          "matches": "application/json"
+        },
+        "Authorization": {
+          "matches": "Bearer [a-zA-Z0-9]+"
+        }
+      }
+    },
+    "response": {
+      "status": 200,
+      "body": "correct"
+    }
+  }
+  
