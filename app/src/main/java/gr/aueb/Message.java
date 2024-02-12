@@ -21,7 +21,7 @@ import java.sql.Statement;
  * spoiler status and text. The class interacts with the database using JDBC.
  * 
  * @version 1.8 released on 15th January 2024
- * @author Νίκος Ραγκούσης, Μαρκέλλα Χάσικου και Άγγελος Λαγός
+ * @author Μαρκέλλα Χάσικου και Άγγελος Λαγός
  */
 
 public class Message {

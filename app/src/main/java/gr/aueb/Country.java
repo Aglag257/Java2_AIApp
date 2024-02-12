@@ -26,6 +26,12 @@ public class Country {
     private ArrayList<Provider> rent;
 
 
+    /**
+     * Retrieves all countries names from a movie database API.
+     *
+     * @param  apiKey   the API key for authorization
+     * @return          a TreeMap containing the ISO codes and names of countries
+     */
     public static TreeMap<String, String> getAllCountriesNames(String apiKey) {
         TreeMap<String, String> countries = new TreeMap<>();
         
