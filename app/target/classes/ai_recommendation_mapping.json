@@ -1,0 +1,36 @@
+{
+    "request": {
+      "method": "POST",
+      "url": "/v1/chat/completions",
+      "headers": {
+        "accept": {
+          "matches": "application/json"
+        },
+        "Authorization": {
+          "matches": "Bearer .+"
+        },
+        "Content-Type": {
+          "matches": "application/json"
+        }
+      },
+      "bodyPatterns": [
+        {
+          "matchesJsonPath": "$.model",
+          "equalTo": "gpt-3.5-turbo"
+        },
+        {
+          "matchesJsonPath": "$.messages[0].role",
+          "equalTo": "user"
+        },
+        {
+          "matchesJsonPath": "$.messages[0].content",
+          "matches": ".+"
+        }
+      ]
+    },
+    "response": {
+        "status": 200,
+        "body": "correct"
+    }
+  }
+  

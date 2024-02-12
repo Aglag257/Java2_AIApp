@@ -29,14 +29,16 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 /**
- * main application class for a movie recommendation system
- * Main application class that serves as the entry point for the movie
+ * Main application class for a movie recommendation system.
+ * This class serves as the entry point for the movie
  * recommendation system.
- * This class handles user interactions, menu displays, and orchestrates various
+ * Acts as the control center of the app providing user
+ * a friendly interface.
+ * Handles user interactions, menu displays, and orchestrates various
  * functionalities.
  * 
- * @version 1.8 14 January 2024
- * @author Νίκος Ραγκούσης 
+ * @version 1.8 3 February 2024
+ * @author Νίκος Ραγκούσης
  */
 public class App {
     /** The currently logged-in user */
@@ -59,7 +61,7 @@ public class App {
      */
     public static void main(String[] args) throws Exception {
         loadApiKeys(); // Load API keys from files
-    
+
         Scanner scanner = new Scanner(System.in);
 
         handleStartMenu(scanner);
@@ -96,6 +98,14 @@ public class App {
         }
     }
 
+    /**
+     * Handles user input for choosing between a lower and upper bound.
+     *
+     * @param lowBound The lower bound of the valid range.
+     * @param upBound  The upper bound of the valid range.
+     * @param scanner  The scanner object for user input.
+     * @return The user's valid choice within the specified range.
+     */
     private static int choose(int lowBound, int upBound, Scanner scanner) {
         boolean validInput = false;
         int choice = -1;
@@ -116,6 +126,15 @@ public class App {
         return choice;
     }
 
+    /**
+     * Handles user input for choosing a floating-point number within a specified
+     * range.
+     *
+     * @param lowBound The lower bound of the valid range.
+     * @param upBound  The upper bound of the valid range.
+     * @param scanner  The scanner object for user input.
+     * @return The user's valid floating-point choice within the specified range.
+     */
     private static float chooseFloat(int lowBound, int upBound, Scanner scanner) {
         boolean validInput = false;
         float choice = -1;
@@ -135,7 +154,7 @@ public class App {
         }
         return choice;
     }
-    
+
     /**
      * Handles the display of the start menu.
      */
@@ -149,15 +168,17 @@ public class App {
     }
 
     /**
-     * Handles the start menu options.
+     * Handles the start menu options, allowing users to log in, sign up, continue
+     * as a guest, or exit.
      *
      * @param scanner The scanner object for user input.
+     * @throws Exception if an error occurs during the execution.
      */
     private static void handleStartMenu(Scanner scanner) throws Exception {
         while (true) {
             displayStartMenu();
             int startChoice = choose(1, 4, scanner);
-             switch (startChoice) {
+            switch (startChoice) {
                 case 1:
                     login(scanner);
                     guest = false;
@@ -179,6 +200,12 @@ public class App {
         }
     }
 
+    /**
+     * Handles the user login process.
+     *
+     * @param scanner The scanner object for user input.
+     * @throws Exception if an error occurs during the login process.
+     */
     private static void login(Scanner scanner) throws Exception {
         String name;
         String password = "0";
@@ -187,16 +214,16 @@ public class App {
             do {
                 System.out.println("\nEnter your username or press 0 to go back");
                 name = scanner.nextLine();
-                if(!name.equals("0")) { 
+                if (!name.equals("0")) {
                     System.out.println("Enter your password or press 0 to go back");
                     password = scanner.nextLine();
                 } else {
                     flag = true;
                 }
-            } while (!name.equals("0") && password.equals("0"));        
-            if(!password.equals("0") && !name.equals("0")) {
+            } while (!name.equals("0") && password.equals("0"));
+            if (!password.equals("0") && !name.equals("0")) {
                 currentUser = User.login(name, password);
-                if(currentUser != null){
+                if (currentUser != null) {
                     System.out.println("\nWelcome to Filmbro!");
                     skipStartMenu = true;
                     flag = true;
@@ -204,10 +231,16 @@ public class App {
                     System.out.println("\nWrong credentials! Try again\n");
                     flag = false;
                 }
-            }  
-        } while(!flag);     
+            }
+        } while (!flag);
     }
 
+    /**
+     * Handles the user signup process.
+     *
+     * @param scanner The scanner object for user input.
+     * @throws Exception if an error occurs during the signup process.
+     */
     private static void signup(Scanner scanner) throws Exception {
         String name;
         String password = "0";
@@ -215,21 +248,28 @@ public class App {
         do {
             System.out.println("\nEnter your username or press 0 to go back");
             name = scanner.nextLine();
-            if(!name.equals("0") && !User.doesUsernameExist(name)) {
+            if (!name.equals("0") && !User.doesUsernameExist(name)) {
                 System.out.println("Enter your password or press 0 to go back");
                 password = scanner.nextLine();
-                if(!password.equals("0")) country = chooseCountry(scanner);
-            } else if(!name.equals("0") && User.doesUsernameExist(name)) { 
+                if (!password.equals("0"))
+                    country = chooseCountry(scanner);
+            } else if (!name.equals("0") && User.doesUsernameExist(name)) {
                 System.out.println("This username is taken!");
             }
-        } while (!name.equals("0") && country.equals("0"));        
-        if(!password.equals("0")) {
+        } while (!name.equals("0") && country.equals("0"));
+        if (!password.equals("0")) {
             currentUser = User.register(name, password, country);
             System.out.println("\nWelcome to Filmbro!");
             skipStartMenu = true;
-        }            
+        }
     }
 
+    /**
+     * Displays a list of countries and prompts the user to choose one.
+     *
+     * @param scanner The scanner object for user input.
+     * @return The chosen country code.
+     */
     private static String chooseCountry(Scanner scanner) throws InterruptedException {
         TreeMap<String, String> countries = Country.getAllCountriesNames(tmdbApiKey);
         int i = 0;
@@ -242,7 +282,7 @@ public class App {
         }
         System.out.print("\nChoose your country or press 0 to go back ");
         int choice = choose(0, countries.size(), scanner);
-        if(choice == 0) {
+        if (choice == 0) {
             return "0";
         } else {
             return keys[choice - 1];
@@ -250,7 +290,8 @@ public class App {
     }
 
     /**
-     * Handles the display of the main menu based on the user's status.
+     * Handles the display of the main menu based on the user's status (logged in or
+     * guest).
      */
     private static void displayMainMenu() {
         System.out.println("\nMain Menu:");
@@ -267,19 +308,19 @@ public class App {
         }
         System.out.print("Enter your choice ");
     }
-    
+
     /**
      * Handles the main menu of the application, providing options based on the
      * user's status.
      *
      * @param scanner The scanner object for user input.
-     * @throws Exception If an exception occurs during execution.
+     * @throws Exception if an error occurs during execution.
      */
     private static void handleMainMenu(Scanner scanner) throws Exception {
         while (skipStartMenu) {
             displayMainMenu();
             int choice;
-            if(!guest) {
+            if (!guest) {
                 choice = choose(1, 6, scanner);
             } else {
                 choice = choose(1, 4, scanner);
@@ -292,7 +333,7 @@ public class App {
                     searchMoviePerson(scanner);
                     break;
                 case 3:
-                    if(guest) {
+                    if (guest) {
                         currentUser = null;
                         skipStartMenu = false;
                         handleStartMenu(scanner);
@@ -301,16 +342,16 @@ public class App {
                     handleSearchForUserCase(scanner);
                     break;
                 case 4:
-                    if(guest) {
+                    if (guest) {
                         System.out.println("Exiting the application.");
                         System.exit(0);
                     }
                     handleMainCase4(scanner);
-                    break; 
-                case 5: 
+                    break;
+                case 5:
                     handleChatroom(scanner);
                     break;
-                case 6: 
+                case 6:
                     System.out.println("Exiting the application.");
                     System.exit(0);
             }
@@ -322,7 +363,7 @@ public class App {
      * preferences.
      *
      * @param scanner The scanner object for user input.
-     * @throws Exception If an exception occurs during execution.
+     * @throws Exception if an error occurs during execution.
      */
     private static void getAIRecommendation(Scanner scanner) throws Exception {
         String userMessage;
@@ -354,10 +395,10 @@ public class App {
                 }
                 if (!flag) {
                     System.out.println(
-                        "\nSomething went wrong. Try to be more specific and limit your message to movie recommendations. ");
+                            "\nSomething went wrong. Try to be more specific and limit your message to movie recommendations. ");
                 }
             }
-        }while(!userMessage.equals("0"));
+        } while (!userMessage.equals("0"));
     }
 
     /**
@@ -368,7 +409,7 @@ public class App {
      * @param titles  The list of movie titles to choose from.
      * @return The selected movie title or "0" to go back.
      */
-    private static String chooseRecommendation(Scanner scanner, ArrayList<String> titles)  {
+    private static String chooseRecommendation(Scanner scanner, ArrayList<String> titles) {
         System.out.print("\nEnter your choice or press 0 to go back ");
         int answer = choose(0, titles.size(), scanner);
         if (answer == 0)
@@ -394,6 +435,12 @@ public class App {
         return movieTitles;
     }
 
+    /**
+     * Encodes the given user input string to be used in URLs.
+     *
+     * @param title The user input string to be encoded.
+     * @return The URL-encoded user input string.
+     */
     private static String encodeUserInput(String title) {
         try {
             return URLEncoder.encode(title, StandardCharsets.UTF_8.toString());
@@ -429,7 +476,7 @@ public class App {
                     }
                 } while (true);
             }
-        } while(!userMessage.equals("0"));
+        } while (!userMessage.equals("0"));
     }
 
     /**
@@ -493,8 +540,8 @@ public class App {
                         }
                     }
                 }
-            sortResultsOnPopulation(idsList, prints, popularity, flag);
-            } 
+                sortResultsOnPopulation(idsList, prints, popularity, flag);
+            }
         } catch (IOException e) {
             System.err.println("Check your internet connection!");
             System.exit(1);
@@ -529,7 +576,7 @@ public class App {
      * @param flag       A boolean flag indicating whether to print the results.
      */
     private static void sortResultsOnPopulation(ArrayList<Integer> idsList, ArrayList<String> prints,
-                                                ArrayList<Float> popularity, boolean flag) {
+            ArrayList<Float> popularity, boolean flag) {
         int n = idsList.size();
         if (n >= 2) {
             for (int i = 1; i <= n - 1; i++) {
@@ -543,7 +590,7 @@ public class App {
                         idsList.set(j, temp2);
                         String temp3 = prints.get(j - 1);
                         prints.set(j - 1, prints.get(j));
-                        prints.set(j, temp3); 
+                        prints.set(j, temp3);
                     }
                 }
             }
@@ -593,14 +640,14 @@ public class App {
         System.out.println("Movie Menu");
         System.out.println("0. Back");
         System.out.println("1. See full Cast and Crew");
-        if(!guest) {
+        if (!guest) {
             System.out.println("2. Reviews");
-            if(flag1) {
+            if (flag1) {
                 System.out.println("3. Remove from Watchlist");
             } else {
                 System.out.println("3. Add to Watchlist");
             }
-            if(flag2) {
+            if (flag2) {
                 System.out.println("4. Remove from Favorites");
             } else {
                 System.out.println("4. Add to Favorites");
@@ -625,17 +672,17 @@ public class App {
         int choice2;
         do {
             if (o instanceof Movie) {
-                Movie m = (Movie)o;
-                TreeMap<String, String> countries = Country.getAllCountriesNames(tmdbApiKey);//temporary!!!!!
-                if(currentUser != null) {
+                Movie m = (Movie) o;
+                TreeMap<String, String> countries = Country.getAllCountriesNames(tmdbApiKey);// temporary!!!!!
+                if (currentUser != null) {
                     String countryName = countries.get(currentUser.getCountry());
-                    System.out.println(m.toString(countryName, currentUser.getCountry())); 
+                    System.out.println(m.toString(countryName, currentUser.getCountry()));
                 } else {
-                    System.out.println(m.toString(null, null)); 
+                    System.out.println(m.toString(null, null));
                 }
                 boolean flag1 = true;
                 boolean flag2 = true;
-                if(!guest) {
+                if (!guest) {
                     flag1 = currentUser.isMovieInWatchlist(m.getMd().getId());
                     flag2 = currentUser.isMovieInFavorites(m.getMd().getId());
                     displayMovieMenu(flag1, flag2);
@@ -646,7 +693,7 @@ public class App {
                 }
                 handleMovieCase(scanner, choice2, m, flag1, flag2);
             } else {
-                Person p = (Person)o;
+                Person p = (Person) o;
                 System.out.println(p);
                 displayPersonMenu();
                 choice2 = choose(0, 2, scanner);
@@ -698,13 +745,13 @@ public class App {
                     Object ob = chooseMoviePerson(scanner, ids2);
                     if (ob instanceof Movie) {
                         Movie m = (Movie) ob;
-                        TreeMap<String, String> countries = Country.getAllCountriesNames(tmdbApiKey);//temporary!!!!!
+                        TreeMap<String, String> countries = Country.getAllCountriesNames(tmdbApiKey);// temporary!!!!!
                         String countryName = countries.get(currentUser.getCountry());
-                        System.out.println(m.toString(countryName, currentUser.getCountry())); 
+                        System.out.println(m.toString(countryName, currentUser.getCountry()));
                         do {
                             boolean flag1 = true;
                             boolean flag2 = true;
-                            if(!guest) {
+                            if (!guest) {
                                 flag1 = currentUser.isMovieInWatchlist(m.getMd().getId());
                                 flag2 = currentUser.isMovieInFavorites(m.getMd().getId());
                                 displayMovieMenu(flag1, flag2);
@@ -719,7 +766,7 @@ public class App {
                         choice4 = 0;
                 } while (choice4 != 0);
                 break;
-            case 2: 
+            case 2:
                 handleMainMenu(scanner);
                 break;
         }
@@ -729,9 +776,10 @@ public class App {
      * Handles the user options related to a Movie.
      *
      * @param scanner The scanner object for user input.
-     * @param choice The user's choice.
+     * @param choice  The user's choice.
      */
-    private static void handleMovieCase(Scanner scanner, int choice, Movie m, boolean flag1, boolean flag2) throws Exception {
+    private static void handleMovieCase(Scanner scanner, int choice, Movie m, boolean flag1, boolean flag2)
+            throws Exception {
         switch (choice) {
             case 0:
                 break;
@@ -745,7 +793,7 @@ public class App {
                 } while (choice2 != 0);
                 break;
             case 2:
-                if(guest) {
+                if (guest) {
                     handleMainMenu(scanner);
                     break;
                 }
@@ -756,8 +804,8 @@ public class App {
                     handleReviewMovieCase(scanner, choice3, m);
                 } while (choice3 != 0);
                 break;
-            case 3: 
-                if(!flag1) {
+            case 3:
+                if (!flag1) {
                     currentUser.addToWatchlist(m.getMd().getId(), m.getMd().getOriginal_title());
                     System.out.print("\nPress 0 to go back ");
                     int back = choose(0, 0, scanner);
@@ -767,8 +815,8 @@ public class App {
                     int back = choose(0, 0, scanner);
                 }
                 break;
-            case 4: 
-                if(!flag2) {
+            case 4:
+                if (!flag2) {
                     currentUser.addToFavorites(m.getMd().getId(), m.getMd().getOriginal_title());
                     System.out.print("\nPress 0 to go back ");
                     int back = choose(0, 0, scanner);
@@ -778,14 +826,14 @@ public class App {
                     int back = choose(0, 0, scanner);
                 }
                 break;
-            case 5: 
+            case 5:
                 MovieList l;
                 do {
                     System.out.println("\nLists: ");
                     l = chooseList(scanner, currentUser, 1);
                     if (l != null) {
                         boolean flag = l.containsMovie(m.getMd().getOriginal_title(), m.getMd().getId());
-                        if(!flag) {
+                        if (!flag) {
                             l.addToList(m.getMd().getOriginal_title(), m.getMd().getId(), currentUser.getId());
                             System.out.print("\nPress 0 to go back ");
                             int back = choose(0, 0, scanner);
@@ -798,16 +846,16 @@ public class App {
                     }
                 } while (l != null);
                 break;
-            case 6: 
+            case 6:
                 int year = 0;
                 if (!m.getMd().getRelease_date().isEmpty()) {
-                    year = extractYear( m.getMd().getRelease_date()); 
-                } 
+                    year = extractYear(m.getMd().getRelease_date());
+                }
                 printBonusContent(m.getMd().getOriginal_title(), year);
                 System.out.print("\nPress 0 to go back ");
                 int choice4 = choose(0, 0, scanner);
                 break;
-            case 7: 
+            case 7:
                 handleMainMenu(scanner);
                 break;
         }
@@ -823,6 +871,15 @@ public class App {
         System.out.print("Enter your choice ");
     }
 
+    /**
+     * Handles the user options related to displaying and interacting with full
+     * contributors' details.
+     *
+     * @param scanner The scanner object for user input.
+     * @param choice  The user's choice.
+     * @param m       The object representing a Movie.
+     * @throws Exception if an error occurs during processing.
+     */
     private static void handleFullContributorsCase(Scanner scanner, int choice, Movie m) throws Exception {
         switch (choice) {
             case 0:
@@ -862,12 +919,17 @@ public class App {
                         choice5 = 0;
                 } while (choice5 != 0);
                 break;
-            case 2: 
+            case 2:
                 handleMainMenu(scanner);
                 break;
-        }   
+        }
     }
 
+    /**
+     * 
+     * Shows a menu to help user choose which reviews wants to see.
+     * 
+     */
     private static void displayReviewContentMenu() {
         System.out.println("0. Back");
         System.out.println("1. See all reviews");
@@ -878,59 +940,68 @@ public class App {
         System.out.print("Enter your choice ");
     }
 
+    /**
+     * Handles the user options related to reviewing a movie.
+     *
+     * @param scanner The scanner object for user input.
+     * @param choice  The user's choice.
+     * @param m       The object representing a Movie.
+     * @throws Exception if an error occurs during processing.
+     */
     private static void handleReviewMovieCase(Scanner scanner, int choice, Movie m) throws Exception {
         ArrayList<Review> reviews;
         switch (choice) {
             case 0:
                 break;
             case 1:
-                    reviews = MovieDAO.getAllReviewsForMovie(m.getMd().getId());
-                    if(!reviews.isEmpty()) {
-                        System.out.println("All reviews: \n");
-                        for (Review r : reviews) {
-                            System.out.println("\n" + r);
-                        }
-                    } else {
-                        System.out.println("No reviews for this movie!");
+                reviews = MovieDAO.getAllReviewsForMovie(m.getMd().getId());
+                if (!reviews.isEmpty()) {
+                    System.out.println("All reviews: \n");
+                    for (Review r : reviews) {
+                        System.out.println("\n" + r);
                     }
-                    System.out.print("Press 0 to go back ");
-                    int choice2 = choose(0, 0, scanner);
+                } else {
+                    System.out.println("No reviews for this movie!");
+                }
+                System.out.print("Press 0 to go back ");
+                int choice2 = choose(0, 0, scanner);
                 break;
             case 2:
-                    reviews = MovieDAO.getSpoilerFreeReviewsForMovie(m.getMd().getId());
-                    if(!reviews.isEmpty()) {
-                        System.out.println("\nSpoiler-free reviews: ");
-                        for (Review r : reviews) {
-                            System.out.println("\n" + r);
-                        }
-                    } else {
-                        System.out.println("\nNo spoiler-free reviews for this movie!");
-                    }   
-                    System.out.print("\nPress 0 to go back ");
-                    int choice3 = choose(0, 0, scanner);
-                    break;
-            case 3:
-                    reviews = Review.getReviewsByUserAndMovie(currentUser.getId(), m.getMd().getId());
-                    if(!reviews.isEmpty()) {
-                        System.out.println("\nYour reviews: ");
-                        for (Review r : reviews) {
-                            System.out.println("\n" + r);
-                        }
-                        System.out.print("\nPress 1 to delete a review or 0 to go back ");
-                        int choice4 = choose(0, 1, scanner);
-                        switch (choice4) {
-                            case 0:
-                                break;
-                            case 1: 
-                                ArrayList<Review> reviews2 = Review.getReviewsByUserAndMovie(currentUser.getId(), m.getMd().getId());
-                                handleDeleteReviewCase(scanner, reviews2);
-                                break;
-                        }
-                    } else {
-                        System.out.println("You have not reviewed this movie!");
+                reviews = MovieDAO.getSpoilerFreeReviewsForMovie(m.getMd().getId());
+                if (!reviews.isEmpty()) {
+                    System.out.println("\nSpoiler-free reviews: ");
+                    for (Review r : reviews) {
+                        System.out.println("\n" + r);
                     }
-                    break;
-            case 4: 
+                } else {
+                    System.out.println("\nNo spoiler-free reviews for this movie!");
+                }
+                System.out.print("\nPress 0 to go back ");
+                int choice3 = choose(0, 0, scanner);
+                break;
+            case 3:
+                reviews = Review.getReviewsByUserAndMovie(currentUser.getId(), m.getMd().getId());
+                if (!reviews.isEmpty()) {
+                    System.out.println("\nYour reviews: ");
+                    for (Review r : reviews) {
+                        System.out.println("\n" + r);
+                    }
+                    System.out.print("\nPress 1 to delete a review or 0 to go back ");
+                    int choice4 = choose(0, 1, scanner);
+                    switch (choice4) {
+                        case 0:
+                            break;
+                        case 1:
+                            ArrayList<Review> reviews2 = Review.getReviewsByUserAndMovie(currentUser.getId(),
+                                    m.getMd().getId());
+                            handleDeleteReviewCase(scanner, reviews2);
+                            break;
+                    }
+                } else {
+                    System.out.println("You have not reviewed this movie!");
+                }
+                break;
+            case 4:
                 String reviewText;
                 float rating = -1;
                 boolean spoilers = false;
@@ -938,12 +1009,12 @@ public class App {
                 do {
                     System.out.println("\nWrite your review or press 0 to go back");
                     reviewText = scanner.nextLine();
-                    if(!reviewText.equals("0")) {
+                    if (!reviewText.equals("0")) {
                         System.out.println();
                         displayAddReviewTypeMenu();
                         choice5 = choose(0, 2, scanner);
                         if (choice5 != 0) {
-                            if(choice5 == 1) {
+                            if (choice5 == 1) {
                                 spoilers = true;
                             }
                             System.out.print("\nEnter your rating from a scale 1-10 or press 0 to go back ");
@@ -951,13 +1022,14 @@ public class App {
                         }
                     }
                 } while (!reviewText.equals("0") && (rating == 0 || choice5 == 0));
-                if(!reviewText.equals("0") && rating != 0 && rating != -1) {
-                    Review.addReview(currentUser.getId(), m.getMd().getId(), reviewText, rating, spoilers, currentUser.getUsername(), m.getMd().getOriginal_title());
+                if (!reviewText.equals("0") && rating != 0 && rating != -1) {
+                    Review.addReview(currentUser.getId(), m.getMd().getId(), reviewText, rating, spoilers,
+                            currentUser.getUsername(), m.getMd().getOriginal_title());
                     System.out.println("\nYour review is published!\n");
                     m.setFilmBroRating(MovieDAO.getAverageRatingForMovie(m.getMd().getId()));
                 }
                 break;
-            case 5: 
+            case 5:
                 handleMainMenu(scanner);
                 break;
         }
@@ -975,20 +1047,35 @@ public class App {
         System.out.print("Enter your choice ");
     }
 
+    /**
+     * Handles the user options related to deleting a review.
+     *
+     * @param scanner The scanner object for user input.
+     * @param reviews The list of reviews to choose from.
+     * @throws Exception If an exception occurs during processing.
+     */
     private static void handleDeleteReviewCase(Scanner scanner, ArrayList<Review> reviews) throws Exception {
         Review r = chooseReview(scanner, reviews);
-        if(r != null) {
+        if (r != null) {
             r.deleteReview(currentUser.getId());
         }
     }
 
+    /**
+     * Allows the user to choose a review from a list.
+     *
+     * @param scanner The scanner object for user input.
+     * @param reviews The list of reviews to choose from.
+     * @return The selected review or null if no reviews are available.
+     * @throws Exception If an exception occurs during processing.
+     */
     private static Review chooseReview(Scanner scanner, ArrayList<Review> reviews) {
-        if(!reviews.isEmpty()) {
+        if (!reviews.isEmpty()) {
             int currentId = 0;
             int i = 0;
             for (Review r : reviews) {
                 i++;
-                if(r.getMovieId() != currentId) {
+                if (r.getMovieId() != currentId) {
                     System.out.println("\n\nMovie: " + r.getMovieName() + "\n");
                     currentId = r.getMovieId();
                 }
@@ -997,14 +1084,14 @@ public class App {
             }
             System.out.print("\nChoose a review or press 0 to go back ");
             int choice = choose(0, reviews.size(), scanner);
-            if(choice != 0) {
+            if (choice != 0) {
                 return reviews.get(choice - 1);
             } else {
                 return null;
             }
         } else {
             return null;
-        } 
+        }
     }
 
     /**
@@ -1026,11 +1113,17 @@ public class App {
         }
     }
 
+    /**
+     * Handles the user options related to searching for a user.
+     *
+     * @param scanner The scanner object for user input.
+     * @throws Exception If an exception occurs during processing.
+     */
     private static void handleSearchForUserCase(Scanner scanner) throws Exception {
         String userMessage;
         do {
             System.out.println("\nType your search or press 0 to return to the main menu ");
-            userMessage = scanner.nextLine(); 
+            userMessage = scanner.nextLine();
             if (!userMessage.equals("0")) {
                 do {
                     ArrayList<User> users = User.getUsersWithPartialUsername(userMessage);
@@ -1053,6 +1146,13 @@ public class App {
         } while (!userMessage.equals("0"));
     }
 
+    /**
+     * Allows the user to choose a user from a list.
+     *
+     * @param users   The list of users to choose from.
+     * @param scanner The scanner object for user input.
+     * @return The selected user or null if no users are available.
+     */
     private static User chooseUser(ArrayList<User> users, Scanner scanner) {
         System.out.print("\nEnter your choice or press 0 to go back ");
         int answer = choose(0, users.size(), scanner);
@@ -1070,7 +1170,7 @@ public class App {
     private static void displayUserMenu(boolean flag) {
         System.out.println("0. Back");
         System.out.println("1. See lists");
-        if(flag) {
+        if (flag) {
             System.out.println("2. Unfollow");
         } else {
             System.out.println("2. Follow");
@@ -1079,6 +1179,13 @@ public class App {
         System.out.print("Enter your choice ");
     }
 
+    /**
+     * Handles the user options related to a specific user.
+     *
+     * @param scanner The scanner object for user input.
+     * @param u       The user to handle.
+     * @throws Exception If an exception occurs during processing.
+     */
     private static void handleUserCase(Scanner scanner, User u) throws Exception {
         int choice;
         do {
@@ -1092,8 +1199,8 @@ public class App {
                 case 1:
                     showListsCase(scanner, u, 1);
                     break;
-                case 2: 
-                    if(flag) {
+                case 2:
+                    if (flag) {
                         currentUser.unfollowUser(u.getUsername());
                         System.out.print("\nPress 0 to go back ");
                         int back = choose(0, 0, scanner);
@@ -1103,34 +1210,44 @@ public class App {
                         int back = choose(0, 0, scanner);
                     }
                     break;
-                case 3: 
+                case 3:
                     handleMainMenu(scanner);
                     break;
             }
-        } while(choice != 0);
+        } while (choice != 0);
     }
 
+    /**
+     * Handles the user options related to showing lists.
+     *
+     * @param scanner  The scanner object for user input.
+     * @param u        The user to show lists for.
+     * @param allLists The type of lists to display.
+     * @throws Exception If an exception occurs during processing.
+     */
     private static void showListsCase(Scanner scanner, User u, int allLists) throws Exception {
         MovieList l;
         do {
             System.out.println("\nLists:");
             l = chooseList(scanner, u, allLists);
-            if(l != null) {
+            if (l != null) {
                 int choice;
-                do { 
+                do {
                     System.out.println("\n" + l.getListName());
-                    if(u.equals(currentUser)) {
+                    if (u.equals(currentUser)) {
                         displayListContentMenu(true);
                         choice = choose(0, 3, scanner);
                     } else {
                         displayListContentMenu(false);
                         choice = choose(0, 2, scanner);
                     }
-                    if(choice != 0) handleListContentCase(scanner, choice, l, u);
-                } while(choice != 0);
-            } 
-            if(allLists == 2 || allLists == 3) break;
-         } while(l != null);
+                    if (choice != 0)
+                        handleListContentCase(scanner, choice, l, u);
+                } while (choice != 0);
+            }
+            if (allLists == 2 || allLists == 3)
+                break;
+        } while (l != null);
     }
 
     /**
@@ -1148,42 +1265,51 @@ public class App {
         System.out.print("Enter your choice ");
     }
 
+    /**
+     * Allows the user to choose a list from a list of lists.
+     *
+     * @param scanner  The scanner object for user input.
+     * @param user     The user to choose lists for.
+     * @param allLists The type of lists to display.
+     * @return The selected list or null if no lists are available.
+     * @throws Exception If an exception occurs during processing.
+     */
     private static MovieList chooseList(Scanner scanner, User user, int allLists) throws Exception {
         ArrayList<MovieList> movieLists = user.getLists();
-        if(allLists == 2) {
+        if (allLists == 2) {
             for (MovieList l : movieLists) {
-                if(l.getListName().equals("watchlist")) {
+                if (l.getListName().equals("watchlist")) {
                     return l;
                 }
             }
         }
-        if(allLists == 3) {
+        if (allLists == 3) {
             for (MovieList l : movieLists) {
-                if(l.getListName().equals("favorites")) {
+                if (l.getListName().equals("favorites")) {
                     return l;
                 }
             }
         }
-        if(movieLists.size() > 2) {
+        if (movieLists.size() > 2) {
             ArrayList<MovieList> tempLists = new ArrayList<>();
             for (int j = 2; j < movieLists.size(); j++) {
-                if(user.equals(currentUser)) {
+                if (user.equals(currentUser)) {
                     tempLists.add(movieLists.get(j));
                 } else {
                     String currentList = movieLists.get(j).getListType();
-                    if(currentUser.isFollowing(user)) {
-                        if(currentList.equals("Public") || currentList.equals("Protected")) {
+                    if (currentUser.isFollowing(user)) {
+                        if (currentList.equals("Public") || currentList.equals("Protected")) {
                             tempLists.add(movieLists.get(j));
                         }
                     } else {
-                        if(currentList.equals("Public")) {
+                        if (currentList.equals("Public")) {
                             tempLists.add(movieLists.get(j));
-                            
+
                         }
                     }
                 }
             }
-            if(tempLists.isEmpty()) {
+            if (tempLists.isEmpty()) {
                 System.out.println("Can't access user's lists!");
                 return null;
             } else {
@@ -1192,7 +1318,7 @@ public class App {
                 }
                 System.out.print("\nEnter your choice or press 0 to go back ");
                 int choice = choose(0, tempLists.size(), scanner);
-                if(choice == 0) {
+                if (choice == 0) {
                     return null;
                 } else {
                     return tempLists.get(choice - 1);
@@ -1201,13 +1327,22 @@ public class App {
         } else {
             System.out.println("No lists created!");
             return null;
-        }  
+        }
     }
 
+    /**
+     * Handles the user options related to a list's content.
+     *
+     * @param scanner The scanner object for user input.
+     * @param choice  The user's choice.
+     * @param list    The MovieList to handle.
+     * @param u       The user associated with the list.
+     * @throws Exception If an exception occurs during processing.
+     */
     private static void handleListContentCase(Scanner scanner, int choice, MovieList list, User u) throws Exception {
         Map<Integer, String> movies;
         movies = list.getMoviesFromList();
-        if(!movies.isEmpty()) {
+        if (!movies.isEmpty()) {
             ArrayList<Integer> movieIds = new ArrayList<>();
             ArrayList<String> movieTitles = new ArrayList<>();
             for (int i : movies.keySet()) {
@@ -1223,36 +1358,38 @@ public class App {
                         for (int i = 0; i < movies.size(); i++) {
                             System.out.printf("%3d. %s \n", i + 1, movieTitles.get(i));
                         }
-                        Object o  = chooseMoviePerson(scanner, movieIds);
-                        if(!o.equals(0)) {
-                            Movie m = (Movie)o;
+                        Object o = chooseMoviePerson(scanner, movieIds);
+                        if (!o.equals(0)) {
+                            Movie m = (Movie) o;
                             checkObjectType(scanner, m);
-                        } else break;
+                        } else
+                            break;
                     } while (true);
                     break;
-                case 2: 
-                    if(currentUser != u) {
+                case 2:
+                    if (currentUser != u) {
                         handleMainMenu(scanner);
                         break;
                     }
                     System.out.println("Remove a movie ");
-                        movies = list.getMoviesFromList();
-                        movieIds = new ArrayList<>();
-                        movieTitles = new ArrayList<>();
-                        for (int i : movies.keySet()) {
-                            movieIds.add(i);
-                            movieTitles.add(movies.get(i));
-                        }
-                        for (int i = 0; i < movies.size(); i++) {
-                            System.out.printf("%3d. %s \n", i + 1, movieTitles.get(i));
-                        }
-                        Object o  = chooseMoviePerson(scanner, movieIds);
-                        if(!o.equals(0)) {
-                            Movie m = (Movie)o;
-                            list.removeMovie(m.getMd().getOriginal_title(),m.getMd().getId(), currentUser.getId()); //and movieID
-                        }
+                    movies = list.getMoviesFromList();
+                    movieIds = new ArrayList<>();
+                    movieTitles = new ArrayList<>();
+                    for (int i : movies.keySet()) {
+                        movieIds.add(i);
+                        movieTitles.add(movies.get(i));
+                    }
+                    for (int i = 0; i < movies.size(); i++) {
+                        System.out.printf("%3d. %s \n", i + 1, movieTitles.get(i));
+                    }
+                    Object o = chooseMoviePerson(scanner, movieIds);
+                    if (!o.equals(0)) {
+                        Movie m = (Movie) o;
+                        list.removeMovie(m.getMd().getOriginal_title(), m.getMd().getId(), currentUser.getId()); // and
+                                                                                                                 // movieID
+                    }
                     break;
-                case 3: 
+                case 3:
                     handleMainMenu(scanner);
                     break;
             }
@@ -1283,8 +1420,14 @@ public class App {
         System.out.print("Enter your choice ");
     }
 
+    /**
+     * Handles the user options related to the profile menu.
+     *
+     * @param scanner The scanner object for user input.
+     * @throws Exception If an exception occurs during processing.
+     */
     private static void handleMainCase4(Scanner scanner) throws Exception {
-        if(guest) {
+        if (guest) {
             System.out.println("Exiting the application.");
             System.exit(0);
         } else {
@@ -1294,9 +1437,16 @@ public class App {
                 choice = choose(0, 9, scanner);
                 handleProfileCase(scanner, choice);
             } while (choice != 0 && choice != 1);
-        } 
+        }
     }
 
+    /**
+     * Handles the user options related to the profile menu.
+     *
+     * @param scanner The scanner object for user input.
+     * @param choice  The user's choice from the profile menu.
+     * @throws Exception If an exception occurs during processing.
+     */
     private static void handleProfileCase(Scanner scanner, int choice) throws Exception {
         switch (choice) {
             case 0:
@@ -1312,19 +1462,19 @@ public class App {
             case 3:
                 showListsCase(scanner, currentUser, 3);
                 break;
-            case 4: 
+            case 4:
                 handleListsCase(scanner);
                 break;
             case 5:
                 handleReviewsCase(scanner);
                 break;
-            case 6: 
+            case 6:
                 caseFollowers(scanner);
                 break;
-            case 7: 
+            case 7:
                 caseFollowing(scanner);
                 break;
-            case 8: 
+            case 8:
                 handleCountryCase(scanner);
                 break;
             case 9:
@@ -1333,6 +1483,9 @@ public class App {
         }
     }
 
+    /**
+     * Displays the list menu options for the user.
+     */
     private static void displayListMenu() {
         System.out.println("0. Back");
         System.out.println("1. See your lists");
@@ -1342,41 +1495,56 @@ public class App {
         System.out.print("Enter your choice ");
     }
 
+    /**
+     * Handles the user options related to lists.
+     *
+     * @param scanner The scanner object for user input.
+     * @throws Exception If an exception occurs during processing.
+     */
     private static void handleListsCase(Scanner scanner) throws Exception {
         int choice;
         do {
             System.out.println();
             displayListMenu();
             choice = choose(0, 4, scanner);
-                switch (choice) {
-                    case 0:
-                        break;
-                    case 1: 
-                        showListsCase(scanner, currentUser, 1); //1 = all lists
-                        break;
-                    case 2: 
-                        deleteListCase(scanner);
-                        break;
-                    case 3: 
-                        createListCase(scanner);
-                    case 4:
-                        handleMainMenu(scanner);
-                        break;
-                }
+            switch (choice) {
+                case 0:
+                    break;
+                case 1:
+                    showListsCase(scanner, currentUser, 1); // 1 = all lists
+                    break;
+                case 2:
+                    deleteListCase(scanner);
+                    break;
+                case 3:
+                    createListCase(scanner);
+                case 4:
+                    handleMainMenu(scanner);
+                    break;
+            }
         } while (choice != 0);
     }
 
+    /**
+     * Handles the user options related to deleting a list.
+     *
+     * @param scanner The scanner object for user input.
+     * @throws Exception If an exception occurs during processing.
+     */
     private static void deleteListCase(Scanner scanner) throws Exception {
         MovieList l;
         do {
             System.out.println("\nLists:");
             l = chooseList(scanner, currentUser, 1);
-            if(l != null) {
+            if (l != null) {
                 l.deleteList(currentUser.getId());
             }
-        } while(l != null);
+        } while (l != null);
     }
 
+    /**
+     * Displays the list type menu options for the user.
+     */
     private static void displayListTypeMenu() {
         System.out.println("0. Back");
         System.out.println("1. Private");
@@ -1385,6 +1553,12 @@ public class App {
         System.out.print("Enter your choice ");
     }
 
+    /**
+     * Handles the user options related to creating a list.
+     *
+     * @param scanner The scanner object for user input.
+     * @throws Exception If an exception occurs during processing.
+     */
     private static void createListCase(Scanner scanner) throws Exception {
         String name;
         String type = "0";
@@ -1392,25 +1566,31 @@ public class App {
             System.out.println("\nEnter a name for your list or press 0 to go back");
             name = scanner.nextLine();
             boolean isNameUnique = MovieList.isListNameExists(name, currentUser.getId());
-            if(!name.equals("0") && !isNameUnique) { 
+            if (!name.equals("0") && !isNameUnique) {
                 System.out.println("\nChoose list type or 0 to go back");
                 displayListTypeMenu();
                 int choice = choose(0, 3, scanner);
                 type = handleListTypeCase(choice);
-            } else if(!name.equals("0") && isNameUnique) {
+            } else if (!name.equals("0") && isNameUnique) {
                 System.out.println("You already have a list with this name!");
             }
-        } while (!name.equals("0") && type.equals("0"));        
-        if(!type.equals("0")) {
+        } while (!name.equals("0") && type.equals("0"));
+        if (!type.equals("0")) {
             MovieList.createList(type, name, currentUser.getId());
-        }            
+        }
     }
 
+    /**
+     * Handles the user options related to list type.
+     *
+     * @param choice The user's choice for the list type.
+     * @return The list type selected.
+     */
     private static String handleListTypeCase(int choice) {
         switch (choice) {
             case 0:
                 return "0";
-            case 1: 
+            case 1:
                 return "Private";
             case 2:
                 return "Public";
@@ -1432,80 +1612,114 @@ public class App {
         System.out.print("Enter your choice ");
     }
 
+    /**
+     * Handles the user options related to managing reviews.
+     *
+     * @param scanner The scanner object for user input.
+     * @throws Exception If an exception occurs during processing.
+     */
     private static void handleReviewsCase(Scanner scanner) throws Exception {
         int choice;
         do {
             System.out.println();
             displayYourReviewMenu();
             choice = choose(0, 3, scanner);
-                switch (choice) {
-                    case 0:
-                        break;
-                    case 1: 
-                        handleUserAllReviews(scanner);
-                        break;
-                    case 2: 
-                        ArrayList<Review> reviews = currentUser.getAllUserReviewsOrderedByMovieId();
-                        handleDeleteReviewCase(scanner, reviews);
-                        break;
-                    case 3: 
-                        handleMainMenu(scanner);
-                        break;
-                }
+            switch (choice) {
+                case 0:
+                    break;
+                case 1:
+                    handleUserAllReviews(scanner);
+                    break;
+                case 2:
+                    ArrayList<Review> reviews = currentUser.getAllUserReviewsOrderedByMovieId();
+                    handleDeleteReviewCase(scanner, reviews);
+                    break;
+                case 3:
+                    handleMainMenu(scanner);
+                    break;
+            }
         } while (choice != 0);
     }
 
+    /**
+     * Handles the user options related to viewing all user reviews.
+     *
+     * @param scanner The scanner object for user input.
+     * @throws Exception If an exception occurs during processing.
+     */
     private static void handleUserAllReviews(Scanner scanner) throws Exception {
-            ArrayList<Review> reviews = currentUser.getAllUserReviewsOrderedByMovieId(); 
-            if(!reviews.isEmpty()) {
-                System.out.println("\nYour reviews:");
-                int currrentId = 0;
-                for (Review r : reviews) {
-                    if(r.getMovieId() != currrentId) {
-                        System.out.println("\n\nMovie: " + r.getMovieName());
-                        currrentId = r.getMovieId();
-                    }
-                    System.out.println();
-                    System.out.println(r);
+        ArrayList<Review> reviews = currentUser.getAllUserReviewsOrderedByMovieId();
+        if (!reviews.isEmpty()) {
+            System.out.println("\nYour reviews:");
+            int currrentId = 0;
+            for (Review r : reviews) {
+                if (r.getMovieId() != currrentId) {
+                    System.out.println("\n\nMovie: " + r.getMovieName());
+                    currrentId = r.getMovieId();
                 }
-                System.out.print("\nPress 0 to go back ");
-                int back = choose(0, 0, scanner);
-            } else {
-                System.out.println("You have not reviewed any movies! ");
+                System.out.println();
+                System.out.println(r);
             }
+            System.out.print("\nPress 0 to go back ");
+            int back = choose(0, 0, scanner);
+        } else {
+            System.out.println("You have not reviewed any movies! ");
+        }
     }
 
+    /**
+     * Handles the case when the user wants to view their followers.
+     *
+     * @param scanner The scanner object for user input.
+     * @throws Exception If an exception occurs during processing.
+     */
     private static void caseFollowers(Scanner scanner) throws Exception {
         do {
             System.out.println("\nYour followers: ");
             User f = chooseFollowerIng(scanner, "Followers");
-            if(f != null) {
+            if (f != null) {
                 handleUserCase(scanner, f);
-            } else break;
-        } while(true);
+            } else
+                break;
+        } while (true);
     }
 
+    /**
+     * Handles the case when the user wants to view the users they are following.
+     *
+     * @param scanner The scanner object for user input.
+     * @throws Exception If an exception occurs during processing.
+     */
     private static void caseFollowing(Scanner scanner) throws Exception {
         do {
             System.out.println("\nUsers you follow: ");
             User f = chooseFollowerIng(scanner, "Following");
-            if(f != null) {
+            if (f != null) {
                 handleUserCase(scanner, f);
-            } else break;
-        } while(true);
+            } else
+                break;
+        } while (true);
     }
 
+    /**
+     * Allows the user to choose a follower or user they are following.
+     *
+     * @param scanner The scanner object for user input.
+     * @param erIng   A string indicating followers or following.
+     * @return The selected user or null if the user chooses to go back.
+     * @throws Exception If an exception occurs during processing.
+     */
     private static User chooseFollowerIng(Scanner scanner, String erIng) throws Exception {
         ArrayList<User> foll;
-        if(erIng.equals("Followers")) {
+        if (erIng.equals("Followers")) {
             foll = currentUser.getFollowers();
-            if(foll.isEmpty()) {
+            if (foll.isEmpty()) {
                 System.out.println("You have 0 followers!");
                 return null;
             }
         } else {
             foll = currentUser.getFollowing();
-            if(foll.isEmpty()) {
+            if (foll.isEmpty()) {
                 System.out.println("You don't follow any users!");
                 return null;
             }
@@ -1515,7 +1729,7 @@ public class App {
         }
         System.out.print("\nEnter your choice or press 0 to go back ");
         int choice = choose(0, foll.size(), scanner);
-        if(choice == 0) {
+        if (choice == 0) {
             return null;
         } else {
             return foll.get(choice - 1);
@@ -1532,6 +1746,12 @@ public class App {
         System.out.print("Enter your choice ");
     }
 
+    /**
+     * Handles the user options related to the user's country.
+     *
+     * @param scanner The scanner object for user input.
+     * @throws Exception If an exception occurs during processing.
+     */
     private static void handleCountryCase(Scanner scanner) throws Exception {
         int choice;
         do {
@@ -1539,20 +1759,20 @@ public class App {
             System.out.println("\nYour country: " + countries.get(currentUser.getCountry()) + "\n");
             displayCountryMenu();
             choice = choose(0, 2, scanner);
-            switch(choice) {
+            switch (choice) {
                 case 0:
                     break;
                 case 1:
                     String newCountry = chooseCountry(scanner);
-                    if(!newCountry.equals("0")) {
+                    if (!newCountry.equals("0")) {
                         currentUser.setCountry(newCountry, currentUser.getPassword());
                     }
                     break;
-                case 2: 
+                case 2:
                     handleMainMenu(scanner);
                     break;
-            } 
-        } while(choice != 0);
+            }
+        } while (choice != 0);
     }
 
     /**
@@ -1562,13 +1782,19 @@ public class App {
     private static void displayChatroomMenu() {
         System.out.println("0. Back");
         System.out.println("1. Create a chatroom");
-        System.out.println("2. See your chatrooms"); 
+        System.out.println("2. See your chatrooms");
         System.out.println("3. New chatrooms");
         System.out.println("4. Search for a chatroom");
         System.out.println("5. Home ");
         System.out.print("Enter your choice ");
     }
 
+    /**
+     * Handles the user options related to chatrooms.
+     *
+     * @param scanner The scanner object for user input.
+     * @throws Exception If an exception occurs during processing.
+     */
     private static void handleChatroom(Scanner scanner) throws Exception {
         int choice;
         do {
@@ -1579,31 +1805,40 @@ public class App {
         } while (choice != 0);
     }
 
+    /**
+     * Handles the user options related to chatroom cases.
+     *
+     * @param choice  The user's choice from the chatroom menu.
+     * @param scanner The scanner object for user input.
+     * @throws Exception If an exception occurs during processing.
+     */
     private static void handleChatroomCase(int choice, Scanner scanner) throws Exception {
         Chatroom chatroom;
         switch (choice) {
             case 0:
                 break;
-            case 1: 
+            case 1:
                 String name;
                 do {
-                    System.out.println("\nEnter a name for your chatroom or press 0 to go back"); 
+                    System.out.println("\nEnter a name for your chatroom or press 0 to go back");
                     name = scanner.nextLine();
                     boolean flag = Chatroom.isNameUnique(name);
-                    if(!flag) {
+                    if (!flag) {
                         System.out.println("\nA chatroom with this name already exists!");
                         name = "0";
-                    } else break;
+                    } else
+                        break;
                 } while (!name.equals("0"));
-                if(!name.equals("0")) Chatroom.createChatroom(name, currentUser.getId());
+                if (!name.equals("0"))
+                    Chatroom.createChatroom(name, currentUser.getId());
                 break;
             case 2:
                 do {
                     ArrayList<Chatroom> chatrooms = currentUser.getJoinedChatrooms();
                     System.out.println("\nYour chatrooms:");
-                    if(!chatrooms.isEmpty()) {
+                    if (!chatrooms.isEmpty()) {
                         chatroom = chooseChatroom(scanner, chatrooms);
-                        if(chatroom != null) {
+                        if (chatroom != null) {
                             handleYourChatroomCase(scanner, chatroom);
                         }
                     } else {
@@ -1612,29 +1847,29 @@ public class App {
                     }
                 } while (chatroom != null);
                 break;
-            case 3 :
+            case 3:
                 do {
                     ArrayList<Chatroom> chatrooms = currentUser.getNotJoinedChatrooms();
                     System.out.println("\nNew chatrooms:");
-                    if(!chatrooms.isEmpty()) {
+                    if (!chatrooms.isEmpty()) {
                         chatroom = chooseChatroom(scanner, chatrooms);
-                        if(chatroom != null) {
+                        if (chatroom != null) {
                             System.out.print("\nPress 1 to join chatroom or 0 to go back ");
                             int choice2 = choose(0, 1, scanner);
                             switch (choice2) {
                                 case 0:
                                     break;
-                                case 1: 
+                                case 1:
                                     currentUser.joinChatroom(chatroom.getRoomId());
                                     handleYourChatroomCase(scanner, chatroom);
                                     break;
                             }
-                        } 
+                        }
                     } else {
                         System.out.println("\nYou have joined all existing chatrooms!");
                         break;
                     }
-                    
+
                 } while (chatroom != null);
                 break;
             case 4:
@@ -1642,44 +1877,53 @@ public class App {
                 do {
                     System.out.println("\nType your search or press 0 to go back");
                     chatroomName = scanner.nextLine();
-                    if(!chatroomName.equals("0")) {
+                    if (!chatroomName.equals("0")) {
                         chatroom = Chatroom.getChatroomByName(chatroomName);
-                        if(chatroom != null) {
+                        if (chatroom != null) {
                             boolean flag = chatroom.isUserInChatroom(currentUser.getId());
-                            if(!flag) {
+                            if (!flag) {
                                 System.out.print("\nPress 1 to join chatroom or 0 to go back ");
                                 int choice2 = choose(0, 1, scanner);
                                 switch (choice2) {
                                     case 0:
                                         break;
-                                    case 1: 
+                                    case 1:
                                         currentUser.joinChatroom(chatroom.getRoomId());
                                         handleYourChatroomCase(scanner, chatroom);
                                         break;
                                 }
                             } else {
                                 handleYourChatroomCase(scanner, chatroom);
-                            } 
-                        } else System.out.println("\nNo results found!");
+                            }
+                        } else
+                            System.out.println("\nNo results found!");
                     }
                 } while (!chatroomName.equals("0"));
                 break;
-            case 5: 
+            case 5:
                 handleMainMenu(scanner);
                 break;
         }
     }
 
+    /**
+     * Allows the user to choose a chatroom from the list.
+     *
+     * @param scanner   The scanner object for user input.
+     * @param chatrooms The list of chatrooms to choose from.
+     * @return The selected chatroom or null if the user chooses to go back.
+     * @throws Exception If an exception occurs during processing.
+     */
     private static Chatroom chooseChatroom(Scanner scanner, ArrayList<Chatroom> chatrooms) {
         System.out.println();
         int i = 0;
         for (Chatroom c : chatrooms) {
             i++;
             System.out.printf("%3d. %s \n", i, c.getName());
-        }   
+        }
         System.out.print("\nEnter your choice or press 0 to go back ");
         int choice = choose(0, chatrooms.size(), scanner);
-        if(choice == 0) {
+        if (choice == 0) {
             return null;
         } else {
             return chatrooms.get(choice - 1);
@@ -1698,7 +1942,7 @@ public class App {
         System.out.println("5. See chatroom members");
         System.out.println("6. Delete a message");
         if (flag) {
-            System.out.println("7. Delete chatroom"); 
+            System.out.println("7. Delete chatroom");
         } else {
             System.out.println("7. Leave chatroom");
         }
@@ -1706,6 +1950,13 @@ public class App {
         System.out.print("Enter your choice ");
     }
 
+    /**
+     * Handles the user options related to their chatroom.
+     *
+     * @param scanner  The scanner object for user input.
+     * @param chatroom The chatroom the user is currently in.
+     * @throws Exception If an exception occurs during processing.
+     */
     private static void handleYourChatroomCase(Scanner scanner, Chatroom chatroom) throws Exception {
         int choice;
         ArrayList<Message> messages;
@@ -1717,25 +1968,26 @@ public class App {
             switch (choice) {
                 case 0:
                     break;
-                case 1 :
+                case 1:
                     String messageText;
                     boolean spoilers = false;
                     int choice2 = 0;
                     do {
                         System.out.println("\nWrite your message or press 0 to go back");
                         messageText = scanner.nextLine();
-                        if(!messageText.equals("0")) {
+                        if (!messageText.equals("0")) {
                             displayAddMessageTypeMenu();
                             choice2 = choose(0, 2, scanner);
                             if (choice2 != 0) {
-                                if(choice2 == 1) {
+                                if (choice2 == 1) {
                                     spoilers = true;
                                 }
                             }
                         }
-                    } while (!messageText.equals("0") && choice2 == 0);        
-                    if(!messageText.equals("0")) {
-                        Message.addMessage(currentUser.getId(), spoilers, messageText, chatroom.getRoomId(), currentUser.getUsername());
+                    } while (!messageText.equals("0") && choice2 == 0);
+                    if (!messageText.equals("0")) {
+                        Message.addMessage(currentUser.getId(), spoilers, messageText, chatroom.getRoomId(),
+                                currentUser.getUsername());
                         System.out.println("\nYour message is published!");
                     }
                     break;
@@ -1744,22 +1996,22 @@ public class App {
                     System.out.println();
                     int i = 0;
                     for (Message m : messages) {
-                        if(currentUser.getId() == m.getUserId()) {
+                        if (currentUser.getId() == m.getUserId()) {
                             i++;
                             System.out.println(i + ".");
                             System.out.println(m);
-                        } 
+                        }
                     }
-                    if(i == 0) {
+                    if (i == 0) {
                         System.out.println("You have not sent any messages in this chatroom!");
-                    }  
+                    }
                     System.out.print("\nPress 0 to go back ");
                     int back = choose(0, 0, scanner);
                     break;
                 case 3:
                     System.out.println("\nUnread messages: ");
                     messages = chatroom.getUnseenMessages(currentUser.getId());
-                    if(!messages.isEmpty()) {
+                    if (!messages.isEmpty()) {
                         for (Message m : messages) {
                             System.out.println();
                             System.out.println(m);
@@ -1773,7 +2025,7 @@ public class App {
                 case 4:
                     messages = chatroom.getMessages();
                     System.out.println("\nAll messages:");
-                    if(!messages.isEmpty()) {
+                    if (!messages.isEmpty()) {
                         for (Message m : messages) {
                             System.out.println();
                             System.out.println(m);
@@ -1791,7 +2043,7 @@ public class App {
                         if (users.size() > 1) {
                             int j = 0;
                             for (User u : users) {
-                                if(u.getId() != currentUser.getId()) {
+                                if (u.getId() != currentUser.getId()) {
                                     System.out.printf("%3d. %s \n", j + 1, u.getUsername());
                                 }
                             }
@@ -1800,7 +2052,7 @@ public class App {
                                 handleUserCase(scanner, u);
                             } else
                                 break;
-                        } else if(users.size() == 1) {
+                        } else if (users.size() == 1) {
                             System.out.println("\nYou are the only member in this chatroom!");
                             break;
                         }
@@ -1811,14 +2063,14 @@ public class App {
                     Message message;
                     do {
                         message = chooseMessage(messages, scanner);
-                        if(message != null) {
+                        if (message != null) {
                             message.deleteMessage(currentUser.getId());
                             break;
                         }
                     } while (message != null);
                     break;
                 case 7:
-                    if(flag) {
+                    if (flag) {
                         currentUser.deleteChatroom(chatroom.getRoomId());
                     } else {
                         currentUser.leaveChatroom(chatroom.getRoomId());
@@ -1833,6 +2085,10 @@ public class App {
         } while (choice != 0);
     }
 
+    /**
+     * Displays the menu options for adding a message and specifies if it contains
+     * spoilers.
+     */
     private static void displayAddMessageTypeMenu() {
         System.out.println("\nDoes your message contain spoilers?");
         System.out.println("0. Back");
@@ -1841,14 +2097,21 @@ public class App {
         System.out.print("Enter your choice ");
     }
 
+    /**
+     * Allows the user to choose a message from the list.
+     *
+     * @param messages The list of messages to choose from.
+     * @param scanner  The scanner object for user input.
+     * @return The selected message or null if the user chooses to go back.
+     */
     private static Message chooseMessage(ArrayList<Message> messages, Scanner scanner) {
         ArrayList<Message> tempMessages = new ArrayList<>();
         for (Message message : messages) {
-            if(currentUser.getId() == message.getUserId()) {
+            if (currentUser.getId() == message.getUserId()) {
                 tempMessages.add(message);
             }
         }
-        if(!tempMessages.isEmpty()) {
+        if (!tempMessages.isEmpty()) {
             System.out.println();
             int i = 0;
             for (Message m : messages) {
@@ -1858,7 +2121,7 @@ public class App {
             }
             System.out.print("\nEnter your choice or press 0 to go back ");
             int choice = choose(0, tempMessages.size(), scanner);
-            if(choice == 0) {
+            if (choice == 0) {
                 return null;
             } else {
                 return messages.get(choice - 1);
