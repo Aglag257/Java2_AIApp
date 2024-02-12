@@ -18,7 +18,7 @@ import java.util.ArrayList;
  * including creating, updating, and retrieving information about chatrooms.
  *
  * @version 1.8 28 January 2024
- * @author Νίκος Ραγκούσης, Άγγελος Λαγός, Δήμητρα Κουτρουλιά και Μαρκέλλα Χάσικου
+ * @author  Άγγελος Λαγός και Μαρκέλλα Χάσικου
  * 
  */
 

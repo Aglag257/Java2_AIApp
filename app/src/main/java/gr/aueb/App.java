@@ -12,6 +12,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -1123,7 +1124,7 @@ public class App {
      * @param movieTitle The title of the movie.
      * @param year       The release year of the movie, or null if not available.
      */
-    private static void printBonusContent(String movieTitle, int year) {
+    private static void printBonusContent(String movieTitle, int year) throws URISyntaxException {
         if (year != 0) {
             BonusContent.searchAndPrintVideo(movieTitle + "  movie " + year, "Fun Facts", youtubeApiKey);
             BonusContent.searchAndPrintVideo(movieTitle + "  movie " + year, "Behind the Scenes", youtubeApiKey);

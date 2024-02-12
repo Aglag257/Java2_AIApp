@@ -7,10 +7,6 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
-import java.util.HashMap;
-
-import javax.management.relation.Role;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
@@ -18,6 +14,13 @@ import java.net.URISyntaxException;
 
 public class AiRecommendation {
 
+    /**
+     * A function that sends a user message to the OpenAI chat completion API and returns the AI's response.
+     *
+     * @param  userMessage  the message provided by the user
+     * @param  apiKey       the API key for authentication
+     * @return              the AI's response to the user message
+     */
     public static String testChatCompletions(String userMessage, String apiKey) throws URISyntaxException {
         String url = "https://api.openai.com/v1/chat/completions";
         String model = "gpt-3.5-turbo";
@@ -83,6 +86,12 @@ public class AiRecommendation {
         }
         return "";
     }
+    /**
+     * A method that processes a StringBuilder response to extract and return the content of the message from the JSON structure.
+     *
+     * @param  response  the StringBuilder containing the JSON response
+     * @return          the content extracted from the JSON message
+     */
     public static String aiMessage(StringBuilder response) {
         Gson gson = new Gson();
         JsonObject jo = gson.fromJson(response.toString(), JsonObject.class);

@@ -10,7 +10,6 @@ public class User {
     private String password;
     private String country;
 
-    // Constructor
     public User(int id, String username, String password, String country) {
         this.id = id;
         this.username = username;
@@ -18,24 +17,50 @@ public class User {
         this.country = country;
     }
  
-    // Setters
 
+    /**
+     * Sets the username to a new value after verifying the current password.
+     *
+     * @param  newUsername      the new username to be set
+     * @param  currentPassword   the current password for verification
+     * @throws Exception        if an error occurs during the process
+     */
     public void setUsername(String newUsername, String currentPassword) throws Exception {
         verifyPassword(currentPassword);
         updateUsername(newUsername, currentPassword);
     }
 
+    /**
+     * Sets a new password after verifying the current password.
+     *
+     * @param  newPassword      the new password to be set
+     * @param  currentPassword  the current password for verification
+     * @throws Exception       if an error occurs during password verification or update
+     */
     public void setPassword(String newPassword, String currentPassword) throws Exception {
         verifyPassword(currentPassword);
         updatePassword(newPassword, currentPassword);
     }
 
+    /**
+     * Sets the country for the user after verifying the current password.
+     *
+     * @param  newCountry      the new country to set for the user
+     * @param  currentPassword the current password for verification
+     * @throws Exception       if an error occurs during the process
+     */
     public void setCountry(String newCountry, String currentPassword) throws Exception {
         verifyPassword(currentPassword);
         updateCountry(newCountry, currentPassword);
-    }
-
-    // Updates with password verification
+    }    
+    /**
+     * Update the username  in the appuser table for the given user ID.
+     *
+     * @param  newUsername      the new username to be updated
+     * @param  currentPassword  the current password for verification
+     * @return                  void
+     * @throws Exception        if there is an error updating the username
+     */
     private void updateUsername(String newUsername, String currentPassword) throws Exception {
         try (DB db = new DB(); Connection con = db.getConnection()) {
             String sql = "UPDATE appuser SET username = ? WHERE userId = ?;";
@@ -51,6 +76,13 @@ public class User {
         }
     }
 
+    /**
+     * Update the user's password with the new password.
+     *
+     * @param  newPassword      the new password to be set
+     * @param  currentPassword  the current password for verification
+     * @return                 no return value
+     */
     private void updatePassword(String newPassword, String currentPassword) throws Exception {
         try (DB db = new DB(); Connection con = db.getConnection()) {
             String sql = "UPDATE appuser SET pass_word = ? WHERE userId = ?;";
@@ -66,6 +98,13 @@ public class User {
         }
     }
 
+    /**
+     * Updates the country of the app user in the database.
+     *
+     * @param  newCountry        the new country to be set
+     * @param  currentPassword   the current password for authentication
+     * @return                  does not return anything
+     */
     private void updateCountry(String newCountry, String currentPassword) throws Exception {
         try (DB db = new DB(); Connection con = db.getConnection()) {
             String sql = "UPDATE appuser SET country = ? WHERE userId = ?;";
@@ -81,30 +120,61 @@ public class User {
         }
     }
 
+    /**
+     * Verifies the entered password.
+     *
+     * @param  enteredPassword  the password entered by the user
+     * @throws Exception       if the entered password is incorrect
+     */
     private void verifyPassword(String enteredPassword) throws Exception {
         if (!enteredPassword.equals(this.password)) {
             throw new Exception("Incorrect password. Operation aborted.");
         }
     }
 
-    // Getters
+    /**
+     * A method to retrieve the ID.
+     *
+     * @return         	the ID
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * A method to retrieve the username.
+     *
+     * @return         	the username
+     */
     public String getUsername() {
         return username;
     }
 
+    /**
+     * A method to retrieve the password.
+     *
+     * @return         	the password
+     */
     public String getPassword() {
         return password;
     }
 
+    /**
+     * A description of the entire Java function.
+     *
+     * @return         description of return value
+     */
     public String getCountry() {
         return country;
     }
 
-    // Login Method
+    /**
+     * A method to log in a user with the given username and password.
+     *
+     * @param  username  the username of the user
+     * @param  password  the password of the user
+     * @return          the User object if login is successful, otherwise null
+     */
     public static User login(String username, String password) throws Exception {
         try (DB db = new DB();
                 Connection con = db.getConnection();
@@ -129,7 +199,15 @@ public class User {
         }
     }
 
-    // Register Method
+    /**
+     * Registers a new user with the given username, password, and country.
+     *
+     * @param  username   the username of the user
+     * @param  password   the password of the user
+     * @param  country    the country of the user
+     * @return            the newly registered User object
+     * @throws Exception  if an error occurs during the registration process
+     */
     public static User register(String username, String password, String country) throws Exception {
         try (DB db = new DB();
                 Connection con = db.getConnection();
@@ -176,7 +254,13 @@ public class User {
         }
     }
 
-    // Add to Favorites Method
+    /**
+     * Adds a movie to the user's favorites list in the database.
+     *
+     * @param  movieId    the unique identifier of the movie
+     * @param  movieName  the name of the movie
+     * @return            throws an exception if the movie is already in favorites, or if the user's 'favorites' list is not found
+     */
     public void addToFavorites(int movieId, String movieName) throws Exception {
         try (DB db = new DB();
                 Connection con = db.getConnection();
@@ -209,7 +293,12 @@ public class User {
             throw new Exception(e.getMessage());
         }
     }
-    // Remove movie from Favorites
+    /**
+     * Removes a movie from the user's favorites list.
+     *
+     * @param  movieId   the ID of the movie to be removed from favorites
+     * @throws Exception if there's an error removing the movie from favorites
+     */
     public void removeFromFavorites(int movieId) throws Exception {
         try (DB db = new DB();
                 Connection con = db.getConnection();
@@ -242,7 +331,13 @@ public class User {
         }
     }
 
-    // Add movie to Watchlist
+    /**
+     * Adds a movie to the user's watchlist.
+     *
+     * @param  movieId    the ID of the movie to be added
+     * @param  movieName  the name of the movie to be added
+     * @throws Exception  if an error occurs during the process
+     */
     public void addToWatchlist(int movieId, String movieName) throws Exception {
         try (DB db = new DB();
                 Connection con = db.getConnection();
@@ -276,7 +371,12 @@ public class User {
         }
     }
 
-    // Remove movie from Watchlist
+    /**
+     * Removes a movie from the user's watchlist.
+     *
+     * @param  movieId   the ID of the movie to be removed from the watchlist
+     * @return          throws an Exception if there's an error during the removal process
+     */
     public void removeFromWatchlist(int movieId) throws Exception {
         try (DB db = new DB();
                 Connection con = db.getConnection();
@@ -309,16 +409,33 @@ public class User {
         }
     }
 
-    // Check if movie is in Favorites
+    /**
+     * Checks if a movie with the given ID is in the favorites list.
+     *
+     * @param  movieId  the ID of the movie to check
+     * @return          true if the movie is in the favorites list, false otherwise
+     */
     public boolean isMovieInFavorites(int movieId) throws Exception {
         return isMovieInList(getListId("favorites"), movieId);
     }
 
-    // Check if movie is in Watchlist
+    /**
+     * Checks if a movie is in the watchlist.
+     *
+     * @param  movieId   the ID of the movie to check
+     * @return          true if the movie is in the watchlist, otherwise false
+     */
     public boolean isMovieInWatchlist(int movieId) throws Exception {
         return isMovieInList(getListId("watchlist"), movieId);
     }
 
+    /**
+     * Checks if a movie is in a given list.
+     *
+     * @param  listId   the ID of the movie list
+     * @param  movieId  the ID of the movie
+     * @return          true if the movie is in the list; false otherwise
+     */
     private boolean isMovieInList(int listId, int movieId) throws Exception {
         try (DB db = new DB();
                 Connection con = db.getConnection();
@@ -337,6 +454,12 @@ public class User {
         }
     }
 
+    /**
+     * Gets the ID of the list based on the list name.
+     *
+     * @param  listName   the name of the list
+     * @return            the ID of the list
+     */
     private int getListId(String listName) throws Exception {
         try (DB db = new DB();
                 Connection con = db.getConnection();
@@ -356,35 +479,13 @@ public class User {
             throw new Exception(e.getMessage());
         }
     }
-    /*
-     * //Get all users method
-     * public static List<String> getAllUsers() throws Exception {
-     * List<String> users = new ArrayList<String>();
-     * DB db = new DB();
-     * Connection con = null;
-     * String query = "SELECT username from appuser;";
-     * try {
-     * con = db.getConnection();
-     * PreparedStatement stmt = con.prepareStatement(query);
-     * ResultSet rs = stmt.executeQuery();
-     * while (rs.next()) {
-     * users.add(rs.getString("username"));
-     * }
-     * rs.close();
-     * stmt.close();
-     * return users;
-     * } catch (Exception e) {
-     * throw new Exception(e.getMessage());
-     * } finally {
-     * try {
-     * db.close();
-     * } catch (Exception e) {
-     * }
-     * }
-     * }
-     */
 
-    // Follow user
+    /**
+     * Method to follow a user in the system.
+     *
+     * @param  follow_user   the username of the user to follow
+     * @throws Exception    if there are issues with the database or if the user does not exist
+     */
     public void followUser(String follow_user) throws Exception {
         try (DB db = new DB();
                 Connection con = db.getConnection();
@@ -412,7 +513,12 @@ public class User {
         }
     }
 
-    // Unfollow user
+    /**
+     * Method to unfollow a user.
+     *
+     * @param  unfollow_user   the username of the user to unfollow
+     * @throws Exception       if there is an error unfollowing the user
+     */
     public void unfollowUser(String unfollow_user) throws Exception {
         try (DB db = new DB();
                 Connection con = db.getConnection();
@@ -440,7 +546,12 @@ public class User {
         }
     }
 
-    // Get Followings Method
+    /**
+     * Retrieves a list of users that the current user is following.
+     *
+     * @throws Exception   if an error occurs while retrieving the list of followings
+     * @return             the list of users that the current user is following
+     */
     public ArrayList<User> getFollowing() throws Exception {
         ArrayList<User> followings = new ArrayList<>();
 
@@ -469,7 +580,11 @@ public class User {
         return followings;
     }
 
-    // Get Followers Method
+    /**
+     * Retrieves the followers of the user.
+     *
+     * @return         	an ArrayList of User objects representing the followers
+     */
     public ArrayList<User> getFollowers() throws Exception {
         ArrayList<User> followers = new ArrayList<>();
 
@@ -498,7 +613,12 @@ public class User {
         return followers;
     }
 
-    // Leave chatroom method
+    /**
+     * Deletes a user from a chatroom.
+     *
+     * @param  chatroomId   the ID of the chatroom
+     * @return         	void
+     */
     public void leaveChatroom(int chatroomId) throws Exception {
         try (DB db = new DB(); Connection con = db.getConnection()) {
             String sql = "DELETE FROM ChatroomUser WHERE roomId=? AND userId=?;";
@@ -513,7 +633,12 @@ public class User {
         }
     }
 
-    // Join chatroom method
+    /**
+     * Join a chatroom with the given chatroom ID.
+     *
+     * @param  chatroomId the ID of the chatroom to join
+     * @throws Exception  if an error occurs while joining the chatroom
+     */
     public void joinChatroom(int chatroomId) throws Exception {
         try (DB db = new DB(); Connection con = db.getConnection()) {
             String insertSql = "INSERT INTO ChatroomUser VALUES(?,?);";
@@ -529,6 +654,11 @@ public class User {
         }
     }
 
+    /**
+     * Retrieves the list of chatrooms that the user has joined.
+     *
+     * @return         	ArrayList of Chatroom objects representing the joined chatrooms
+     */
     public ArrayList<Chatroom> getJoinedChatrooms() throws Exception {
         ArrayList<Chatroom> joinedChatrooms = new ArrayList<>();
         DB db = new DB();
@@ -556,8 +686,14 @@ public class User {
         return joinedChatrooms;
     }
 
-    // gets also called to check if the user can access the messages of a chatroom
-    // in app
+        
+    /**
+     * Retrieves the list of chatrooms that the user has not joined.
+     * Gets also called to check if the user can access the messages of a chatroom in app.
+     *
+     * @return         the list of chatrooms not joined by the user
+     * @throws Exception  if an error occurs while retrieving the chatrooms
+     */
     public ArrayList<Chatroom> getNotJoinedChatrooms() throws Exception {
         ArrayList<Chatroom> notJoinedChatrooms = new ArrayList<>();
         DB db = new DB();
@@ -587,6 +723,11 @@ public class User {
         return notJoinedChatrooms;
     }
 
+    /**
+     * Retrieves the list of chatrooms created by the user.
+     *
+     * @return         	the list of created chatrooms
+     */
     public List<Chatroom> getCreatedChatrooms() throws Exception {
         List<Chatroom> createdChatrooms = new ArrayList<>();
         DB db = new DB();
@@ -611,7 +752,12 @@ public class User {
         return createdChatrooms;
     }
 
-    // Get List Method
+    /**
+     * Retrieves the movie lists from the database for a specific user.
+     *
+     * @return         an ArrayList of MovieList objects containing the user's movie lists
+     * @throws Exception  if an error occurs while retrieving the movie lists
+     */
     public ArrayList<MovieList> getLists() throws Exception {
         ArrayList<MovieList> movieLists = new ArrayList<>();
 
@@ -641,6 +787,12 @@ public class User {
         }
     }
 
+    /**
+     * A method to check if a username exists in the database.
+     *
+     * @param  username   the username to check
+     * @return           true if the username exists, false otherwise
+     */
     public static boolean doesUsernameExist(String username) throws Exception {
         try (DB db = new DB();
                 Connection con = db.getConnection();
@@ -657,6 +809,12 @@ public class User {
         }
     }
 
+    /**
+     * Retrieves users with partial username from the database.
+     *
+     * @param  partialUsername    the partial username to search for
+     * @return                   the list of users with matching partial usernames
+     */
     public static ArrayList<User> getUsersWithPartialUsername(String partialUsername) {
         ArrayList<User> users = new ArrayList<>();
 
@@ -685,6 +843,12 @@ public class User {
         return users;
     }
 
+    /**
+     * Checks if the current user is following another user.
+     *
+     * @param  otherUser  the user to check if the current user is following
+     * @return           true if the current user follows the other user; otherwise, false
+     */
     public boolean isFollowing(User otherUser) {
         try (DB db = new DB();
                 Connection con = db.getConnection();
@@ -707,7 +871,11 @@ public class User {
         }
     }
 
-    // Method to get all user reviews ordered by movie ID
+    /**
+     * Retrieves all user reviews ordered by movie ID.
+     *
+     * @return         	list of user reviews ordered by movie ID
+     */
     public ArrayList<Review> getAllUserReviewsOrderedByMovieId() throws Exception {
         ArrayList<Review> userReviews = new ArrayList<>();
 
@@ -746,6 +914,12 @@ public class User {
         return userReviews;
     }
 
+    /**
+     * Deletes a chatroom and its associated data from the database.
+     *
+     * @param  chatroomId   the ID of the chatroom to be deleted
+     * @return         		void
+     */
     public void deleteChatroom(int chatroomId) throws Exception {
         try (DB db = new DB(); Connection con = db.getConnection()) {
 
@@ -780,6 +954,11 @@ public class User {
         }
     }
 
+    /**
+     * Returns a string representation of the User object, including id, username, and country.
+     *
+     * @return a string representation of the User object
+     */
     @Override
     public String toString() {
         return "User{" +
